@@ -30,10 +30,40 @@ $primary-gradient-two: #7367F0;
         background: $dark;
         border-bottom: 2px solid $dark-border;
         display: flex;
-        align-items: center;
-        padding: 0 12px;
+
+        %top-container {
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .left-container {
+            @extend %top-container;
+            flex: 3;
+            padding-left: 12px;
+            display: flex;
+
+            .group-canvas-options {
+                margin-left: 6%;
+                flex: 1;
+            }
+
+            .group-additional {
+                margin-right: 14px;
+            }
+        }
+
+        .right-container {
+            flex: 1;
+        }
 
         .builder-action {
+            font-family: 'Arial', sans-serif;
+            font-size: 16px;
+            color: $light;
+            min-height: 27px;
+            margin-right: 6px;
+
             .icon {
                 width: 24px;
                 height: 24px;
