@@ -46,6 +46,7 @@ $primary-gradient-two: #7367F0;
             .group-canvas-options {
                 margin-left: 6%;
                 flex: 1;
+                display: flex;
             }
 
             .group-additional {
@@ -69,6 +70,13 @@ $primary-gradient-two: #7367F0;
                 height: 24px;
                 // fill: url(#my-cool-gradient) $primary;
                 fill: $light;
+            }
+
+            &.active {
+                font-weight: 700;
+                background: linear-gradient(to right, $primary-gradient-one 10%, $primary-gradient-two 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
             }
 
             &::after {

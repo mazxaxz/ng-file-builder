@@ -6,10 +6,22 @@
             </button>
 
             <div class="group-canvas-options">
-                <button class="builder-btn builder-action">
+                <button class="builder-btn builder-action" (click)="changeOrientation()">
                     <svg class="icon" aria-hidden="true" focusable="false">
                         <use xlink:href="assets/icons/rotate_90.svg#rotate_90"></use>
                     </svg>
+                </button>
+
+                <button #sizeAction class="builder-btn builder-action active" data-size="A5" (click)="setSize(Size.A5)">
+                    A5
+                </button>
+
+                <button #sizeAction class="builder-btn builder-action" data-size="A4" (click)="setSize(Size.A4)">
+                    A4
+                </button>
+
+                <button #sizeAction class="builder-btn builder-action" data-size="A3" (click)="setSize(Size.A3)">
+                    A3
                 </button>
             </div>
     
