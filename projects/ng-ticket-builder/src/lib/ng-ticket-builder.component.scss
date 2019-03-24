@@ -23,13 +23,15 @@ $primary-gradient-two: #7367F0;
     display: flex;
     flex-direction: column;
     border: 1px solid $dark-border;
+    width: 100%;
+    height: 100%;
 
     .top-bar {
-        height: 34px;
         flex: 1;
         background: $dark;
         border-bottom: 2px solid $dark-border;
         display: flex;
+        align-items: center;
 
         %top-container {
             height: 100%;
@@ -100,7 +102,7 @@ $primary-gradient-two: #7367F0;
     }
 
     .wrapper {
-        flex: 1;
+        flex: 16;
         display: flex;
 
         .canvas-container {
@@ -110,11 +112,32 @@ $primary-gradient-two: #7367F0;
             justify-content: center;
             min-height: 500px;
             background: $canvas-background;
+            overflow: auto;
+            position: relative;
+
+            .canvas {
+                position: absolute;
+                will-change: width, height;
+                transition: .3s width ease-in-out, .3s height ease-in-out;
+            }
+
+            &::-webkit-scrollbar {
+                width: 10px;
+            }
+            
+            &::-webkit-scrollbar-track {
+                background: lighten($canvas-background, 10%);
+            }
+            
+            &::-webkit-scrollbar-thumb {
+                background: lighten($canvas-background, 5%);
+            }
         }
     
         .side-bar {
             flex: 1;
             min-height: 200px;
+            min-width: 200px;
             background: $dark;
         }
     }

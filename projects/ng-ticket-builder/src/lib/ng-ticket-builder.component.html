@@ -12,7 +12,7 @@
                     </svg>
                 </button>
 
-                <button #sizeAction class="builder-btn builder-action active" data-size="A5" (click)="setSize(Size.A5)">
+                <button #sizeAction class="builder-btn builder-action" data-size="A5" (click)="setSize(Size.A5)">
                     A5
                 </button>
 
@@ -52,7 +52,7 @@
         </div>    
 
     </div>
-    <div class="wrapper">
+    <div class="wrapper" (window:resize)="onWindowResize()">
         <div class="canvas-container">
             <div #builderCanvas class="canvas"></div>
         </div>
