@@ -7,7 +7,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "build:library": "ng build --prod ng-ticket-builder && cp -a projects/ng-ticket-builder/src/assets dist/ng-ticket-builder"
   },
   "private": true,
   "dependencies": {
@@ -47,6 +48,6 @@
     "tsickle": ">=0.29.0",
     "tslib": "^1.9.0",
     "tslint": "~5.9.1",
-    "typescript": "~2.7.2"
+    "typescript": "3.2.4"
   }
 }

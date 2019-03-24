@@ -1,0 +1,85 @@
+$dark: #2A3647;
+$dark-border: darken($dark, 5%);
+$dark-icon: #B9C9C7;
+
+$canvas-background: darken($dark, 2%);
+
+$light: #F5F9F8;
+$primary: #504280;
+
+$primary-gradient-one: #CE9FFC;
+$primary-gradient-two: #7367F0;
+
+.builder-btn {
+    position: relative;
+    padding: 0;
+    background: transparent;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+
+.builder-container {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid $dark-border;
+
+    .top-bar {
+        height: 34px;
+        flex: 1;
+        background: $dark;
+        border-bottom: 2px solid $dark-border;
+        display: flex;
+        align-items: center;
+        padding: 0 12px;
+
+        .builder-action {
+            .icon {
+                width: 24px;
+                height: 24px;
+                // fill: url(#my-cool-gradient) $primary;
+                fill: $light;
+            }
+
+            &::after {
+                content: ' ';
+                display: block;
+                opacity: 0;
+                width: 100%;
+                height: 2px;
+                position: absolute;
+                left: 0;
+                bottom: -4px;
+                background-image: linear-gradient(90deg, $primary-gradient-one 10%, $primary-gradient-two 100%);
+                will-change: opacity;
+                transition: .2s opacity ease-in-out;
+            }
+
+            &:hover::after {
+                opacity: 1;
+            }
+        }        
+    }
+
+    .wrapper {
+        flex: 1;
+        display: flex;
+
+        .canvas-container {
+            flex: 3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 500px;
+            background: $canvas-background;
+        }
+    
+        .side-bar {
+            flex: 1;
+            min-height: 200px;
+            background: $dark;
+        }
+    }
+
+    
+}
