@@ -12,16 +12,20 @@
                     </svg>
                 </button>
 
+                <button #sizeAction class="builder-btn builder-action" data-size="A7" (click)="setSize(Size.A7)">
+                    A7
+                </button>
+
+                <button #sizeAction class="builder-btn builder-action" data-size="A6" (click)="setSize(Size.A6)">
+                    A6
+                </button>
+
                 <button #sizeAction class="builder-btn builder-action" data-size="A5" (click)="setSize(Size.A5)">
                     A5
                 </button>
 
                 <button #sizeAction class="builder-btn builder-action" data-size="A4" (click)="setSize(Size.A4)">
                     A4
-                </button>
-
-                <button #sizeAction class="builder-btn builder-action" data-size="A3" (click)="setSize(Size.A3)">
-                    A3
                 </button>
             </div>
     
@@ -52,9 +56,9 @@
         </div>    
 
     </div>
-    <div class="wrapper" (window:resize)="onWindowResize()">
+    <div class="wrapper">
         <div class="canvas-container">
-            <div #builderCanvas class="canvas"></div>
+            <div #builderCanvas class="canvas" [innerHtml]="initialHtml | safeSanitizer: 'html'"></div>
         </div>
         <div class="side-bar">
     

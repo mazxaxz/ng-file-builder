@@ -117,8 +117,8 @@ $primary-gradient-two: #7367F0;
 
             .canvas {
                 position: absolute;
-                will-change: width, height;
-                transition: .3s width ease-in-out, .3s height ease-in-out;
+                will-change: width, height, transform;
+                transition: .3s width ease-in-out, .3s height ease-in-out, .3s transform ease-in-out;
             }
 
             &::-webkit-scrollbar {
