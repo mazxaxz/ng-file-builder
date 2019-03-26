@@ -58,6 +58,24 @@ $primary-gradient-two: #7367F0;
 
         .right-container {
             flex: 1;
+            min-width: 200px;
+            text-align: center;
+
+            .tab-selector {
+                @extend .builder-btn;
+                padding: 0 8px;
+
+                .icon {
+                    width: 20px;
+                    height: 20px;
+                    fill: $light;
+                    color: $light;
+                }
+
+                .tab-control {
+                    display: none;
+                }
+            }
         }
 
         .builder-action {
@@ -139,6 +157,10 @@ $primary-gradient-two: #7367F0;
             min-height: 200px;
             min-width: 200px;
             background: $dark;
+
+            .tab {
+                color: $light;
+            }
         }
     }
 

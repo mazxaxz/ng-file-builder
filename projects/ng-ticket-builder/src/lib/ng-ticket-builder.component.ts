@@ -1,4 +1,6 @@
-import { Component, OnInit, ViewChild, Renderer2, ViewChildren, QueryList, AfterViewInit, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Renderer2, ViewChildren, QueryList, AfterViewInit, Input, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 enum Size {
   A7 = "A7",
@@ -12,6 +14,12 @@ enum Orientation {
   Vertical = "vertical"
 }
 
+enum Tabs {
+  Core = "Core",
+  Typography = "Typography",
+  Blocks = "Blocks"
+}
+
 const PAGE_SIZES = {
   A7: { width: 210, height: 298, scale: 2.02 },
   A6: { width: 298, height: 420, scale: 1.42 },
@@ -22,25 +30,35 @@ const PAGE_SIZES = {
 @Component({
   selector: 'mzx-ng-ticket-builder',
   templateUrl: './ng-ticket-builder.component.html',
-  styleUrls: ['./ng-ticket-builder.component.scss']
+  styleUrls: ['./ng-ticket-builder.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NgTicketBuilderComponent implements OnInit, AfterViewInit {
+export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewInit {
+  private _subs: Subscription[] = [];
   @ViewChild('builderCanvas') builderCanvas: any;
   @ViewChildren('sizeAction') sizeActions: QueryList<any>;
   @Input() initialHtml?: string = '';
   private _canvas: any;
+  navigationForm: FormGroup;
 
   currentSize: Size;
   currentOrientation: Orientation;
+  currentTab: Tabs = Tabs.Core;
 
   Size = Size;
   Orientation = Orientation;
+  Tabs = Tabs;
 
   constructor(private renderer2: Renderer2) { }
 
   ngOnInit() {
     this._canvas = this.builderCanvas.nativeElement;
     this._initialize();
+    this._initializeNavigation();
+  }
+
+  ngOnDestroy() {
+    this._subs.forEach(sub => sub.unsubscribe());
   }
 
   ngAfterViewInit() {
@@ -94,6 +112,19 @@ export class NgTicketBuilderComponent implements OnInit, AfterViewInit {
     this.renderer2.setStyle(this._canvas, 'background-color', '#fff');
     this.renderer2.setStyle(this._canvas, 'width', `${PAGE_SIZES[this.currentSize].width}px`);
     this.renderer2.setStyle(this._canvas, 'height', `${PAGE_SIZES[this.currentSize].height}px`);
+  }
+
+  private _initializeNavigation() {
+    this.navigationForm = new FormGroup({
+      currentTab: new FormControl(this.currentTab)
+    });
+    const sub = this.navigationForm.get('currentTab').valueChanges
+      .subscribe((value: Tabs) => {
+        if (!value) return;
+
+        this.currentTab = value;
+      });
+    this._subs.push(sub);
   }
 
 }

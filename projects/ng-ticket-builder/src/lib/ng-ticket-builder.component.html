@@ -52,8 +52,29 @@
         </div>
 
         <div class="right-container">
+            <form [formGroup]="navigationForm">
+                <label class="tab-selector" role="button">
+                    <svg class="icon" aria-hidden="true" focusable="false">
+                        <use xlink:href="assets/icons/business.svg#business"></use>
+                    </svg>
+                    <input class="tab-control" type="radio" name="currentTab" [value]="Tabs.Core" formControlName="currentTab" />
+                </label>
 
-        </div>    
+                <label class="tab-selector" role="button">
+                    <svg class="icon" aria-hidden="true" focusable="false">
+                        <use xlink:href="assets/icons/text_fields.svg#text_fields"></use>
+                    </svg>
+                    <input class="tab-control" type="radio" name="currentTab" [value]="Tabs.Typography" formControlName="currentTab" />
+                </label>
+
+                <label class="tab-selector" role="button">
+                    <svg class="icon" aria-hidden="true" focusable="false">
+                        <use xlink:href="assets/icons/view_module.svg#view_module"></use>
+                    </svg>
+                    <input class="tab-control" type="radio" name="currentTab" [value]="Tabs.Blocks" formControlName="currentTab" />
+                </label>
+            </form>
+        </div>
 
     </div>
     <div class="wrapper">
@@ -61,7 +82,11 @@
             <div #builderCanvas class="canvas" [innerHtml]="initialHtml | safeSanitizer: 'html'"></div>
         </div>
         <div class="side-bar">
-    
+            <ng-container [ngSwitch]="currentTab">
+                <div class="tab" *ngSwitchCase="Tabs.Core">Core</div>
+                <div class="tab" *ngSwitchCase="Tabs.Typography">typography</div>
+                <div class="tab" *ngSwitchCase="Tabs.Blocks">blocks</div>
+            </ng-container>
         </div>
     </div>
     <svg style="width:0;height:0;position:absolute;" aria-hidden="true" focusable="false">
