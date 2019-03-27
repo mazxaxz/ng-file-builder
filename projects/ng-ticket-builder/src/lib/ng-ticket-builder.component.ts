@@ -1,18 +1,7 @@
 import { Component, OnInit, ViewChild, Renderer2, ViewChildren, QueryList, AfterViewInit, Input, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
-
-enum Size {
-  A7 = "A7",
-  A6 = "A6",
-  A5 = "A5",
-  A4 = "A4"
-}
-
-enum Orientation {
-  Horizontal = "horizontal",
-  Vertical = "vertical"
-}
+import { PageOrientation, PageSize } from './ng-ticket-builder.models';
 
 enum Tabs {
   Core = "Core",
@@ -41,12 +30,12 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
   private _canvas: any;
   navigationForm: FormGroup;
 
-  currentSize: Size;
-  currentOrientation: Orientation;
+  currentSize: PageSize;
+  currentOrientation: PageOrientation;
   currentTab: Tabs = Tabs.Core;
 
-  Size = Size;
-  Orientation = Orientation;
+  PageSize = PageSize;
+  PageOrientation = PageOrientation;
   Tabs = Tabs;
 
   constructor(private renderer2: Renderer2) { }
@@ -76,19 +65,19 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
     this.renderer2.setStyle(this._canvas, 'width', height);
     this.renderer2.setStyle(this._canvas, 'height', width);
 
-    if (this.currentOrientation === Orientation.Horizontal) {
-      return this.currentOrientation = Orientation.Vertical;
+    if (this.currentOrientation === PageOrientation.Horizontal) {
+      return this.currentOrientation = PageOrientation.Vertical;
     }
 
-    this.currentOrientation = Orientation.Horizontal;
+    this.currentOrientation = PageOrientation.Horizontal;
   }
 
-  setSize(size: Size) {
+  setSize(size: PageSize) {
     this.currentSize = size;
     const width = `${PAGE_SIZES[size].width}px`;
     const height = `${PAGE_SIZES[size].height}px`;
     this.renderer2.setStyle(this._canvas, 'transform', `scale(${PAGE_SIZES[size].scale})`);
-    if (this.currentOrientation === Orientation.Vertical) {
+    if (this.currentOrientation === PageOrientation.Vertical) {
       this.renderer2.setStyle(this._canvas, 'width', width);
       this.renderer2.setStyle(this._canvas, 'height', height);
     } else {
@@ -107,8 +96,8 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   private _initialize() {
-    this.currentSize = Size.A5;
-    this.currentOrientation = Orientation.Vertical;
+    this.currentSize = PageSize.A5;
+    this.currentOrientation = PageOrientation.Vertical;
     this.renderer2.setStyle(this._canvas, 'background-color', '#fff');
     this.renderer2.setStyle(this._canvas, 'width', `${PAGE_SIZES[this.currentSize].width}px`);
     this.renderer2.setStyle(this._canvas, 'height', `${PAGE_SIZES[this.currentSize].height}px`);

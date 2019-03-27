@@ -157,8 +157,11 @@ $primary-gradient-two: #7367F0;
             min-height: 200px;
             min-width: 200px;
             background: $dark;
+            padding: 10px;
 
             .tab {
+                font-family: 'Arial', sans-serif;
+                font-size: 16px;
                 color: $light;
             }
         }
