@@ -6,6 +6,7 @@ $canvas-background: darken($dark, 2%);
 
 $light: #F5F9F8;
 $primary: #504280;
+$danger: #FF6565;
 
 $primary-gradient-one: #CE9FFC;
 $primary-gradient-two: #7367F0;
@@ -167,5 +168,51 @@ $primary-gradient-two: #7367F0;
         }
     }
 
-    
+    .form-group {
+        position: relative;
+
+        .form-control {
+            background: transparent;
+            outline: none;
+            width: 100%;
+            border: 1px solid $light;
+            border-radius: 10px;
+            color: $light;
+            padding: 8px 12px;
+            font-size: 17px;
+            margin-bottom: 10px;
+            will-change: border-color;
+            transition: .3s border-color ease-in-out;
+
+            &:focus {
+                border-color: $primary-gradient-one;
+                -webkit-box-shadow: 0px 0px 4px -1px $primary-gradient-one;
+                -moz-box-shadow: 0px 0px 4px -1px $primary-gradient-one;
+                box-shadow: 0px 0px 4px -1px $primary-gradient-one;
+            }
+
+            &:valid + .form-control-label,
+            &:focus + .form-control-label {
+                font-size: 11px;
+                transform: translate3d(0, -14px, 0);
+            }
+
+            &.invalid {
+                border-color: $danger;
+                -webkit-box-shadow: 0px 0px 4px -1px $danger;
+                -moz-box-shadow: 0px 0px 4px -1px $danger;
+                box-shadow: 0px 0px 4px -1px $danger;
+            }
+        }
+
+        .form-control-label {
+            position: absolute;
+            left: 13px;
+            top: 9px;
+            background: $dark;
+            cursor: text;
+            will-change: transform, font-size;
+            transition: .2s transform ease-in-out, .2s font-size ease-in-out;
+        }
+    }
 }

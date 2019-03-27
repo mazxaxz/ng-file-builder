@@ -1,3 +1,5 @@
+import { ValidatorFn } from "@angular/forms";
+
 export enum PageSize {
     A7 = "A7",
     A6 = "A6",
@@ -8,4 +10,10 @@ export enum PageSize {
 export enum PageOrientation {
     Horizontal = "horizontal",
     Vertical = "vertical"
+}
+
+export interface BuilderControl {
+    label: string;
+    name: string;
+    validators: ValidatorFn[];
 }

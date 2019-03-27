@@ -83,7 +83,24 @@
         </div>
         <div class="side-bar">
             <ng-container [ngSwitch]="currentTab">
-                <div class="tab" *ngSwitchCase="Tabs.Core">Core</div>
+                <div class="tab" *ngSwitchCase="Tabs.Core">
+
+                    <form [formGroup]="coreForm">
+                        <div *ngFor="let control of controls; let idx = index" formArrayName="dynamicControls">
+                            <div class="form-group" [formGroupName]="idx">
+                                <input type="text" 
+                                    class="form-control" 
+                                    [ngClass]="{ 'invalid': !getCoreControlGroup(idx).valid && getCoreControlGroup(idx).touched }"
+                                    [formControlName]="control.name" 
+                                    [name]="control.name" 
+                                    [id]="control.name" 
+                                    required />
+                                <label [for]="control.name" class="form-control-label">{{ control.label }}</label>
+                            </div>
+                        </div>
+                    </form>
+                    
+                </div>
                 <div class="tab" *ngSwitchCase="Tabs.Typography">typography</div>
                 <div class="tab" *ngSwitchCase="Tabs.Blocks">blocks</div>
             </ng-container>

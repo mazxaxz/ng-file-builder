@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, Renderer2, ViewChildren, QueryList, AfterViewInit, Input, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, FormArray, ValidatorFn } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { PageOrientation, PageSize } from './ng-ticket-builder.models';
+import { PageOrientation, PageSize, BuilderControl } from './ng-ticket-builder.models';
 
 enum Tabs {
   Core = "Core",
@@ -27,8 +27,12 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
   @ViewChild('builderCanvas') builderCanvas: any;
   @ViewChildren('sizeAction') sizeActions: QueryList<any>;
   @Input() initialHtml?: string = '';
+  @Input() controls?: BuilderControl[] = [];
+
   private _canvas: any;
   navigationForm: FormGroup;
+  coreForm: FormGroup;
+  coreFormFields: FormArray;
 
   currentSize: PageSize;
   currentOrientation: PageOrientation;
@@ -38,12 +42,19 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
   PageOrientation = PageOrientation;
   Tabs = Tabs;
 
-  constructor(private renderer2: Renderer2) { }
+  constructor(
+    private renderer2: Renderer2,
+    private formBuilder: FormBuilder) {
+      this.coreForm = this.formBuilder.group({
+        dynamicControls: this.formBuilder.array([])
+      });
+    }
 
   ngOnInit() {
     this._canvas = this.builderCanvas.nativeElement;
     this._initialize();
     this._initializeNavigation();
+    this._initializeCoreForm();
   }
 
   ngOnDestroy() {
@@ -95,6 +106,10 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
     });
   }
 
+  getCoreControlGroup(groupName: number) {
+    return this.coreForm.controls['dynamicControls'].get(groupName.toString());
+  }
+
   private _initialize() {
     this.currentSize = PageSize.A5;
     this.currentOrientation = PageOrientation.Vertical;
@@ -114,6 +129,22 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
         this.currentTab = value;
       });
     this._subs.push(sub);
+  }
+
+  private _initializeCoreForm() {
+    if (!this.controls || this.controls.length <= 0) return;
+
+    const items = this.coreForm.get('dynamicControls') as FormArray;
+    this.controls.forEach((control: BuilderControl) => {
+      items.push(this._createInput(control.name, control.validators));
+    });
+    this.coreFormFields = items;
+  }
+
+  private _createInput(name: string, validators: ValidatorFn[]): FormGroup {
+    const group = this.formBuilder.group({});
+    group.addControl(name, new FormControl('', validators));
+    return group;
   }
 
 }
