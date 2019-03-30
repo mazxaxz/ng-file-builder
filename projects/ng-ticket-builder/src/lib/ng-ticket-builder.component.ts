@@ -1,12 +1,46 @@
-import { Component, OnInit, ViewChild, Renderer2, ViewChildren, QueryList, AfterViewInit, Input, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, Renderer2, ViewChildren, QueryList, AfterViewInit, Input, ChangeDetectionStrategy, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, FormArray, ValidatorFn } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { PageOrientation, PageSize, BuilderControl } from './ng-ticket-builder.models';
 
+enum ArrowAction {
+  Up = "ArrowUp",
+  Left = "ArrowLeft",
+  Right = "ArrowRight",
+  Down = "ArrowDown"
+}
+
 enum Tabs {
   Core = "Core",
   Typography = "Typography",
-  Blocks = "Blocks"
+  Blocks = "Blocks",
+  Layers = "Layers"
+}
+
+enum DefaultBlocks {
+  QrCode = "qrcode"
+}
+
+const DEFAULT_BLOCKS_HTML = {
+  qrcode: {
+    selector: 'img',
+    attributes: [
+      {
+        name: 'src',
+        value: '/assets/images/qr_code_image_placeholder.png'
+      }
+    ],
+    initialStyles: [
+      {
+        name: 'height',
+        value: '200px'
+      },
+      {
+        name: 'width',
+        value: '200px'
+      }
+    ]
+  }
 }
 
 const PAGE_SIZES = {
@@ -30,6 +64,7 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
   @Input() controls?: BuilderControl[] = [];
 
   private _canvas: any;
+  private _focusedElement: any;
   navigationForm: FormGroup;
   coreForm: FormGroup;
   coreFormFields: FormArray;
@@ -41,6 +76,7 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
   PageSize = PageSize;
   PageOrientation = PageOrientation;
   Tabs = Tabs;
+  DefaultBlocks = DefaultBlocks;
 
   constructor(
     private renderer2: Renderer2,
@@ -58,6 +94,7 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   ngOnDestroy() {
+    window.removeEventListener('keydown', this._handleArrowMovement);
     this._subs.forEach(sub => sub.unsubscribe());
   }
 
@@ -110,12 +147,47 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
     return this.coreForm.controls['dynamicControls'].get(groupName.toString());
   }
 
+  renderElement(block: DefaultBlocks) {
+    const selected = DEFAULT_BLOCKS_HTML[block];
+    const element = this.renderer2.createElement(selected.selector);
+    selected.attributes.forEach(attribute => {
+      this.renderer2.setAttribute(element, attribute.name, attribute.value);
+    });
+    selected.initialStyles.forEach(style => {
+      this.renderer2.setStyle(element, style.name, style.value);
+    });
+
+    const height = element.style.height.replace('px', '') << 0;
+    const width = element.style.width.replace('px', '') << 0;
+    const parentHeight = this._canvas.style.height.replace('px', '') << 0;
+    const parentWidth = this._canvas.style.width.replace('px', '') << 0;
+
+    this.renderer2.setStyle(element, 'position', 'absolute');
+    this.renderer2.setStyle(element, 'top', `${(parentHeight / 2) - (height / 2)}px`);
+    this.renderer2.setStyle(element, 'left', `${(parentWidth / 2) - (width / 2)}px`);
+    this.renderer2.setStyle(element, 'box-sizing', 'border-box');
+    this.renderer2.setStyle(element, 'cursor', 'grab');
+
+    this.renderer2.listen(element, 'mouseover', () => {
+      this.renderer2.setStyle(element, 'box-shadow', '0px 0px 0px 3px rgba(149,177,225,1)');
+    });
+
+    this.renderer2.listen(element, 'mouseout', () => {
+      this.renderer2.setStyle(element, 'box-shadow', 'none');
+    });
+
+    this.renderer2.listen(window, 'mousedown', () => this._focusedElement = element);
+    this.renderer2.appendChild(this._canvas, element);
+    this._focusedElement = element;
+  }
+
   private _initialize() {
     this.currentSize = PageSize.A5;
     this.currentOrientation = PageOrientation.Vertical;
     this.renderer2.setStyle(this._canvas, 'background-color', '#fff');
     this.renderer2.setStyle(this._canvas, 'width', `${PAGE_SIZES[this.currentSize].width}px`);
     this.renderer2.setStyle(this._canvas, 'height', `${PAGE_SIZES[this.currentSize].height}px`);
+    window.addEventListener('keydown', this._handleArrowMovement.bind(this));
   }
 
   private _initializeNavigation() {
@@ -145,6 +217,29 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
     const group = this.formBuilder.group({});
     group.addControl(name, new FormControl('', validators));
     return group;
+  }
+
+  private _handleArrowMovement(e) {
+    if (!this._focusedElement) return;
+      
+    const currentY = this._focusedElement.style.top.replace('px', '') << 0;
+    const currentX = this._focusedElement.style.left.replace('px', '') << 0;
+
+    if (e.code === ArrowAction.Up) {
+      return this._focusedElement.style.top = `${currentY - 1}px`;
+    }
+
+    if (e.code === ArrowAction.Down) {
+      return this._focusedElement.style.top = `${currentY + 1}px`;
+    }
+
+    if (e.code === ArrowAction.Left) {
+      return this._focusedElement.style.left = `${currentX - 1}px`;
+    }
+
+    if (e.code === ArrowAction.Right) {
+      return this._focusedElement.style.left = `${currentX + 1}px`;
+    }
   }
 
 }
