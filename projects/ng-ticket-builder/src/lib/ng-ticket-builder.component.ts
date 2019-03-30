@@ -187,6 +187,7 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
     this.renderer2.setStyle(this._canvas, 'background-color', '#fff');
     this.renderer2.setStyle(this._canvas, 'width', `${PAGE_SIZES[this.currentSize].width}px`);
     this.renderer2.setStyle(this._canvas, 'height', `${PAGE_SIZES[this.currentSize].height}px`);
+    this.renderer2.setStyle(this._canvas, 'overflow', 'hidden');
     window.addEventListener('keydown', this._handleArrowMovement.bind(this));
   }
 
