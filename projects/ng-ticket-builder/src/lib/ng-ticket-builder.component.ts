@@ -58,6 +58,7 @@ const PAGE_SIZES = {
 })
 export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewInit {
   private _subs: Subscription[] = [];
+  private _listeners: Function[] = [];
   @ViewChild('builderCanvas') builderCanvas: any;
   @ViewChildren('sizeAction') sizeActions: QueryList<any>;
   @Input() initialHtml?: string = '';
@@ -65,6 +66,9 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
 
   private _canvas: any;
   private _focusedElement: any;
+  private _currentMouseX: number;
+  private _currentMouseY: number;
+  private _resizeBindingFnc: any;
   navigationForm: FormGroup;
   coreForm: FormGroup;
   coreFormFields: FormArray;
@@ -96,6 +100,7 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
   ngOnDestroy() {
     window.removeEventListener('keydown', this._handleArrowMovement);
     this._subs.forEach(sub => sub.unsubscribe());
+    this._listeners.forEach(fn => fn());
   }
 
   ngAfterViewInit() {
@@ -105,6 +110,12 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
 
       this.renderer2.addClass(nativeElement, 'active');
     });
+
+    if (!this.initialHtml) return;
+
+    for (let i = 0; i < this._canvas.children.length; i++) {
+      this._addListeners(this._canvas.children[i]);
+    }
   }
 
   changeOrientation() {
@@ -165,18 +176,9 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
     this.renderer2.setStyle(element, 'position', 'absolute');
     this.renderer2.setStyle(element, 'top', `${(parentHeight / 2) - (height / 2)}px`);
     this.renderer2.setStyle(element, 'left', `${(parentWidth / 2) - (width / 2)}px`);
-    this.renderer2.setStyle(element, 'box-sizing', 'border-box');
-    this.renderer2.setStyle(element, 'cursor', 'grab');
+    this.renderer2.setStyle(element, 'cursor', 'auto');
 
-    this.renderer2.listen(element, 'mouseover', () => {
-      this.renderer2.setStyle(element, 'box-shadow', '0px 0px 0px 3px rgba(149,177,225,1)');
-    });
-
-    this.renderer2.listen(element, 'mouseout', () => {
-      this.renderer2.setStyle(element, 'box-shadow', 'none');
-    });
-
-    this.renderer2.listen(window, 'mousedown', () => this._focusedElement = element);
+    this._addListeners(element);
     this.renderer2.appendChild(this._canvas, element);
     this._focusedElement = element;
   }
@@ -188,7 +190,69 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
     this.renderer2.setStyle(this._canvas, 'width', `${PAGE_SIZES[this.currentSize].width}px`);
     this.renderer2.setStyle(this._canvas, 'height', `${PAGE_SIZES[this.currentSize].height}px`);
     this.renderer2.setStyle(this._canvas, 'overflow', 'hidden');
+    
     window.addEventListener('keydown', this._handleArrowMovement.bind(this));
+  }
+
+  private _addListeners(element) {
+    const over = this.renderer2.listen(element, 'mouseover', () => {
+      this.renderer2.setStyle(element, 'outline', '3px solid rgba(149,177,225,1)');
+    });
+
+    const out = this.renderer2.listen(element, 'mouseout', () => {
+      this.renderer2.setStyle(element, 'outline', 'none');
+    });
+
+    const move = this.renderer2.listen(window, 'mousemove', (e) => {
+      const computed = window.getComputedStyle(element);
+      const height = +computed.getPropertyValue('height').replace('px', '');
+      const width = +computed.getPropertyValue('width').replace('px', '');
+      const borderSize = 10 / PAGE_SIZES[this.currentSize].scale;
+
+      if (e.offsetY > (height - borderSize) && e.offsetY < (height + borderSize) &&
+          e.offsetX > (width - borderSize) && e.offsetX < (width + borderSize)) {
+        element.style.cursor = 'se-resize';
+        this._canvas.style.cursor = 'se-resize';
+        return;
+      }
+      
+      element.style.cursor = 'auto';
+      this._canvas.style.cursor = 'auto';
+    });
+
+    const down = this.renderer2.listen(window, 'mousedown', (e) => {
+      this._focusedElement = element;
+      window.removeEventListener('mousemove', this._resizeBindingFnc);
+      const computed = window.getComputedStyle(element);
+      const height = +computed.getPropertyValue('height').replace('px', '');
+      const width = +computed.getPropertyValue('width').replace('px', '');
+      const borderSize = 10 / PAGE_SIZES[this.currentSize].scale;
+
+      if (e.offsetY > (height - borderSize) && e.offsetY < (height + borderSize) &&
+          e.offsetX > (width - borderSize) && e.offsetX < (width + borderSize)) {
+        this._currentMouseY = e.y;
+        this._currentMouseX = e.x;
+        this._resizeBindingFnc = this._resize.bind(this, element);
+        this.renderer2.setStyle(element, 'outline', '3px solid rgba(149,177,225,1)');
+        window.addEventListener('mousemove', this._resizeBindingFnc);
+      }
+    });
+
+    const up = this.renderer2.listen(window, 'mouseup', () => window.removeEventListener('mousemove', this._resizeBindingFnc));
+    this._listeners.push(over, out, move, down, up);
+  }
+
+  private _resize(element) {
+    const event = arguments[1];
+    const dy = (this._currentMouseY - event.y) / PAGE_SIZES[this.currentSize].scale;
+    const dx = (this._currentMouseX - event.x) / PAGE_SIZES[this.currentSize].scale;
+    const height = +window.getComputedStyle(element).getPropertyValue('height').replace('px', '');
+    const width = +window.getComputedStyle(element).getPropertyValue('width').replace('px', '');
+
+    this._currentMouseY = event.y;
+    this._currentMouseX = event.x;
+    element.style.height = (height - dy) + 'px';
+    element.style.width = (width - dx) + 'px';
   }
 
   private _initializeNavigation() {
