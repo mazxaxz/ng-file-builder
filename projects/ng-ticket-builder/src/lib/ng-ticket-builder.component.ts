@@ -203,7 +203,7 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
       this.renderer2.setStyle(element, 'outline', 'none');
     });
 
-    const move = this.renderer2.listen(window, 'mousemove', (e) => {
+    const move = this.renderer2.listen(this._canvas, 'mousemove', (e) => {
       const computed = window.getComputedStyle(element);
       const height = +computed.getPropertyValue('height').replace('px', '');
       const width = +computed.getPropertyValue('width').replace('px', '');
@@ -220,9 +220,9 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
       this._canvas.style.cursor = 'auto';
     });
 
-    const down = this.renderer2.listen(window, 'mousedown', (e) => {
+    const down = this.renderer2.listen(element, 'mousedown', (e) => {
       this._focusedElement = element;
-      window.removeEventListener('mousemove', this._resizeBindingFnc);
+      this._canvas.removeEventListener('mousemove', this._resizeBindingFnc);
       const computed = window.getComputedStyle(element);
       const height = +computed.getPropertyValue('height').replace('px', '');
       const width = +computed.getPropertyValue('width').replace('px', '');
@@ -232,27 +232,26 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
           e.offsetX > (width - borderSize) && e.offsetX < (width + borderSize)) {
         this._currentMouseY = e.y;
         this._currentMouseX = e.x;
-        this._resizeBindingFnc = this._resize.bind(this, element);
+        this._resizeBindingFnc = this._resize.bind(this);
         this.renderer2.setStyle(element, 'outline', '3px solid rgba(149,177,225,1)');
-        window.addEventListener('mousemove', this._resizeBindingFnc);
+        this._canvas.addEventListener('mousemove', this._resizeBindingFnc);
       }
     });
 
-    const up = this.renderer2.listen(window, 'mouseup', () => window.removeEventListener('mousemove', this._resizeBindingFnc));
+    const up = this.renderer2.listen(this._canvas, 'mouseup', () => this._canvas.removeEventListener('mousemove', this._resizeBindingFnc));
     this._listeners.push(over, out, move, down, up);
   }
 
-  private _resize(element) {
-    const event = arguments[1];
+  private _resize(event) {
     const dy = (this._currentMouseY - event.y) / PAGE_SIZES[this.currentSize].scale;
     const dx = (this._currentMouseX - event.x) / PAGE_SIZES[this.currentSize].scale;
-    const height = +window.getComputedStyle(element).getPropertyValue('height').replace('px', '');
-    const width = +window.getComputedStyle(element).getPropertyValue('width').replace('px', '');
+    const height = +window.getComputedStyle(this._focusedElement).getPropertyValue('height').replace('px', '');
+    const width = +window.getComputedStyle(this._focusedElement).getPropertyValue('width').replace('px', '');
 
     this._currentMouseY = event.y;
     this._currentMouseX = event.x;
-    element.style.height = (height - dy) + 'px';
-    element.style.width = (width - dx) + 'px';
+    this._focusedElement.style.height = (height - dy) + 'px';
+    this._focusedElement.style.width = (width - dx) + 'px';
   }
 
   private _initializeNavigation() {
