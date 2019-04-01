@@ -18,7 +18,8 @@ enum Tabs {
 }
 
 enum DefaultBlocks {
-  QrCode = "qrcode"
+  QrCode = "qrcode",
+  Square = "square"
 }
 
 const DEFAULT_BLOCKS_HTML = {
@@ -45,6 +46,24 @@ const DEFAULT_BLOCKS_HTML = {
       {
         name: 'background-repeat',
         value: 'no-repeat'
+      }
+    ]
+  },
+  square: {
+    selector: 'div',
+    attributes: [],
+    initialStyles: [
+      {
+        name: 'height',
+        value: '100px'
+      },
+      {
+        name: 'width',
+        value: '100px'
+      },
+      {
+        name: 'background-color',
+        value: '#504280'
       }
     ]
   }
@@ -125,6 +144,7 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
 
     for (let i = 0; i < this._canvas.children.length; i++) {
       this._addListeners(this._canvas.children[i]);
+      this.renderer2.setStyle(this._canvas.children[i], 'user-select', 'none');
     }
   }
 
@@ -187,6 +207,7 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
     this.renderer2.setStyle(element, 'top', `${(parentHeight / 2) - (height / 2)}px`);
     this.renderer2.setStyle(element, 'left', `${(parentWidth / 2) - (width / 2)}px`);
     this.renderer2.setStyle(element, 'cursor', 'auto');
+    this.renderer2.setStyle(element, 'user-select', 'none');
 
     this._addListeners(element);
     this.renderer2.appendChild(this._canvas, element);
