@@ -176,9 +176,15 @@ $primary-gradient-two: #7367F0;
                         .block {
                             @extend .builder-btn;
                             flex: 1;
-                            border: 1px solid $light;
-                            border-radius: 10px;
                             color: $light;
+                            opacity: 0.85;
+                            background: lighten($dark, 5%);
+                            will-change: opacity;
+                            transition: .3s opacity ease-in-out;
+
+                            &:hover {
+                                opacity: 1;
+                            }
 
                             .icon-wrapper {
                                 .icon {
@@ -209,36 +215,24 @@ $primary-gradient-two: #7367F0;
         position: relative;
 
         .form-control {
-            background: transparent;
+            background: lighten($dark, 5%);
             outline: none;
+            border: none;
             width: 100%;
-            border: 1px solid $light;
-            border-radius: 10px;
             color: $light;
             padding: 8px 12px;
             font-size: 17px;
             margin-bottom: 10px;
-            will-change: border-color;
-            transition: .3s border-color ease-in-out;
-
-            &:focus {
-                border-color: $primary-gradient-one;
-                -webkit-box-shadow: 0px 0px 4px -1px $primary-gradient-one;
-                -moz-box-shadow: 0px 0px 4px -1px $primary-gradient-one;
-                box-shadow: 0px 0px 4px -1px $primary-gradient-one;
-            }
 
             &:valid + .form-control-label,
             &:focus + .form-control-label {
                 font-size: 11px;
                 transform: translate3d(0, -14px, 0);
+                color: $primary-gradient-one;
             }
 
-            &.invalid {
-                border-color: $danger;
-                -webkit-box-shadow: 0px 0px 4px -1px $danger;
-                -moz-box-shadow: 0px 0px 4px -1px $danger;
-                box-shadow: 0px 0px 4px -1px $danger;
+            &.invalid + .form-control-label {
+                color: $danger;
             }
         }
 
@@ -246,7 +240,7 @@ $primary-gradient-two: #7367F0;
             position: absolute;
             left: 13px;
             top: 9px;
-            background: $dark;
+            background: transparent;
             cursor: text;
             will-change: transform, font-size;
             transition: .2s transform ease-in-out, .2s font-size ease-in-out;

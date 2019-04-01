@@ -23,13 +23,8 @@ enum DefaultBlocks {
 
 const DEFAULT_BLOCKS_HTML = {
   qrcode: {
-    selector: 'img',
-    attributes: [
-      {
-        name: 'src',
-        value: '/assets/images/qr_code_image_placeholder.png'
-      }
-    ],
+    selector: 'div',
+    attributes: [],
     initialStyles: [
       {
         name: 'height',
@@ -38,6 +33,18 @@ const DEFAULT_BLOCKS_HTML = {
       {
         name: 'width',
         value: '200px'
+      },
+      {
+        name: 'background-image',
+        value: "url('/assets/images/qr_code_image_placeholder.png')"
+      },
+      {
+        name: 'background-size',
+        value: 'contain'
+      },
+      {
+        name: 'background-repeat',
+        value: 'no-repeat'
       }
     ]
   }
