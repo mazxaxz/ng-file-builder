@@ -68,7 +68,10 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
   private _focusedElement: any;
   private _currentMouseX: number;
   private _currentMouseY: number;
+
   private _resizeBindingFnc: any;
+  private _dragBindingFnc: any;
+
   navigationForm: FormGroup;
   coreForm: FormGroup;
   coreFormFields: FormArray;
@@ -216,29 +219,39 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
         return;
       }
       
-      element.style.cursor = 'auto';
+      element.style.cursor = 'grab';
       this._canvas.style.cursor = 'auto';
     });
 
     const down = this.renderer2.listen(element, 'mousedown', (e) => {
       this._focusedElement = element;
       this._canvas.removeEventListener('mousemove', this._resizeBindingFnc);
+      this._canvas.removeEventListener('mousemove', this._dragBindingFnc);
+      this.renderer2.setStyle(element, 'outline', '3px solid rgba(149,177,225,1)');
+
       const computed = window.getComputedStyle(element);
       const height = +computed.getPropertyValue('height').replace('px', '');
       const width = +computed.getPropertyValue('width').replace('px', '');
       const borderSize = 10 / PAGE_SIZES[this.currentSize].scale;
 
+      this._currentMouseY = e.y;
+      this._currentMouseX = e.x;
+
       if (e.offsetY > (height - borderSize) && e.offsetY < (height + borderSize) &&
           e.offsetX > (width - borderSize) && e.offsetX < (width + borderSize)) {
-        this._currentMouseY = e.y;
-        this._currentMouseX = e.x;
         this._resizeBindingFnc = this._resize.bind(this);
-        this.renderer2.setStyle(element, 'outline', '3px solid rgba(149,177,225,1)');
         this._canvas.addEventListener('mousemove', this._resizeBindingFnc);
+        return;
       }
+
+      this._dragBindingFnc = this._drag.bind(this);
+      this._canvas.addEventListener('mousemove', this._dragBindingFnc);
     });
 
-    const up = this.renderer2.listen(this._canvas, 'mouseup', () => this._canvas.removeEventListener('mousemove', this._resizeBindingFnc));
+    const up = this.renderer2.listen(this._canvas, 'mouseup', () => {
+      this._canvas.removeEventListener('mousemove', this._resizeBindingFnc);
+      this._canvas.removeEventListener('mousemove', this._dragBindingFnc);
+    });
     this._listeners.push(over, out, move, down, up);
   }
 
@@ -252,6 +265,18 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
     this._currentMouseX = event.x;
     this._focusedElement.style.height = (height - dy) + 'px';
     this._focusedElement.style.width = (width - dx) + 'px';
+  }
+
+  private _drag(event) {
+    const dy = (this._currentMouseY - event.y) / PAGE_SIZES[this.currentSize].scale;
+    const dx = (this._currentMouseX - event.x) / PAGE_SIZES[this.currentSize].scale;
+    const top = +window.getComputedStyle(this._focusedElement).getPropertyValue('top').replace('px', '');
+    const left = +window.getComputedStyle(this._focusedElement).getPropertyValue('left').replace('px', '');
+
+    this._currentMouseY = event.y;
+    this._currentMouseX = event.x;
+    this._focusedElement.style.top = (top - dy) + 'px';
+    this._focusedElement.style.left = (left - dx) + 'px';
   }
 
   private _initializeNavigation() {
