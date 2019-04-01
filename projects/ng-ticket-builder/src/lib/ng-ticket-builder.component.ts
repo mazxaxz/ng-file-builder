@@ -98,6 +98,8 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
   private _resizeBindingFnc: any;
   private _dragBindingFnc: any;
 
+  allElements: any[] = [];
+
   navigationForm: FormGroup;
   coreForm: FormGroup;
   coreFormFields: FormArray;
@@ -143,6 +145,7 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
     if (!this.initialHtml) return;
 
     for (let i = 0; i < this._canvas.children.length; i++) {
+      this.allElements.push(this._canvas.children[i]);
       this._addListeners(this._canvas.children[i]);
       this.renderer2.setStyle(this._canvas.children[i], 'user-select', 'none');
     }
@@ -188,6 +191,10 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
     return this.coreForm.controls['dynamicControls'].get(groupName.toString());
   }
 
+  getElementBackground(element) {
+    return element.style.backgroundImage || element.style.background || element.style.backgroundColor || '#fff';
+  }
+
   renderElement(block: DefaultBlocks) {
     const selected = DEFAULT_BLOCKS_HTML[block];
     const element = this.renderer2.createElement(selected.selector);
@@ -211,6 +218,7 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
 
     this._addListeners(element);
     this.renderer2.appendChild(this._canvas, element);
+    this.allElements.push(element);
     this._focusedElement = element;
   }
 
