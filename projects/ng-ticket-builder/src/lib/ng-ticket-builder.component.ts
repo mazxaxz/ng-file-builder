@@ -154,7 +154,11 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
       }
     }
 
-    this.allElements = this.allElements.sort((a, b) => +a.style.zIndex - +b.style.zIndex);
+    this.allElements = this.allElements.sort((a, b) => +a.style.zIndex - +b.style.zIndex)
+      .map((element: any, idx: number) => {
+        this.renderer2.setStyle(element, 'z-index', idx);
+        return element;
+      });
   }
 
   changeOrientation() {
@@ -240,7 +244,28 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
     this.renderer2.appendChild(this._canvas, element);
     this.allElements.push(element);
     this._focusedElement = element;
-    console.log(this.allElements);
+  }
+
+  layerUp(elementIdx: number) {
+    if (elementIdx === 0) return;
+
+    const temp = this.allElements[elementIdx - 1];
+    this.allElements[elementIdx - 1] = this.allElements[elementIdx];
+    this.allElements[elementIdx] = temp;
+
+    this.renderer2.setStyle(this.allElements[elementIdx - 1], 'z-index', elementIdx - 1);
+    this.renderer2.setStyle(this.allElements[elementIdx], 'z-index', elementIdx);
+  }
+
+  layerDown(elementIdx: number) {
+    if (elementIdx === (this.allElements.length - 1)) return;
+
+    const temp = this.allElements[elementIdx + 1];
+    this.allElements[elementIdx + 1] = this.allElements[elementIdx];
+    this.allElements[elementIdx] = temp;
+
+    this.renderer2.setStyle(this.allElements[elementIdx + 1], 'z-index', elementIdx + 1);
+    this.renderer2.setStyle(this.allElements[elementIdx], 'z-index', elementIdx);
   }
 
   private _initialize() {
