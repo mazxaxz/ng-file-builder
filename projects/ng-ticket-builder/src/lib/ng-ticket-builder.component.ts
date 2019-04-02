@@ -95,6 +95,8 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
   private _currentMouseX: number;
   private _currentMouseY: number;
 
+  private _currentDrag = { x: 0, y: 0 };
+
   private _resizeBindingFnc: any;
   private _dragBindingFnc: any;
 
@@ -332,16 +334,28 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
 
     const up = this.renderer2.listen(this._canvas, 'mouseup', () => {
       this._canvas.removeEventListener('mousemove', this._resizeBindingFnc);
+
       this._canvas.removeEventListener('mousemove', this._dragBindingFnc);
+      if (this._currentDrag.x !== 0 || this._currentDrag.y !== 0) {
+        const computed = window.getComputedStyle(this._focusedElement);
+        const y = +computed.getPropertyValue('top').replace('px', '');
+        const x = +computed.getPropertyValue('left').replace('px', '');
+
+        this.renderer2.setStyle(this._focusedElement, 'top', `${y + this._currentDrag.y}px`);
+        this.renderer2.setStyle(this._focusedElement, 'left', `${x + this._currentDrag.x}px`);
+        this.renderer2.setStyle(this._focusedElement, 'transform', 'none');
+        [this._currentDrag.x, this._currentDrag.y] = [0, 0];
+      }
     });
     this._listeners.push(over, out, move, down, up);
   }
 
   private _resize(event) {
+    const computed = window.getComputedStyle(this._focusedElement);
     const dy = (this._currentMouseY - event.y) / PAGE_SIZES[this.currentSize].scale;
     const dx = (this._currentMouseX - event.x) / PAGE_SIZES[this.currentSize].scale;
-    const height = +window.getComputedStyle(this._focusedElement).getPropertyValue('height').replace('px', '');
-    const width = +window.getComputedStyle(this._focusedElement).getPropertyValue('width').replace('px', '');
+    const height = +computed.getPropertyValue('height').replace('px', '');
+    const width = +computed.getPropertyValue('width').replace('px', '');
 
     this._currentMouseY = event.y;
     this._currentMouseX = event.x;
@@ -352,13 +366,12 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
   private _drag(event) {
     const dy = (this._currentMouseY - event.y) / PAGE_SIZES[this.currentSize].scale;
     const dx = (this._currentMouseX - event.x) / PAGE_SIZES[this.currentSize].scale;
-    const top = +window.getComputedStyle(this._focusedElement).getPropertyValue('top').replace('px', '');
-    const left = +window.getComputedStyle(this._focusedElement).getPropertyValue('left').replace('px', '');
-
     this._currentMouseY = event.y;
     this._currentMouseX = event.x;
-    this._focusedElement.style.top = (top - dy) + 'px';
-    this._focusedElement.style.left = (left - dx) + 'px';
+
+    const drag = { x: this._currentDrag.x - dx, y: this._currentDrag.y - dy };
+    this.renderer2.setStyle(this._focusedElement, 'transform', `translate3d(${drag.x}px, ${drag.y}px, 0px)`);
+    [this._currentDrag.x, this._currentDrag.y] = [drag.x, drag.y];
   }
 
   private _initializeNavigation() {
