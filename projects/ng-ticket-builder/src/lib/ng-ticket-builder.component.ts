@@ -148,7 +148,13 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
       this.allElements.push(this._canvas.children[i]);
       this._addListeners(this._canvas.children[i]);
       this.renderer2.setStyle(this._canvas.children[i], 'user-select', 'none');
+
+      if (this._canvas.children[i].style.zIndex.length <= 0) {
+        this.renderer2.setStyle(this._canvas.children[i], 'z-index', i);
+      }
     }
+
+    this.allElements = this.allElements.sort((a, b) => +a.style.zIndex - +b.style.zIndex);
   }
 
   changeOrientation() {
@@ -192,7 +198,20 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   getElementBackground(element) {
-    return element.style.backgroundImage || element.style.background || element.style.backgroundColor || '#fff';
+    const style = element.style;
+    if (style.backgroundImage && style.backgroundImage !== 'initial') {
+      return style.backgroundImage;
+    }
+
+    if (style.backgroundColor && style.backgroundColor !== 'initial') {
+      return style.backgroundColor;
+    }
+
+    if (style.background && style.background !== 'initial') {
+      return style.background;
+    }
+
+    return '#fff';
   }
 
   renderElement(block: DefaultBlocks) {
@@ -215,11 +234,13 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
     this.renderer2.setStyle(element, 'left', `${(parentWidth / 2) - (width / 2)}px`);
     this.renderer2.setStyle(element, 'cursor', 'auto');
     this.renderer2.setStyle(element, 'user-select', 'none');
+    this.renderer2.setStyle(element, 'z-index', this.allElements.length);
 
     this._addListeners(element);
     this.renderer2.appendChild(this._canvas, element);
     this.allElements.push(element);
     this._focusedElement = element;
+    console.log(this.allElements);
   }
 
   private _initialize() {

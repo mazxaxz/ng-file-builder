@@ -137,18 +137,18 @@
                     </div>
                 </div>
                 <div class="tab" *ngSwitchCase="Tabs.Layers">
-                    <div class="layer-wrapper" *ngFor="let element of allElements">
+                    <div class="layer-wrapper" *ngFor="let element of allElements; let idx = index;">
                         <div class="element-preview" [ngStyle]="{ 'background' : getElementBackground(element) }"></div>
                         <div class="element-name">
                             {{ element.innerText || element.nodeName.toLowerCase() }}
                         </div>
                         <div class="actions">
-                            <div class="up">
+                            <div class="up" (click)="layerUp(idx)" *ngIf="idx !== 0">
                                 <svg class="icon" aria-hidden="true" focusable="false">
                                     <use xlink:href="assets/icons/arrow_up.svg#arrow_up"></use>
                                 </svg>
                             </div>
-                            <div class="down">
+                            <div class="down" (click)="layerDown(idx)" *ngIf="idx !== (allElements.length - 1)">
                                 <svg class="icon" aria-hidden="true" focusable="false">
                                     <use xlink:href="assets/icons/arrow_down.svg#arrow_down"></use>
                                 </svg>
