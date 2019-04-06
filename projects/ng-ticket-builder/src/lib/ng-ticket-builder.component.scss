@@ -153,60 +153,6 @@
                 font-size: 16px;
                 color: $light;
 
-                .layer-wrapper {
-                    display: flex;
-                    align-items: center;
-                    background: lighten($dark, 5%);
-                    height: 36px;
-                    margin-top: 10px;
-
-                    &:first-child {
-                        margin-top: 0;
-                    }
-
-                    .element-preview {
-                        width: 21px;
-                        height: 21px;
-                        background-size: contain !important;
-                        margin: auto 8px;
-                    }
-
-                    .element-name {
-                        flex: 1;
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                    }
-
-                    .actions {
-                        & > * {
-                            cursor: pointer;
-
-                            &:hover {
-                                .icon {
-                                    fill: $dark-icon;
-                                    color: $dark-icon;
-                                }
-                            }
-                        }
-
-                        .up {
-                            .icon {
-                                transform: translateY(-5px);
-                            }
-                        }
-
-                        .icon {
-                            width: 23px;
-                            height: 14px;
-                            fill: $light;
-                            color: $light;
-                            will-change: color, fill;
-                            transition: .3s color ease-in-out, .3s fill ease-in-out;
-                        }
-                    }
-                }
-
                 .blocks-container {
                     display: flex;
                     flex-direction: column;
