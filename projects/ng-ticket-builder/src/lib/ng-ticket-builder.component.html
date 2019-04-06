@@ -48,42 +48,20 @@
           </svg>
         </button>
       </div>
-        
     </div>
 
     <div class="right-container">
       <form [formGroup]="navigationForm">
-        <label class="tab-selector" role="button">
-          <svg class="icon" aria-hidden="true" focusable="false">
-            <use xlink:href="assets/icons/business.svg#business"></use>
+        <label class="tab-selector" role="button" *ngFor="let tab of navigationTabs">
+          <svg class="icon" aria-hidden="true" focusable="false" [ngClass]="{ 'tab-active': navigationForm.value.currentTab === tab.value }">
+            <use attr.xlink:href="assets/icons/{{ tab.icon }}.svg#{{ tab.icon }}"></use>
           </svg>
-          <input class="tab-control" type="radio" name="currentTab" [value]="Tabs.Core" formControlName="currentTab" />
-        </label>
-
-        <label class="tab-selector" role="button">
-          <svg class="icon" aria-hidden="true" focusable="false">
-            <use xlink:href="assets/icons/text_fields.svg#text_fields"></use>
-          </svg>
-          <input class="tab-control" type="radio" name="currentTab" [value]="Tabs.Typography" formControlName="currentTab" />
-        </label>
-
-        <label class="tab-selector" role="button">
-          <svg class="icon" aria-hidden="true" focusable="false">
-            <use xlink:href="assets/icons/view_module.svg#view_module"></use>
-          </svg>
-          <input class="tab-control" type="radio" name="currentTab" [value]="Tabs.Blocks" formControlName="currentTab" />
-        </label>
-
-        <label class="tab-selector" role="button">
-          <svg class="icon" aria-hidden="true" focusable="false">
-            <use xlink:href="assets/icons/layers.svg#layers"></use>
-          </svg>
-          <input class="tab-control" type="radio" name="currentTab" [value]="Tabs.Layers" formControlName="currentTab" />
+          <input class="tab-control" type="radio" name="currentTab" [value]="tab.value" formControlName="currentTab" />
         </label>
       </form>
     </div>
-
   </div>
+
   <div class="wrapper">
     <div class="canvas-container">
         <div #builderCanvas class="canvas" [innerHtml]="initialHtml | safeSanitizer: 'html'"></div>
@@ -117,7 +95,7 @@
                       {{ block.label }}
                     </div>
                 </button>
-                
+
               </div>
             </div>
           </div>

@@ -11,6 +11,11 @@ enum ArrowAction {
   Down = "ArrowDown"
 }
 
+interface NavigationTab {
+  icon: string;
+  value: Tabs;
+}
+
 enum Tabs {
   Core = "Core",
   Typography = "Typography",
@@ -117,6 +122,8 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
   Tabs = Tabs;
   DefaultBlocks = DefaultBlocks;
 
+  navigationTabs: NavigationTab[];
+
   constructor(
     private ticketBuilderService: NgTicketBuilderService,
     private renderer2: Renderer2,
@@ -124,6 +131,13 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
       this.coreForm = this.formBuilder.group({
         dynamicControls: this.formBuilder.array([])
       });
+
+      this.navigationTabs = [
+        { icon: 'business', value: Tabs.Core },
+        { icon: 'text_fields', value: Tabs.Typography },
+        { icon: 'view_module', value: Tabs.Blocks },
+        { icon: 'layers', value: Tabs.Layers }
+      ];
     }
 
   ngOnInit() {
