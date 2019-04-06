@@ -145,6 +145,7 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
     this._initialize();
     this._initializeNavigation();
     this._initializeCoreForm();
+    this._initializeHighlight();
   }
 
   ngOnDestroy() {
@@ -369,6 +370,24 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
       items.push(this._createInput(control.name, control.validators));
     });
     this.coreFormFields = items;
+  }
+
+  private _initializeHighlight() {
+    const highlightSub = this.ticketBuilderService.highlightedElement$
+      .subscribe(element => {
+        if (element === null) return;
+
+        this.renderer2.setStyle(element, 'outline', '2px dashed rgba(149,177,225,1)');
+      });
+
+    const disableHighlightSub = this.ticketBuilderService.disableHighlight$
+      .subscribe(element => {
+        if (element === null) return;
+
+        this.renderer2.setStyle(element, 'outline', 'none');
+      });
+    
+    this._subs.push(highlightSub, disableHighlightSub);
   }
 
   private _createInput(name: string, validators: ValidatorFn[]): FormGroup {

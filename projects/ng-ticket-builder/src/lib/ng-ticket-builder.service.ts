@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NgTicketBuilderService {
   private _allElements: any[] = [];
+  private _highlightedElement = null;
+  highlightedElement$ = new BehaviorSubject<any>(this._highlightedElement);
+  disableHighlight$ = new BehaviorSubject<any>(this._highlightedElement);
 
   constructor() { }
 
@@ -26,5 +30,11 @@ export class NgTicketBuilderService {
         element.style.zIndex = idx;
         return element;
       });
+  }
+
+  highlightElement(element) {
+    this.disableHighlight$.next(this._highlightedElement);
+    this.highlightedElement$.next(element);
+    this._highlightedElement = element;
   }
 }

@@ -1,5 +1,9 @@
 <div class="container">
-    <div class="layer-wrapper" *ngFor="let element of getElements(); let idx = index;">
+    <div *ngFor="let element of getElements(); let idx = index;"
+        (mouseover)="highlight(idx)"
+        (mouseout)="disableHighlight(idx)"
+        class="layer-wrapper">
+
         <div class="element-preview" [ngStyle]="{ 'background' : getElementBackground(element) }"></div>
         <div class="element-name">
             {{ element.innerText || element.nodeName.toLowerCase() }}

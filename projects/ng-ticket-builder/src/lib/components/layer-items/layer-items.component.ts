@@ -57,4 +57,12 @@ export class LayerItemsComponent implements OnInit {
     this.ticketBuilderService.replaceElement(elementsCopy[elementIdx - 1], elementIdx);
   }
 
+  highlight(elementIdx: number) {
+    this.ticketBuilderService.highlightElement(this.getElements()[elementIdx]);
+  }
+
+  disableHighlight(elementIdx: number) {
+    this.ticketBuilderService.disableHighlight$.next(this.getElements()[elementIdx]);
+  }
+
 }
