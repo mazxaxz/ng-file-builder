@@ -17,3 +17,8 @@ export interface BuilderControl {
     name: string;
     validators: ValidatorFn[];
 }
+
+export enum DefaultBlocks {
+    QrCode = "qrcode",
+    Square = "square"
+}

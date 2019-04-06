@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, Renderer2, ViewChildren, QueryList, AfterViewInit, Input, ChangeDetectionStrategy, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, FormArray, ValidatorFn } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { PageOrientation, PageSize, BuilderControl } from './ng-ticket-builder.models';
+import { PageOrientation, PageSize, BuilderControl, DefaultBlocks } from './ng-ticket-builder.models';
 import { NgTicketBuilderService } from './ng-ticket-builder.service';
 
 enum ArrowAction {
@@ -18,15 +18,15 @@ enum Tabs {
   Layers = "Layers"
 }
 
-enum DefaultBlocks {
-  QrCode = "qrcode",
-  Square = "square"
-}
+const QR_CODE_SRC_PLACEHOLDER = '/assets/images/qr_code_image_placeholder.png';
 
 const DEFAULT_BLOCKS_HTML = {
   qrcode: {
     selector: 'div',
     attributes: [],
+    enumDecorator: DefaultBlocks.QrCode,
+    icon: 'layers',
+    label: 'QR Code',
     initialStyles: [
       {
         name: 'height',
@@ -38,7 +38,7 @@ const DEFAULT_BLOCKS_HTML = {
       },
       {
         name: 'background-image',
-        value: "url('/assets/images/qr_code_image_placeholder.png')"
+        value: `url('${QR_CODE_SRC_PLACEHOLDER}')`
       },
       {
         name: 'background-size',
@@ -53,6 +53,9 @@ const DEFAULT_BLOCKS_HTML = {
   square: {
     selector: 'div',
     attributes: [],
+    enumDecorator: DefaultBlocks.Square,
+    icon: 'stop',
+    label: 'Square',
     initialStyles: [
       {
         name: 'height',
@@ -221,6 +224,10 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
     this.renderer2.appendChild(this._canvas, element);
     this.ticketBuilderService.addElement(element);
     this._focusedElement = element;
+  }
+
+  getDefaultBlocksAsArray() {
+    return Object.keys(DEFAULT_BLOCKS_HTML).map(key => DEFAULT_BLOCKS_HTML[key]);
   }
 
   private _initialize() {

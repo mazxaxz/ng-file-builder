@@ -104,27 +104,20 @@
           <div class="tab" *ngSwitchCase="Tabs.Blocks">
             <div class="blocks-container">
               <div class="block-row">
-                <button class="block" (click)="renderElement(DefaultBlocks.Square)">
-                  <div class="icon-wrapper">
-                    <svg class="icon" aria-hidden="true" focusable="false">
-                      <use xlink:href="assets/icons/stop.svg#stop"></use>
-                    </svg>
-                  </div>
-                  <div class="block-label">
-                    Square
-                  </div>
-                </button>
 
-                <button class="block" (click)="renderElement(DefaultBlocks.QrCode)">
+                <button *ngFor="let block of getDefaultBlocksAsArray()"
+                  class="block" 
+                  (click)="renderElement(block.enumDecorator)">
                   <div class="icon-wrapper">
-                    <svg class="icon" aria-hidden="true" focusable="false">
-                      <use xlink:href="assets/icons/layers.svg#layers"></use>
-                    </svg>
-                  </div>
-                  <div class="block-label">
-                    QR Code
-                  </div>
+                      <svg class="icon" aria-hidden="true" focusable="false">
+                        <use attr.xlink:href="assets/icons/{{ block.icon }}.svg#{{ block.icon }}"></use>
+                      </svg>
+                    </div>
+                    <div class="block-label">
+                      {{ block.label }}
+                    </div>
                 </button>
+                
               </div>
             </div>
           </div>
