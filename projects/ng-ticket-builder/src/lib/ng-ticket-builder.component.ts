@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, Renderer2, ViewChildren, QueryList, After
 import { FormGroup, FormControl, FormBuilder, FormArray, ValidatorFn } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { PageOrientation, PageSize, BuilderControl } from './ng-ticket-builder.models';
+import { NgTicketBuilderService } from './ng-ticket-builder.service';
 
 enum ArrowAction {
   Up = "ArrowUp",
@@ -100,8 +101,6 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
   private _resizeBindingFnc: any;
   private _dragBindingFnc: any;
 
-  allElements: any[] = [];
-
   navigationForm: FormGroup;
   coreForm: FormGroup;
   coreFormFields: FormArray;
@@ -116,6 +115,7 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
   DefaultBlocks = DefaultBlocks;
 
   constructor(
+    private ticketBuilderService: NgTicketBuilderService,
     private renderer2: Renderer2,
     private formBuilder: FormBuilder) {
       this.coreForm = this.formBuilder.group({
@@ -147,20 +147,16 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
     if (!this.initialHtml) return;
 
     for (let i = 0; i < this._canvas.children.length; i++) {
-      this.allElements.push(this._canvas.children[i]);
       this._addListeners(this._canvas.children[i]);
       this.renderer2.setStyle(this._canvas.children[i], 'user-select', 'none');
 
       if (this._canvas.children[i].style.zIndex.length <= 0) {
         this.renderer2.setStyle(this._canvas.children[i], 'z-index', i);
       }
+      this.ticketBuilderService.addElement(this._canvas.children[i])
     }
 
-    this.allElements = this.allElements.sort((a, b) => +a.style.zIndex - +b.style.zIndex)
-      .map((element: any, idx: number) => {
-        this.renderer2.setStyle(element, 'z-index', idx);
-        return element;
-      });
+    this.ticketBuilderService.sortByZIndex();
   }
 
   changeOrientation() {
@@ -199,23 +195,6 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
     });
   }
 
-  getElementBackground(element) {
-    const style = element.style;
-    if (style.backgroundImage && style.backgroundImage !== 'initial') {
-      return style.backgroundImage;
-    }
-
-    if (style.backgroundColor && style.backgroundColor !== 'initial') {
-      return style.backgroundColor;
-    }
-
-    if (style.background && style.background !== 'initial') {
-      return style.background;
-    }
-
-    return '#fff';
-  }
-
   renderElement(block: DefaultBlocks) {
     const selected = DEFAULT_BLOCKS_HTML[block];
     const element = this.renderer2.createElement(selected.selector);
@@ -236,34 +215,12 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
     this.renderer2.setStyle(element, 'left', `${(parentWidth / 2) - (width / 2)}px`);
     this.renderer2.setStyle(element, 'cursor', 'auto');
     this.renderer2.setStyle(element, 'user-select', 'none');
-    this.renderer2.setStyle(element, 'z-index', this.allElements.length);
+    this.renderer2.setStyle(element, 'z-index', this.ticketBuilderService.getElements().length);
 
     this._addListeners(element);
     this.renderer2.appendChild(this._canvas, element);
-    this.allElements.push(element);
+    this.ticketBuilderService.addElement(element);
     this._focusedElement = element;
-  }
-
-  layerUp(elementIdx: number) {
-    if (elementIdx === 0) return;
-
-    const temp = this.allElements[elementIdx - 1];
-    this.allElements[elementIdx - 1] = this.allElements[elementIdx];
-    this.allElements[elementIdx] = temp;
-
-    this.renderer2.setStyle(this.allElements[elementIdx - 1], 'z-index', elementIdx - 1);
-    this.renderer2.setStyle(this.allElements[elementIdx], 'z-index', elementIdx);
-  }
-
-  layerDown(elementIdx: number) {
-    if (elementIdx === (this.allElements.length - 1)) return;
-
-    const temp = this.allElements[elementIdx + 1];
-    this.allElements[elementIdx + 1] = this.allElements[elementIdx];
-    this.allElements[elementIdx] = temp;
-
-    this.renderer2.setStyle(this.allElements[elementIdx + 1], 'z-index', elementIdx + 1);
-    this.renderer2.setStyle(this.allElements[elementIdx], 'z-index', elementIdx);
   }
 
   private _initialize() {

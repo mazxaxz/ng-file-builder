@@ -1,156 +1,137 @@
 <div class="builder-container">
-    <div class="top-bar">
-        <div class="left-container">
-            <button class="builder-btn builder-action">
-                Save
-            </button>
+  <div class="top-bar">
+    <div class="left-container">
+      <button class="builder-btn builder-action">
+        Save
+      </button>
 
-            <div class="group-canvas-options">
-                <button class="builder-btn builder-action" (click)="changeOrientation()">
-                    <svg class="icon" aria-hidden="true" focusable="false">
-                        <use xlink:href="assets/icons/rotate_90.svg#rotate_90"></use>
-                    </svg>
-                </button>
+      <div class="group-canvas-options">
+        <button class="builder-btn builder-action" (click)="changeOrientation()">
+          <svg class="icon" aria-hidden="true" focusable="false">
+            <use xlink:href="assets/icons/rotate_90.svg#rotate_90"></use>
+          </svg>
+        </button>
 
-                <button #sizeAction class="builder-btn builder-action" data-size="A7" (click)="setSize(PageSize.A7)">
-                    A7
-                </button>
+        <button #sizeAction class="builder-btn builder-action" data-size="A7" (click)="setSize(PageSize.A7)">
+          A7
+        </button>
 
-                <button #sizeAction class="builder-btn builder-action" data-size="A6" (click)="setSize(PageSize.A6)">
-                    A6
-                </button>
+        <button #sizeAction class="builder-btn builder-action" data-size="A6" (click)="setSize(PageSize.A6)">
+          A6
+        </button>
 
-                <button #sizeAction class="builder-btn builder-action" data-size="A5" (click)="setSize(PageSize.A5)">
-                    A5
-                </button>
+        <button #sizeAction class="builder-btn builder-action" data-size="A5" (click)="setSize(PageSize.A5)">
+          A5
+        </button>
 
-                <button #sizeAction class="builder-btn builder-action" data-size="A4" (click)="setSize(PageSize.A4)">
-                    A4
-                </button>
-            </div>
-    
-            <div class="group-additional">
-                <button class="builder-btn builder-action">
-                    <svg class="icon" aria-hidden="true" focusable="false">
-                        <use xlink:href="assets/icons/code.svg#code"></use>
-                    </svg>
-                </button>
+        <button #sizeAction class="builder-btn builder-action" data-size="A4" (click)="setSize(PageSize.A4)">
+          A4
+        </button>
+      </div>
+
+      <div class="group-additional">
+        <button class="builder-btn builder-action">
+          <svg class="icon" aria-hidden="true" focusable="false">
+            <use xlink:href="assets/icons/code.svg#code"></use>
+          </svg>
+        </button>
+
+        <button class="builder-btn builder-action">
+          <svg class="icon" aria-hidden="true" focusable="false">
+            <use xlink:href="assets/icons/get_app.svg#get_app"></use>
+          </svg>
+        </button>
+
+        <button class="builder-btn builder-action">
+          <svg class="icon" aria-hidden="true" focusable="false">
+            <use xlink:href="assets/icons/info.svg#info"></use>
+          </svg>
+        </button>
+      </div>
         
-                <button class="builder-btn builder-action">
+    </div>
+
+    <div class="right-container">
+      <form [formGroup]="navigationForm">
+        <label class="tab-selector" role="button">
+          <svg class="icon" aria-hidden="true" focusable="false">
+            <use xlink:href="assets/icons/business.svg#business"></use>
+          </svg>
+          <input class="tab-control" type="radio" name="currentTab" [value]="Tabs.Core" formControlName="currentTab" />
+        </label>
+
+        <label class="tab-selector" role="button">
+          <svg class="icon" aria-hidden="true" focusable="false">
+            <use xlink:href="assets/icons/text_fields.svg#text_fields"></use>
+          </svg>
+          <input class="tab-control" type="radio" name="currentTab" [value]="Tabs.Typography" formControlName="currentTab" />
+        </label>
+
+        <label class="tab-selector" role="button">
+          <svg class="icon" aria-hidden="true" focusable="false">
+            <use xlink:href="assets/icons/view_module.svg#view_module"></use>
+          </svg>
+          <input class="tab-control" type="radio" name="currentTab" [value]="Tabs.Blocks" formControlName="currentTab" />
+        </label>
+
+        <label class="tab-selector" role="button">
+          <svg class="icon" aria-hidden="true" focusable="false">
+            <use xlink:href="assets/icons/layers.svg#layers"></use>
+          </svg>
+          <input class="tab-control" type="radio" name="currentTab" [value]="Tabs.Layers" formControlName="currentTab" />
+        </label>
+      </form>
+    </div>
+
+  </div>
+  <div class="wrapper">
+    <div class="canvas-container">
+        <div #builderCanvas class="canvas" [innerHtml]="initialHtml | safeSanitizer: 'html'"></div>
+    </div>
+    <div class="side-bar">
+      <ng-container [ngSwitch]="currentTab">
+        <div class="tab" *ngSwitchCase="Tabs.Core">
+          <form [formGroup]="coreForm">
+            <mzx-input *ngFor="let control of controls; let idx = index"
+              [parentForm]="coreForm"
+              arrayName="dynamicControls"
+              [groupName]="idx"
+              [controlName]="control.name"
+              [label]="control.label"></mzx-input>
+          </form>
+        </div>
+          <div class="tab" *ngSwitchCase="Tabs.Typography">typography</div>
+          <div class="tab" *ngSwitchCase="Tabs.Blocks">
+            <div class="blocks-container">
+              <div class="block-row">
+                <button class="block" (click)="renderElement(DefaultBlocks.Square)">
+                  <div class="icon-wrapper">
                     <svg class="icon" aria-hidden="true" focusable="false">
-                        <use xlink:href="assets/icons/get_app.svg#get_app"></use>
+                      <use xlink:href="assets/icons/stop.svg#stop"></use>
                     </svg>
+                  </div>
+                  <div class="block-label">
+                    Square
+                  </div>
                 </button>
-        
-                <button class="builder-btn builder-action">
+
+                <button class="block" (click)="renderElement(DefaultBlocks.QrCode)">
+                  <div class="icon-wrapper">
                     <svg class="icon" aria-hidden="true" focusable="false">
-                        <use xlink:href="assets/icons/info.svg#info"></use>
+                      <use xlink:href="assets/icons/layers.svg#layers"></use>
                     </svg>
+                  </div>
+                  <div class="block-label">
+                    QR Code
+                  </div>
                 </button>
+              </div>
             </div>
-           
-        </div>
-
-        <div class="right-container">
-            <form [formGroup]="navigationForm">
-                <label class="tab-selector" role="button">
-                    <svg class="icon" aria-hidden="true" focusable="false">
-                        <use xlink:href="assets/icons/business.svg#business"></use>
-                    </svg>
-                    <input class="tab-control" type="radio" name="currentTab" [value]="Tabs.Core" formControlName="currentTab" />
-                </label>
-
-                <label class="tab-selector" role="button">
-                    <svg class="icon" aria-hidden="true" focusable="false">
-                        <use xlink:href="assets/icons/text_fields.svg#text_fields"></use>
-                    </svg>
-                    <input class="tab-control" type="radio" name="currentTab" [value]="Tabs.Typography" formControlName="currentTab" />
-                </label>
-
-                <label class="tab-selector" role="button">
-                    <svg class="icon" aria-hidden="true" focusable="false">
-                        <use xlink:href="assets/icons/view_module.svg#view_module"></use>
-                    </svg>
-                    <input class="tab-control" type="radio" name="currentTab" [value]="Tabs.Blocks" formControlName="currentTab" />
-                </label>
-
-                <label class="tab-selector" role="button">
-                    <svg class="icon" aria-hidden="true" focusable="false">
-                        <use xlink:href="assets/icons/layers.svg#layers"></use>
-                    </svg>
-                    <input class="tab-control" type="radio" name="currentTab" [value]="Tabs.Layers" formControlName="currentTab" />
-                </label>
-            </form>
-        </div>
-
+          </div>
+          <div class="tab" *ngSwitchCase="Tabs.Layers">
+            <mzx-layer-items></mzx-layer-items>
+          </div>
+      </ng-container>
     </div>
-    <div class="wrapper">
-        <div class="canvas-container">
-            <div #builderCanvas class="canvas" [innerHtml]="initialHtml | safeSanitizer: 'html'"></div>
-        </div>
-        <div class="side-bar">
-            <ng-container [ngSwitch]="currentTab">
-                <div class="tab" *ngSwitchCase="Tabs.Core">
-
-                    <form [formGroup]="coreForm">
-                        <mzx-input *ngFor="let control of controls; let idx = index"
-                            [parentForm]="coreForm"
-                            arrayName="dynamicControls"
-                            [groupName]="idx"
-                            [controlName]="control.name"
-                            [label]="control.label"></mzx-input>
-                    </form>
-                    
-                </div>
-                <div class="tab" *ngSwitchCase="Tabs.Typography">typography</div>
-                <div class="tab" *ngSwitchCase="Tabs.Blocks">
-                    <div class="blocks-container">
-                        <div class="block-row">
-                            <button class="block" (click)="renderElement(DefaultBlocks.Square)">
-                                <div class="icon-wrapper">
-                                    <svg class="icon" aria-hidden="true" focusable="false">
-                                        <use xlink:href="assets/icons/stop.svg#stop"></use>
-                                    </svg>
-                                </div>
-                                <div class="block-label">
-                                    Square
-                                </div>
-                            </button>
-
-                            <button class="block" (click)="renderElement(DefaultBlocks.QrCode)">
-                                <div class="icon-wrapper">
-                                    <svg class="icon" aria-hidden="true" focusable="false">
-                                        <use xlink:href="assets/icons/layers.svg#layers"></use>
-                                    </svg>
-                                </div>
-                                <div class="block-label">
-                                    QR Code
-                                </div>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="tab" *ngSwitchCase="Tabs.Layers">
-                    <div class="layer-wrapper" *ngFor="let element of allElements; let idx = index;">
-                        <div class="element-preview" [ngStyle]="{ 'background' : getElementBackground(element) }"></div>
-                        <div class="element-name">
-                            {{ element.innerText || element.nodeName.toLowerCase() }}
-                        </div>
-                        <div class="actions">
-                            <div class="up" (click)="layerUp(idx)" *ngIf="idx !== 0">
-                                <svg class="icon" aria-hidden="true" focusable="false">
-                                    <use xlink:href="assets/icons/arrow_up.svg#arrow_up"></use>
-                                </svg>
-                            </div>
-                            <div class="down" (click)="layerDown(idx)" *ngIf="idx !== (allElements.length - 1)">
-                                <svg class="icon" aria-hidden="true" focusable="false">
-                                    <use xlink:href="assets/icons/arrow_down.svg#arrow_down"></use>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </ng-container>
-        </div>
-    </div>
+  </div>
 </div>
