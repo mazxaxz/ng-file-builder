@@ -1,0 +1,14 @@
+<div [formGroup]="parentForm">
+  <div [formArrayName]="arrayName">
+    <div class="form-group" [formGroupName]="groupName">
+      <input type="text" 
+        class="form-control" 
+        [ngClass]="{ 'invalid': !getGroup().valid && getGroup().touched }"
+        [formControlName]="controlName" 
+        [name]="controlName" 
+        [id]="controlName" 
+        required />
+      <label [for]="controlName" class="form-control-label">{{ label }}</label>
+    </div>
+  </div>
+</div>

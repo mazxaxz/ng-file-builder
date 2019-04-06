@@ -199,10 +199,6 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
     });
   }
 
-  getCoreControlGroup(groupName: number) {
-    return this.coreForm.controls['dynamicControls'].get(groupName.toString());
-  }
-
   getElementBackground(element) {
     const style = element.style;
     if (style.backgroundImage && style.backgroundImage !== 'initial') {

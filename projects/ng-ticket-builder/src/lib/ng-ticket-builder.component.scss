@@ -1,15 +1,4 @@
-$dark: #2A3647;
-$dark-border: darken($dark, 5%);
-$dark-icon: #B9C9C7;
-
-$canvas-background: darken($dark, 2%);
-
-$light: #F5F9F8;
-$primary: #504280;
-$danger: #FF6565;
-
-$primary-gradient-one: #CE9FFC;
-$primary-gradient-two: #7367F0;
+@import '../assets/scss/variables.scss';
 
 .builder-btn {
     position: relative;
@@ -262,42 +251,6 @@ $primary-gradient-two: #7367F0;
                     }
                 }
             }
-        }
-    }
-
-    .form-group {
-        position: relative;
-
-        .form-control {
-            background: lighten($dark, 5%);
-            outline: none;
-            border: none;
-            width: 100%;
-            color: $light;
-            padding: 8px 12px;
-            font-size: 17px;
-            margin-bottom: 10px;
-
-            &:valid + .form-control-label,
-            &:focus + .form-control-label {
-                font-size: 11px;
-                transform: translate3d(0, -14px, 0);
-                color: $primary-gradient-one;
-            }
-
-            &.invalid + .form-control-label {
-                color: $danger;
-            }
-        }
-
-        .form-control-label {
-            position: absolute;
-            left: 13px;
-            top: 9px;
-            background: transparent;
-            cursor: text;
-            will-change: transform, font-size;
-            transition: .2s transform ease-in-out, .2s font-size ease-in-out;
         }
     }
 }
