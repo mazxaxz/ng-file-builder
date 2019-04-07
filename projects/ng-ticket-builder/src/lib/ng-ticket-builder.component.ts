@@ -45,6 +45,7 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
 
   private _resizeBindingFnc: any;
   private _dragBindingFnc: any;
+  private _arrowMvmntFnc: any;
 
   navigationForm: FormGroup;
   coreForm: FormGroup;
@@ -86,7 +87,7 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   ngOnDestroy() {
-    window.removeEventListener('keydown', this._handleArrowMovement);
+    window.removeEventListener('keydown', this._arrowMvmntFnc);
     this._subs.forEach(sub => sub.unsubscribe());
     this._listeners.forEach(fn => fn());
   }
@@ -194,7 +195,8 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
     this.renderer2.setStyle(this._canvas, 'height', `${PAGE_SIZES[this.currentSize].height}px`);
     this.renderer2.setStyle(this._canvas, 'overflow', 'hidden');
     
-    window.addEventListener('keydown', this._handleArrowMovement.bind(this));
+    this._arrowMvmntFnc = this._handleArrowMovement.bind(this);
+    window.addEventListener('keydown', this._arrowMvmntFnc);
   }
 
   private _addListeners(element) {
