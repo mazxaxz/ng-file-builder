@@ -275,16 +275,16 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
       this._canvas.removeEventListener('mousemove', this._rotateBindingFnc);
 
       this._canvas.removeEventListener('mousemove', this._dragBindingFnc);
-      console.log(window.getComputedStyle(this.ticketBuilderService.focusedElement).getPropertyValue('transform'));
       if (this._currentDrag.x !== 0 || this._currentDrag.y !== 0) {
         const focused = this.ticketBuilderService.focusedElement;
         const computed = window.getComputedStyle(focused);
         const y = +computed.getPropertyValue('top').replace('px', '');
         const x = +computed.getPropertyValue('left').replace('px', '');
+        const rotation = focused.dataset.rotation ? `rotate(${focused.dataset.rotation})` : '';
 
         this.renderer2.setStyle(focused, 'top', `${y + this._currentDrag.y}px`);
         this.renderer2.setStyle(focused, 'left', `${x + this._currentDrag.x}px`);
-        this.renderer2.setStyle(focused, 'transform', 'none');
+        this.renderer2.setStyle(focused, 'transform', rotation);
         [this._currentDrag.x, this._currentDrag.y] = [0, 0];
       }
     });
@@ -314,6 +314,7 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
     const radians = Math.atan2(dx - this._currentMouseX, dy - this._currentMouseY);
     const degree = ((radians * (180 / Math.PI) * -1) - 120) * 4;
 
+    this.ticketBuilderService.focusedElement.setAttribute('data-rotation', degree + 'deg');
     this.renderer2.setStyle(this.ticketBuilderService.focusedElement, 'transform', `rotate(${degree}deg)`);
   }
 
@@ -325,7 +326,8 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
     const focused = this.ticketBuilderService.focusedElement;
 
     const drag = { x: this._currentDrag.x - dx, y: this._currentDrag.y - dy };
-    this.renderer2.setStyle(focused, 'transform', `translate3d(${drag.x}px, ${drag.y}px, 0px)`);
+    const rotation = focused.dataset.rotation ? `rotate(${focused.dataset.rotation})` : '';
+    this.renderer2.setStyle(focused, 'transform', `${rotation} translate3d(${drag.x}px, ${drag.y}px, 0px)`);
     [this._currentDrag.x, this._currentDrag.y] = [drag.x, drag.y];
   }
 
