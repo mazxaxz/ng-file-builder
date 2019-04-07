@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewChild, Renderer2, ViewChildren, QueryList, AfterViewInit, Input, ChangeDetectionStrategy, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, Renderer2, ViewChildren, QueryList, AfterViewInit, Input, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, FormArray, ValidatorFn } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { PageOrientation, PageSize, BuilderControl, DefaultBlocks } from './ng-ticket-builder.models';
 import { NgTicketBuilderService } from './ng-ticket-builder.service';
+import { DEFAULT_BLOCKS_HTML, PAGE_SIZES } from './ng-ticket-builder.constants';
 
 enum ArrowAction {
   Up = "ArrowUp",
@@ -18,71 +19,8 @@ interface NavigationTab {
 
 enum Tabs {
   Core = "Core",
-  Typography = "Typography",
   Blocks = "Blocks",
   Layers = "Layers"
-}
-
-const QR_CODE_SRC_PLACEHOLDER = '/assets/images/qr_code_image_placeholder.png';
-
-const DEFAULT_BLOCKS_HTML = {
-  qrcode: {
-    selector: 'div',
-    attributes: [],
-    enumDecorator: DefaultBlocks.QrCode,
-    icon: 'layers',
-    label: 'QR Code',
-    initialStyles: [
-      {
-        name: 'height',
-        value: '200px'
-      },
-      {
-        name: 'width',
-        value: '200px'
-      },
-      {
-        name: 'background-image',
-        value: `url('${QR_CODE_SRC_PLACEHOLDER}')`
-      },
-      {
-        name: 'background-size',
-        value: 'contain'
-      },
-      {
-        name: 'background-repeat',
-        value: 'no-repeat'
-      }
-    ]
-  },
-  square: {
-    selector: 'div',
-    attributes: [],
-    enumDecorator: DefaultBlocks.Square,
-    icon: 'stop',
-    label: 'Square',
-    initialStyles: [
-      {
-        name: 'height',
-        value: '100px'
-      },
-      {
-        name: 'width',
-        value: '100px'
-      },
-      {
-        name: 'background-color',
-        value: '#504280'
-      }
-    ]
-  }
-}
-
-const PAGE_SIZES = {
-  A7: { width: 210, height: 298, scale: 2.02 },
-  A6: { width: 298, height: 420, scale: 1.42 },
-  A5: { width: 420, height: 595, scale: 1 },
-  A4: { width: 595, height: 842, scale: 0.7 }
 }
 
 @Component({
@@ -133,7 +71,6 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
 
       this.navigationTabs = [
         { icon: 'business', value: Tabs.Core },
-        { icon: 'text_fields', value: Tabs.Typography },
         { icon: 'view_module', value: Tabs.Blocks },
         { icon: 'layers', value: Tabs.Layers }
       ];
@@ -223,6 +160,10 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
       this.renderer2.setStyle(element, style.name, style.value);
     });
 
+    if (selected.initialText) {
+      element.innerText = selected.initialText;
+    }
+    
     const height = element.style.height.replace('px', '') << 0;
     const width = element.style.width.replace('px', '') << 0;
     const parentHeight = this._canvas.style.height.replace('px', '') << 0;

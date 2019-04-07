@@ -20,5 +20,7 @@ export interface BuilderControl {
 
 export enum DefaultBlocks {
     QrCode = "qrcode",
-    Square = "square"
+    Square = "square",
+    Header = "header",
+    Paragraph = "paragraph"
 }

@@ -81,9 +81,9 @@
           <div class="tab" *ngSwitchCase="Tabs.Typography">typography</div>
           <div class="tab" *ngSwitchCase="Tabs.Blocks">
             <div class="blocks-container">
-              <div class="block-row">
 
-                <button *ngFor="let block of getDefaultBlocksAsArray()"
+              <div class="block-row" *ngFor="let block of getDefaultBlocksAsArray()">
+                <button 
                   class="block" 
                   (click)="renderElement(block.enumDecorator)">
                   <div class="icon-wrapper">
@@ -95,8 +95,8 @@
                       {{ block.label }}
                     </div>
                 </button>
-
               </div>
+              
             </div>
           </div>
           <div class="tab" *ngSwitchCase="Tabs.Layers">
