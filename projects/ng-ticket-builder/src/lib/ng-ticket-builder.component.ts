@@ -232,6 +232,7 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
     });
 
     const down = this.renderer2.listen(element, 'mousedown', (e) => {
+      e.preventDefault();
       this.ticketBuilderService.focusElement(element);
       this._canvas.removeEventListener('mousemove', this._resizeBindingFnc);
       this._canvas.removeEventListener('mousemove', this._dragBindingFnc);

@@ -105,5 +105,19 @@ export const DEFAULT_BLOCKS_HTML = {
         value: "'Arial', sans-serif"
       }
     ]
+  },
+  image: {
+    selector: 'img',
+    attributes: [
+      {
+        name: 'src',
+        value: ''
+      }
+    ],
+    enumDecorator: DefaultBlocks.Image,
+    icon: 'landscape',
+    label: 'Image',
+    initialText: null,
+    initialStyles: []
   }
 }

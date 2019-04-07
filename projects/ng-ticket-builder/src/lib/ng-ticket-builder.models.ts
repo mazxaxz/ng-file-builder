@@ -22,5 +22,6 @@ export enum DefaultBlocks {
     QrCode = "qrcode",
     Square = "square",
     Header = "header",
-    Paragraph = "paragraph"
+    Paragraph = "paragraph",
+    Image = "image"
 }
