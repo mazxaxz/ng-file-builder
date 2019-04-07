@@ -46,6 +46,7 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
 
   private _resizeBindingFnc: any;
   private _dragBindingFnc: any;
+  private _rotateBindingFnc: any;
   private _arrowMvmntFnc: any;
 
   navigationForm: FormGroup;
@@ -226,6 +227,12 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
         this._canvas.style.cursor = 'se-resize';
         return;
       }
+
+      if (e.offsetY < (height * 0.3) && ((width * 0.3) < e.offsetX && e.offsetX < (width * 0.6))) {
+        element.style.cursor = 'cell';
+        this._canvas.style.cursor = 'cell';
+        return;
+      }
       
       element.style.cursor = 'grab';
       this._canvas.style.cursor = 'auto';
@@ -253,14 +260,22 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
         return;
       }
 
+      if (e.offsetY < (height * 0.3) && ((width * 0.3) < e.offsetX && e.offsetX < (width * 0.6))) {
+        this._rotateBindingFnc = this._rotate.bind(this);
+        this._canvas.addEventListener('mousemove', this._rotateBindingFnc);
+        return;
+      }
+
       this._dragBindingFnc = this._drag.bind(this);
       this._canvas.addEventListener('mousemove', this._dragBindingFnc);
     });
 
     const up = this.renderer2.listen(this._canvas, 'mouseup', () => {
       this._canvas.removeEventListener('mousemove', this._resizeBindingFnc);
+      this._canvas.removeEventListener('mousemove', this._rotateBindingFnc);
 
       this._canvas.removeEventListener('mousemove', this._dragBindingFnc);
+      console.log(window.getComputedStyle(this.ticketBuilderService.focusedElement).getPropertyValue('transform'));
       if (this._currentDrag.x !== 0 || this._currentDrag.y !== 0) {
         const focused = this.ticketBuilderService.focusedElement;
         const computed = window.getComputedStyle(focused);
@@ -290,14 +305,27 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
     focused.style.width = (width - dx) + 'px';
   }
 
+  private _rotate(event) {
+    const dy = (this._currentMouseY - event.y);
+    const dx = (this._currentMouseX - event.x);
+    this._currentMouseY = event.y;
+    this._currentMouseX = event.x;
+
+    const radians = Math.atan2(dx - this._currentMouseX, dy - this._currentMouseY);
+    const degree = ((radians * (180 / Math.PI) * -1) - 120) * 4;
+
+    this.renderer2.setStyle(this.ticketBuilderService.focusedElement, 'transform', `rotate(${degree}deg)`);
+  }
+
   private _drag(event) {
     const dy = (this._currentMouseY - event.y) / PAGE_SIZES[this.currentSize].scale;
     const dx = (this._currentMouseX - event.x) / PAGE_SIZES[this.currentSize].scale;
     this._currentMouseY = event.y;
     this._currentMouseX = event.x;
+    const focused = this.ticketBuilderService.focusedElement;
 
     const drag = { x: this._currentDrag.x - dx, y: this._currentDrag.y - dy };
-    this.renderer2.setStyle(this.ticketBuilderService.focusedElement, 'transform', `translate3d(${drag.x}px, ${drag.y}px, 0px)`);
+    this.renderer2.setStyle(focused, 'transform', `translate3d(${drag.x}px, ${drag.y}px, 0px)`);
     [this._currentDrag.x, this._currentDrag.y] = [drag.x, drag.y];
   }
 
