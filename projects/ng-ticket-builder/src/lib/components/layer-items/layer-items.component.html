@@ -2,6 +2,7 @@
     <div *ngFor="let element of getElements(); let idx = index;"
         (mouseover)="highlight(idx)"
         (mouseout)="disableHighlight(idx)"
+        (click)="focus(idx)"
         class="layer-wrapper">
 
         <div class="element-preview" [ngStyle]="{ 'background' : getElementBackground(element) }"></div>

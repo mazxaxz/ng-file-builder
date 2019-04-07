@@ -65,4 +65,8 @@ export class LayerItemsComponent implements OnInit {
     this.ticketBuilderService.disableHighlight$.next(this.getElements()[elementIdx]);
   }
 
+  focus(elementIdx: number) {
+    this.ticketBuilderService.focusElement(this.getElements()[elementIdx]);
+  }
+
 }

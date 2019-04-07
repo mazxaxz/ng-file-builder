@@ -10,6 +10,10 @@ export class NgTicketBuilderService {
   highlightedElement$ = new BehaviorSubject<any>(this._highlightedElement);
   disableHighlight$ = new BehaviorSubject<any>(this._highlightedElement);
 
+  focusedElement = null;
+  focusElement$ = new BehaviorSubject<any>(this.focusedElement);
+  disableFocus$ = new BehaviorSubject<any>(this.focusedElement);
+
   constructor() { }
 
   getElements(): any[] {
@@ -36,5 +40,11 @@ export class NgTicketBuilderService {
     this.disableHighlight$.next(this._highlightedElement);
     this.highlightedElement$.next(element);
     this._highlightedElement = element;
+  }
+
+  focusElement(element) {
+    this.disableFocus$.next(this.focusedElement);
+    this.focusedElement = element;
+    this.focusElement$.next(element);
   }
 }

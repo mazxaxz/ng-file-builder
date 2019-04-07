@@ -100,7 +100,6 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
   @Input() controls?: BuilderControl[] = [];
 
   private _canvas: any;
-  private _focusedElement: any;
   private _currentMouseX: number;
   private _currentMouseY: number;
 
@@ -146,6 +145,7 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
     this._initializeNavigation();
     this._initializeCoreForm();
     this._initializeHighlight();
+    this._initializeFocus();
   }
 
   ngOnDestroy() {
@@ -238,7 +238,7 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
     this._addListeners(element);
     this.renderer2.appendChild(this._canvas, element);
     this.ticketBuilderService.addElement(element);
-    this._focusedElement = element;
+    this.ticketBuilderService.focusElement(element);
   }
 
   getDefaultBlocksAsArray() {
@@ -258,10 +258,14 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
 
   private _addListeners(element) {
     const over = this.renderer2.listen(element, 'mouseover', () => {
+      if (this.ticketBuilderService.focusedElement === element) return;
+
       this.renderer2.setStyle(element, 'outline', '3px solid rgba(149,177,225,1)');
     });
 
     const out = this.renderer2.listen(element, 'mouseout', () => {
+      if (this.ticketBuilderService.focusedElement === element) return;
+
       this.renderer2.setStyle(element, 'outline', 'none');
     });
 
@@ -283,7 +287,7 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
     });
 
     const down = this.renderer2.listen(element, 'mousedown', (e) => {
-      this._focusedElement = element;
+      this.ticketBuilderService.focusElement(element);
       this._canvas.removeEventListener('mousemove', this._resizeBindingFnc);
       this._canvas.removeEventListener('mousemove', this._dragBindingFnc);
       this.renderer2.setStyle(element, 'outline', '3px solid rgba(149,177,225,1)');
@@ -312,13 +316,14 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
 
       this._canvas.removeEventListener('mousemove', this._dragBindingFnc);
       if (this._currentDrag.x !== 0 || this._currentDrag.y !== 0) {
-        const computed = window.getComputedStyle(this._focusedElement);
+        const focused = this.ticketBuilderService.focusedElement;
+        const computed = window.getComputedStyle(focused);
         const y = +computed.getPropertyValue('top').replace('px', '');
         const x = +computed.getPropertyValue('left').replace('px', '');
 
-        this.renderer2.setStyle(this._focusedElement, 'top', `${y + this._currentDrag.y}px`);
-        this.renderer2.setStyle(this._focusedElement, 'left', `${x + this._currentDrag.x}px`);
-        this.renderer2.setStyle(this._focusedElement, 'transform', 'none');
+        this.renderer2.setStyle(focused, 'top', `${y + this._currentDrag.y}px`);
+        this.renderer2.setStyle(focused, 'left', `${x + this._currentDrag.x}px`);
+        this.renderer2.setStyle(focused, 'transform', 'none');
         [this._currentDrag.x, this._currentDrag.y] = [0, 0];
       }
     });
@@ -326,7 +331,8 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   private _resize(event) {
-    const computed = window.getComputedStyle(this._focusedElement);
+    const focused = this.ticketBuilderService.focusedElement;
+    const computed = window.getComputedStyle(focused);
     const dy = (this._currentMouseY - event.y) / PAGE_SIZES[this.currentSize].scale;
     const dx = (this._currentMouseX - event.x) / PAGE_SIZES[this.currentSize].scale;
     const height = +computed.getPropertyValue('height').replace('px', '');
@@ -334,8 +340,8 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
 
     this._currentMouseY = event.y;
     this._currentMouseX = event.x;
-    this._focusedElement.style.height = (height - dy) + 'px';
-    this._focusedElement.style.width = (width - dx) + 'px';
+    focused.style.height = (height - dy) + 'px';
+    focused.style.width = (width - dx) + 'px';
   }
 
   private _drag(event) {
@@ -345,7 +351,7 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
     this._currentMouseX = event.x;
 
     const drag = { x: this._currentDrag.x - dx, y: this._currentDrag.y - dy };
-    this.renderer2.setStyle(this._focusedElement, 'transform', `translate3d(${drag.x}px, ${drag.y}px, 0px)`);
+    this.renderer2.setStyle(this.ticketBuilderService.focusedElement, 'transform', `translate3d(${drag.x}px, ${drag.y}px, 0px)`);
     [this._currentDrag.x, this._currentDrag.y] = [drag.x, drag.y];
   }
 
@@ -375,19 +381,39 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
   private _initializeHighlight() {
     const highlightSub = this.ticketBuilderService.highlightedElement$
       .subscribe(element => {
-        if (element === null) return;
+        if (element === null || this.ticketBuilderService.focusedElement === element)
+          return;
 
         this.renderer2.setStyle(element, 'outline', '2px dashed rgba(149,177,225,1)');
       });
 
     const disableHighlightSub = this.ticketBuilderService.disableHighlight$
       .subscribe(element => {
-        if (element === null) return;
+        if (element === null || this.ticketBuilderService.focusedElement === element)
+          return;
 
         this.renderer2.setStyle(element, 'outline', 'none');
       });
     
     this._subs.push(highlightSub, disableHighlightSub);
+  }
+
+  private _initializeFocus() {
+    const focusSub = this.ticketBuilderService.focusElement$
+      .subscribe(element => {
+        if (element === null) return;
+
+        this.renderer2.setStyle(element, 'outline', '3px solid rgba(149,177,225,1)');
+      });
+    
+    const disableFocusSub = this.ticketBuilderService.disableFocus$
+      .subscribe(element => {
+        if (element === null) return;
+
+        this.renderer2.setStyle(element, 'outline', 'none');
+      });
+
+    this._subs.push(focusSub, disableFocusSub);
   }
 
   private _createInput(name: string, validators: ValidatorFn[]): FormGroup {
@@ -397,25 +423,26 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   private _handleArrowMovement(e) {
-    if (!this._focusedElement) return;
+    const focused = this.ticketBuilderService.focusedElement;
+    if (!focused) return;
       
-    const currentY = this._focusedElement.style.top.replace('px', '') << 0;
-    const currentX = this._focusedElement.style.left.replace('px', '') << 0;
+    const currentY = focused.style.top.replace('px', '') << 0;
+    const currentX = focused.style.left.replace('px', '') << 0;
 
     if (e.code === ArrowAction.Up) {
-      return this._focusedElement.style.top = `${currentY - 1}px`;
+      return focused.style.top = `${currentY - 1}px`;
     }
 
     if (e.code === ArrowAction.Down) {
-      return this._focusedElement.style.top = `${currentY + 1}px`;
+      return focused.style.top = `${currentY + 1}px`;
     }
 
     if (e.code === ArrowAction.Left) {
-      return this._focusedElement.style.left = `${currentX - 1}px`;
+      return focused.style.left = `${currentX - 1}px`;
     }
 
     if (e.code === ArrowAction.Right) {
-      return this._focusedElement.style.left = `${currentX + 1}px`;
+      return focused.style.left = `${currentX + 1}px`;
     }
   }
 
