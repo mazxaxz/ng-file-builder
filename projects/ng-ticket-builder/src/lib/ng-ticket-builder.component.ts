@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Renderer2, ViewChildren, QueryList, AfterViewInit, Input, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, Renderer2, ViewChildren, QueryList, AfterViewInit, Input, ChangeDetectionStrategy, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, FormArray, ValidatorFn } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { PageOrientation, PageSize, BuilderControl, DefaultBlocks } from './ng-ticket-builder.models';
@@ -20,7 +20,8 @@ interface NavigationTab {
 enum Tabs {
   Core = "Core",
   Blocks = "Blocks",
-  Layers = "Layers"
+  Layers = "Layers",
+  Options = "Options"
 }
 
 @Component({
@@ -65,7 +66,8 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
   constructor(
     private ticketBuilderService: NgTicketBuilderService,
     private renderer2: Renderer2,
-    private formBuilder: FormBuilder) {
+    private formBuilder: FormBuilder,
+    private ref: ChangeDetectorRef) {
       this.coreForm = this.formBuilder.group({
         dynamicControls: this.formBuilder.array([])
       });
@@ -347,6 +349,8 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
         if (element === null) return;
 
         this.renderer2.setStyle(element, 'outline', '3px solid rgba(149,177,225,1)');
+        this.navigationForm.get('currentTab').setValue(Tabs.Options);
+        this.ref.detectChanges();
       });
     
     const disableFocusSub = this.ticketBuilderService.disableFocus$

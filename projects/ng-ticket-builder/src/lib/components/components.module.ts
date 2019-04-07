@@ -3,10 +3,12 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { InputComponent } from './inputs/input/input.component';
 import { LayerItemsComponent } from './layer-items/layer-items.component';
+import { OptionsTabComponent } from './options-tab/options-tab.component';
 
 export const components = [
   InputComponent,
-  LayerItemsComponent
+  LayerItemsComponent,
+  OptionsTabComponent
 ]
 
 @NgModule({

@@ -78,30 +78,32 @@
               [label]="control.label"></mzx-input>
           </form>
         </div>
-          <div class="tab" *ngSwitchCase="Tabs.Typography">typography</div>
-          <div class="tab" *ngSwitchCase="Tabs.Blocks">
-            <div class="blocks-container">
+        <div class="tab" *ngSwitchCase="Tabs.Blocks">
+          <div class="blocks-container">
 
-              <div class="block-row" *ngFor="let block of getDefaultBlocksAsArray()">
-                <button 
-                  class="block" 
-                  (click)="renderElement(block.enumDecorator)">
-                  <div class="icon-wrapper">
-                      <svg class="icon" aria-hidden="true" focusable="false">
-                        <use attr.xlink:href="assets/icons/{{ block.icon }}.svg#{{ block.icon }}"></use>
-                      </svg>
-                    </div>
-                    <div class="block-label">
-                      {{ block.label }}
-                    </div>
-                </button>
-              </div>
-              
+            <div class="block-row" *ngFor="let block of getDefaultBlocksAsArray()">
+              <button 
+                class="block" 
+                (click)="renderElement(block.enumDecorator)">
+                <div class="icon-wrapper">
+                    <svg class="icon" aria-hidden="true" focusable="false">
+                      <use attr.xlink:href="assets/icons/{{ block.icon }}.svg#{{ block.icon }}"></use>
+                    </svg>
+                  </div>
+                  <div class="block-label">
+                    {{ block.label }}
+                  </div>
+              </button>
             </div>
+            
           </div>
-          <div class="tab" *ngSwitchCase="Tabs.Layers">
-            <mzx-layer-items></mzx-layer-items>
-          </div>
+        </div>
+        <div class="tab" *ngSwitchCase="Tabs.Layers">
+          <mzx-layer-items></mzx-layer-items>
+        </div>
+        <div class="tab" *ngSwitchCase="Tabs.Options">
+          <mzx-options-tab></mzx-options-tab>
+        </div>
       </ng-container>
     </div>
   </div>
