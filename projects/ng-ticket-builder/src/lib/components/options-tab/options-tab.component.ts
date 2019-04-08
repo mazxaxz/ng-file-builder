@@ -30,9 +30,9 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
     private renderer2: Renderer2) { }
 
   ngOnInit() {
-    this._focusedElement = this.ticketBuilderService.focusedElement;
     this._initializeTypography();
     this._initializeGeneralForm();
+    this._initializeStyles();
   }
 
   ngOnDestroy() {
@@ -70,8 +70,27 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private _initializeGeneralForm() {
     this.generalForm = new FormGroup({
-      'background-image': new FormControl(null)
+      'background-image': new FormControl(null),
+      'background-color': new FormControl(null),
+      'background': new FormControl(null)
     })
+  }
+  
+  private _initializeStyles() {
+    this._focusedElement = this.ticketBuilderService.focusedElement;
+    Object.keys(this._focusedElement.style).forEach(property => {
+      const dashcase = property.split(/(?=[A-Z])/).join('-');
+
+      const typographyControl = this.typographyForm.get(dashcase);
+      if (typographyControl) {
+        return typographyControl.setValue(this._focusedElement.style[property]);
+      }
+
+      const generalControl = this.generalForm.get(dashcase);
+      if (generalControl) {
+        return generalControl.setValue(this._focusedElement.style[property]);
+      }
+    });
   }
 
 }
