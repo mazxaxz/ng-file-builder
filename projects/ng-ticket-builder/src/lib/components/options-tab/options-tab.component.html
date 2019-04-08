@@ -1,3 +1,39 @@
-<p>
-  options-tab works!
-</p>
+<div class="container">
+  <div class="list-container">
+    <div class="list-collapse-toggler" (click)="toggleSection(Sections.Typography)">
+      <span class="toggler-label">
+        Typography
+      </span>
+      <div class="icon-wrapper">
+        <svg #toggleIcon class="icon" data-section="typography" aria-hidden="true" focusable="false">
+          <use xlink:href="assets/icons/keyboard_arrow_down.svg#keyboard_arrow_down"></use>
+        </svg>
+      </div>
+    </div>
+
+    <div #section class="list-content" data-section="typography">
+      <form [formGroup]="typographyForm">
+        <mzx-option-text-input [parentForm]="typographyForm" controlName="innerText" label="Inner Text"></mzx-option-text-input>
+      </form>
+    </div>
+  </div>
+
+  <div class="list-container">
+    <div class="list-collapse-toggler" (click)="toggleSection(Sections.General)">
+      <span class="toggler-label">
+        General
+      </span>
+      <div class="icon-wrapper">
+        <svg #toggleIcon class="icon" data-section="general" aria-hidden="true" focusable="false">
+          <use xlink:href="assets/icons/keyboard_arrow_down.svg#keyboard_arrow_down"></use>
+        </svg>
+      </div>
+    </div>
+    
+    <div #section class="list-content" data-section="general">
+      <form [formGroup]="generalForm">
+        <mzx-option-text-input [parentForm]="generalForm" controlName="background-image" label="Background image URL"></mzx-option-text-input>
+      </form>
+    </div>
+  </div>
+</div>

@@ -4,11 +4,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { InputComponent } from './inputs/input/input.component';
 import { LayerItemsComponent } from './layer-items/layer-items.component';
 import { OptionsTabComponent } from './options-tab/options-tab.component';
+import { OptionTextInputComponent } from './inputs/option-text-input/option-text-input.component';
 
 export const components = [
   InputComponent,
   LayerItemsComponent,
-  OptionsTabComponent
+  OptionsTabComponent,
+  OptionTextInputComponent
 ]
 
 @NgModule({

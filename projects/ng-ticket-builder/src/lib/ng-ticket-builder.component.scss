@@ -160,6 +160,20 @@
             min-width: 200px;
             background: $dark;
             padding: 10px;
+            overflow-y: auto;
+            max-height: 100%;
+
+            &::-webkit-scrollbar {
+                width: 10px;
+            }
+            
+            &::-webkit-scrollbar-track {
+                background: lighten($canvas-background, 10%);
+            }
+            
+            &::-webkit-scrollbar-thumb {
+                background: lighten($canvas-background, 5%);
+            }
 
             .tab {
                 font-family: 'Arial', sans-serif;

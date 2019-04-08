@@ -1,0 +1,58 @@
+@import '../../../assets/scss/variables.scss';
+
+.container {
+    display: flex;
+    flex-direction: column;
+
+    .list-container {
+        margin-bottom: 10px;
+
+        .list-collapse-toggler {
+            display: flex;
+            padding: 8px 8px 4px 8px;
+            background: lighten($dark, 5%);
+            cursor: pointer;
+
+            .toggler-label {
+                flex: 1;
+            }
+
+            .icon-wrapper {
+                transform: translateY(-3px);
+
+                .icon {
+                    width: 22px;
+                    height: 18px;
+                    color: $light;
+                    fill: $light;
+                    will-change: transform;
+                    transition: .3s transform ease-in-out;
+                    transform-origin: 50% 65%;
+
+                    &.expanded {
+                        transform: rotate(180deg);
+                    }
+                }
+            }
+        }
+
+        .list-content {
+            display: flex;
+            justify-content: center;
+            height: 0;
+            background: lighten($dark, 2.5%);
+            overflow: hidden;
+            will-change: height;
+            transition: .3s height ease-in-out;
+
+            &.expanded {
+                height: 200px;
+            }
+
+            & > * {
+                margin-top: 10px;
+                width: 96%;
+            }
+        }
+    }
+}
