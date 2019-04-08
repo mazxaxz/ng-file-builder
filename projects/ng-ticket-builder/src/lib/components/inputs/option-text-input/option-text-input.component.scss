@@ -10,12 +10,12 @@
         width: 100%;
         color: $light;
         padding: 8px 12px;
-        font-size: 17px;
+        font-size: 13px;
         margin-bottom: 10px;
 
         &:valid + .form-control-label,
         &:focus + .form-control-label {
-            font-size: 11px;
+            font-size: 10px;
             transform: translate3d(0, -14px, 0);
             color: $primary-gradient-one;
         }
@@ -29,6 +29,7 @@
         position: absolute;
         left: 13px;
         top: 9px;
+        font-size: 13px;
         background: transparent;
         cursor: text;
         will-change: transform, font-size;
