@@ -312,23 +312,24 @@ export class NgFileBuilderComponent implements OnInit, OnDestroy, AfterViewInit 
     this._currentMouseX = event.x;
 
     const radians = Math.atan2(dx - this._currentMouseX, dy - this._currentMouseY);
-    const degree = ((radians * (180 / Math.PI) * -1) - 120) * 4;
+    const degree = (((radians * (180 / Math.PI) * -1) - 120) * 4) % 360;
 
     this.fileBuilderService.focusedElement.setAttribute('data-rotation', degree + 'deg');
     this.renderer2.setStyle(this.fileBuilderService.focusedElement, 'transform', `rotate(${degree}deg)`);
   }
 
   private _drag(event) {
-    const dy = (this._currentMouseY - event.y) / PAGE_SIZES[this.currentSize].scale;
-    const dx = (this._currentMouseX - event.x) / PAGE_SIZES[this.currentSize].scale;
+    let dy = (this._currentMouseY - event.y) / PAGE_SIZES[this.currentSize].scale;
+    let dx = (this._currentMouseX - event.x) / PAGE_SIZES[this.currentSize].scale;
     this._currentMouseY = event.y;
     this._currentMouseX = event.x;
     const focused = this.fileBuilderService.focusedElement;
 
     const drag = { x: this._currentDrag.x - dx, y: this._currentDrag.y - dy };
-    const rotation = focused.dataset.rotation ? `rotate(${focused.dataset.rotation})` : '';
-    this.renderer2.setStyle(focused, 'transform', `${rotation} translate3d(${drag.x}px, ${drag.y}px, 0px)`);
     [this._currentDrag.x, this._currentDrag.y] = [drag.x, drag.y];
+
+    const rotation = focused.dataset.rotation ? `rotate(${focused.dataset.rotation})` : '';
+    this.renderer2.setStyle(focused, 'transform', `translate3d(${drag.x}px, ${drag.y}px, 0px) ${rotation}`);    
   }
 
   private _initializeNavigation() {
