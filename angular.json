@@ -126,38 +126,38 @@
         }
       }
     },
-    "ng-ticket-builder": {
-      "root": "projects/ng-ticket-builder",
-      "sourceRoot": "projects/ng-ticket-builder/src",
+    "ng-file-builder": {
+      "root": "projects/ng-file-builder",
+      "sourceRoot": "projects/ng-file-builder/src",
       "projectType": "library",
       "prefix": "mzx",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "projects/ng-ticket-builder/tsconfig.lib.json",
-            "project": "projects/ng-ticket-builder/ng-package.json"
+            "tsConfig": "projects/ng-file-builder/tsconfig.lib.json",
+            "project": "projects/ng-file-builder/ng-package.json"
           },
           "configurations": {
             "production": {
-              "project": "projects/ng-ticket-builder/ng-package.prod.json"
+              "project": "projects/ng-file-builder/ng-package.prod.json"
             }
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/ng-ticket-builder/src/test.ts",
-            "tsConfig": "projects/ng-ticket-builder/tsconfig.spec.json",
-            "karmaConfig": "projects/ng-ticket-builder/karma.conf.js"
+            "main": "projects/ng-file-builder/src/test.ts",
+            "tsConfig": "projects/ng-file-builder/tsconfig.spec.json",
+            "karmaConfig": "projects/ng-file-builder/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "projects/ng-ticket-builder/tsconfig.lib.json",
-              "projects/ng-ticket-builder/tsconfig.spec.json"
+              "projects/ng-file-builder/tsconfig.lib.json",
+              "projects/ng-file-builder/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"

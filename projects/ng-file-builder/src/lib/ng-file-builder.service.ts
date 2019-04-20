@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class NgTicketBuilderService {
+export class NgFileBuilderService {
   private _allElements: any[] = [];
   private _highlightedElement = null;
   highlightedElement$ = new BehaviorSubject<any>(this._highlightedElement);

@@ -18,11 +18,11 @@
       "dom"
     ],
     "paths": {
-      "ng-ticket-builder": [
-        "dist/ng-ticket-builder"
+      "ng-file-builder": [
+        "dist/ng-file-builder"
       ],
-      "ng-ticket-builder/*": [
-        "dist/ng-ticket-builder/*"
+      "ng-file-builder/*": [
+        "dist/ng-file-builder/*"
       ]
     }
   }

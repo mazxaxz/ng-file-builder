@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild, Renderer2, ViewChildren, QueryList, AfterViewInit, Input, ChangeDetectionStrategy, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, FormArray, ValidatorFn } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { PageOrientation, PageSize, BuilderControl, DefaultBlocks } from './ng-ticket-builder.models';
-import { NgTicketBuilderService } from './ng-ticket-builder.service';
-import { DEFAULT_BLOCKS_HTML, PAGE_SIZES } from './ng-ticket-builder.constants';
+import { PageOrientation, PageSize, BuilderControl, DefaultBlocks } from './ng-file-builder.models';
+import { NgFileBuilderService } from './ng-file-builder.service';
+import { DEFAULT_BLOCKS_HTML, PAGE_SIZES } from './ng-file-builder.constants';
 
 enum ArrowAction {
   Up = "ArrowUp",
@@ -25,12 +25,12 @@ enum Tabs {
 }
 
 @Component({
-  selector: 'mzx-ng-ticket-builder',
-  templateUrl: './ng-ticket-builder.component.html',
-  styleUrls: ['./ng-ticket-builder.component.scss'],
+  selector: 'mzx-file-builder',
+  templateUrl: './ng-file-builder.component.html',
+  styleUrls: ['./ng-file-builder.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewInit {
+export class NgFileBuilderComponent implements OnInit, OnDestroy, AfterViewInit {
   private _subs: Subscription[] = [];
   private _listeners: Function[] = [];
   @ViewChild('builderCanvas') builderCanvas: any;
@@ -65,7 +65,7 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
   navigationTabs: NavigationTab[];
 
   constructor(
-    private ticketBuilderService: NgTicketBuilderService,
+    private fileBuilderService: NgFileBuilderService,
     private renderer2: Renderer2,
     private formBuilder: FormBuilder,
     private ref: ChangeDetectorRef) {
@@ -112,10 +112,10 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
       if (this._canvas.children[i].style.zIndex.length <= 0) {
         this.renderer2.setStyle(this._canvas.children[i], 'z-index', i);
       }
-      this.ticketBuilderService.addElement(this._canvas.children[i])
+      this.fileBuilderService.addElement(this._canvas.children[i])
     }
 
-    this.ticketBuilderService.sortByZIndex();
+    this.fileBuilderService.sortByZIndex();
   }
 
   changeOrientation() {
@@ -178,12 +178,12 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
     this.renderer2.setStyle(element, 'left', `${(parentWidth / 2) - (width / 2)}px`);
     this.renderer2.setStyle(element, 'cursor', 'auto');
     this.renderer2.setStyle(element, 'user-select', 'none');
-    this.renderer2.setStyle(element, 'z-index', this.ticketBuilderService.getElements().length);
+    this.renderer2.setStyle(element, 'z-index', this.fileBuilderService.getElements().length);
 
     this._addListeners(element);
     this.renderer2.appendChild(this._canvas, element);
-    this.ticketBuilderService.addElement(element);
-    this.ticketBuilderService.focusElement(element);
+    this.fileBuilderService.addElement(element);
+    this.fileBuilderService.focusElement(element);
   }
 
   getDefaultBlocksAsArray() {
@@ -204,13 +204,13 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
 
   private _addListeners(element) {
     const over = this.renderer2.listen(element, 'mouseover', () => {
-      if (this.ticketBuilderService.focusedElement === element) return;
+      if (this.fileBuilderService.focusedElement === element) return;
 
       this.renderer2.setStyle(element, 'outline', '3px solid rgba(149,177,225,1)');
     });
 
     const out = this.renderer2.listen(element, 'mouseout', () => {
-      if (this.ticketBuilderService.focusedElement === element) return;
+      if (this.fileBuilderService.focusedElement === element) return;
 
       this.renderer2.setStyle(element, 'outline', 'none');
     });
@@ -240,7 +240,7 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
 
     const down = this.renderer2.listen(element, 'mousedown', (e) => {
       e.preventDefault();
-      this.ticketBuilderService.focusElement(element);
+      this.fileBuilderService.focusElement(element);
       this._canvas.removeEventListener('mousemove', this._resizeBindingFnc);
       this._canvas.removeEventListener('mousemove', this._dragBindingFnc);
       this.renderer2.setStyle(element, 'outline', '3px solid rgba(149,177,225,1)');
@@ -276,7 +276,7 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
 
       this._canvas.removeEventListener('mousemove', this._dragBindingFnc);
       if (this._currentDrag.x !== 0 || this._currentDrag.y !== 0) {
-        const focused = this.ticketBuilderService.focusedElement;
+        const focused = this.fileBuilderService.focusedElement;
         const computed = window.getComputedStyle(focused);
         const y = +computed.getPropertyValue('top').replace('px', '');
         const x = +computed.getPropertyValue('left').replace('px', '');
@@ -292,7 +292,7 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   private _resize(event) {
-    const focused = this.ticketBuilderService.focusedElement;
+    const focused = this.fileBuilderService.focusedElement;
     const computed = window.getComputedStyle(focused);
     const dy = (this._currentMouseY - event.y) / PAGE_SIZES[this.currentSize].scale;
     const dx = (this._currentMouseX - event.x) / PAGE_SIZES[this.currentSize].scale;
@@ -314,8 +314,8 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
     const radians = Math.atan2(dx - this._currentMouseX, dy - this._currentMouseY);
     const degree = ((radians * (180 / Math.PI) * -1) - 120) * 4;
 
-    this.ticketBuilderService.focusedElement.setAttribute('data-rotation', degree + 'deg');
-    this.renderer2.setStyle(this.ticketBuilderService.focusedElement, 'transform', `rotate(${degree}deg)`);
+    this.fileBuilderService.focusedElement.setAttribute('data-rotation', degree + 'deg');
+    this.renderer2.setStyle(this.fileBuilderService.focusedElement, 'transform', `rotate(${degree}deg)`);
   }
 
   private _drag(event) {
@@ -323,7 +323,7 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
     const dx = (this._currentMouseX - event.x) / PAGE_SIZES[this.currentSize].scale;
     this._currentMouseY = event.y;
     this._currentMouseX = event.x;
-    const focused = this.ticketBuilderService.focusedElement;
+    const focused = this.fileBuilderService.focusedElement;
 
     const drag = { x: this._currentDrag.x - dx, y: this._currentDrag.y - dy };
     const rotation = focused.dataset.rotation ? `rotate(${focused.dataset.rotation})` : '';
@@ -355,17 +355,17 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   private _initializeHighlight() {
-    const highlightSub = this.ticketBuilderService.highlightedElement$
+    const highlightSub = this.fileBuilderService.highlightedElement$
       .subscribe(element => {
-        if (element === null || this.ticketBuilderService.focusedElement === element)
+        if (element === null || this.fileBuilderService.focusedElement === element)
           return;
 
         this.renderer2.setStyle(element, 'outline', '2px dashed rgba(149,177,225,1)');
       });
 
-    const disableHighlightSub = this.ticketBuilderService.disableHighlight$
+    const disableHighlightSub = this.fileBuilderService.disableHighlight$
       .subscribe(element => {
-        if (element === null || this.ticketBuilderService.focusedElement === element)
+        if (element === null || this.fileBuilderService.focusedElement === element)
           return;
 
         this.renderer2.setStyle(element, 'outline', 'none');
@@ -375,7 +375,7 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   private _initializeFocus() {
-    const focusSub = this.ticketBuilderService.focusElement$
+    const focusSub = this.fileBuilderService.focusElement$
       .subscribe(element => {
         if (element === null) return;
 
@@ -384,7 +384,7 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
         this.ref.detectChanges();
       });
     
-    const disableFocusSub = this.ticketBuilderService.disableFocus$
+    const disableFocusSub = this.fileBuilderService.disableFocus$
       .subscribe(element => {
         if (element === null) return;
 
@@ -401,7 +401,7 @@ export class NgTicketBuilderComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   private _handleArrowMovement(e) {
-    const focused = this.ticketBuilderService.focusedElement;
+    const focused = this.fileBuilderService.focusedElement;
     if (!focused) return;
       
     const currentY = focused.style.top.replace('px', '') << 0;

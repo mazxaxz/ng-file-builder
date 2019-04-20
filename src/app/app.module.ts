@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { NgTicketBuilderModule } from 'projects/ng-ticket-builder/src/public_api';
+import { NgFileBuilderModule } from 'projects/ng-file-builder/src/public_api';
 
 @NgModule({
   declarations: [
@@ -10,7 +10,7 @@ import { NgTicketBuilderModule } from 'projects/ng-ticket-builder/src/public_api
   ],
   imports: [
     BrowserModule,
-    NgTicketBuilderModule
+    NgFileBuilderModule
   ],
   providers: [],
   bootstrap: [AppComponent]

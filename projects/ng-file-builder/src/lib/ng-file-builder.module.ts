@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { NgTicketBuilderComponent } from './ng-ticket-builder.component';
+import { NgFileBuilderComponent } from './ng-file-builder.component';
 import { SafeSanitizerPipe } from './pipes/safe-sanitizer.pipe';
 import { CommonModule } from '@angular/common';
 import { ComponentsModule } from './components/components.module';
@@ -10,9 +10,9 @@ import { ComponentsModule } from './components/components.module';
     ComponentsModule
   ],
   declarations: [
-    NgTicketBuilderComponent,
+    NgFileBuilderComponent,
     SafeSanitizerPipe
   ],
-  exports: [NgTicketBuilderComponent]
+  exports: [NgFileBuilderComponent]
 })
-export class NgTicketBuilderModule { }
+export class NgFileBuilderModule { }

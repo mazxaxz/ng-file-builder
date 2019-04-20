@@ -1,5 +1,5 @@
 import { Component, OnInit, Renderer2, OnDestroy, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
-import { NgTicketBuilderService } from '../../ng-ticket-builder.service';
+import { NgFileBuilderService } from '../../ng-file-builder.service';
 import { Subscription } from 'rxjs';
 import { FormGroup, FormControl } from '@angular/forms';
 
@@ -26,7 +26,7 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
   generalForm: FormGroup;
 
   constructor(
-    private ticketBuilderService: NgTicketBuilderService,
+    private fileBuilderService: NgFileBuilderService,
     private renderer2: Renderer2) { }
 
   ngOnInit() {
@@ -77,7 +77,7 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   
   private _initializeStyles() {
-    this._focusedElement = this.ticketBuilderService.focusedElement;
+    this._focusedElement = this.fileBuilderService.focusedElement;
     Object.keys(this._focusedElement.style).forEach(property => {
       const dashcase = property.split(/(?=[A-Z])/).join('-');
 

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BuilderControl } from 'projects/ng-ticket-builder/src/public_api';
+import { BuilderControl } from 'projects/ng-file-builder/src/public_api';
 import { Validators } from '@angular/forms';
 
 @Component({

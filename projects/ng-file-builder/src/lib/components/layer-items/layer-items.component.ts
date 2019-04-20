@@ -1,5 +1,5 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
-import { NgTicketBuilderService } from '../../ng-ticket-builder.service';
+import { NgFileBuilderService } from '../../ng-file-builder.service';
 
 @Component({
   selector: 'mzx-layer-items',
@@ -8,14 +8,14 @@ import { NgTicketBuilderService } from '../../ng-ticket-builder.service';
 })
 export class LayerItemsComponent implements OnInit {
   constructor(
-    private ticketBuilderService: NgTicketBuilderService,
+    private fileBuilderService: NgFileBuilderService,
     private renderer2: Renderer2) { }
 
   ngOnInit() {
   }
 
   getElements(): any[] {
-    return this.ticketBuilderService.getElements();
+    return this.fileBuilderService.getElements();
   }
 
   getElementBackground(element) {
@@ -42,8 +42,8 @@ export class LayerItemsComponent implements OnInit {
     this.renderer2.setStyle(elementsCopy[elementIdx], 'z-index', elementIdx + 1);
     this.renderer2.setStyle(elementsCopy[elementIdx + 1], 'z-index', elementIdx);
 
-    this.ticketBuilderService.replaceElement(elementsCopy[elementIdx], elementIdx + 1);
-    this.ticketBuilderService.replaceElement(elementsCopy[elementIdx + 1], elementIdx);
+    this.fileBuilderService.replaceElement(elementsCopy[elementIdx], elementIdx + 1);
+    this.fileBuilderService.replaceElement(elementsCopy[elementIdx + 1], elementIdx);
   }
 
   layerDown(elementIdx: number) {
@@ -53,20 +53,20 @@ export class LayerItemsComponent implements OnInit {
     this.renderer2.setStyle(elementsCopy[elementIdx], 'z-index', elementIdx - 1);
     this.renderer2.setStyle(elementsCopy[elementIdx - 1], 'z-index', elementIdx);
 
-    this.ticketBuilderService.replaceElement(elementsCopy[elementIdx], elementIdx - 1);
-    this.ticketBuilderService.replaceElement(elementsCopy[elementIdx - 1], elementIdx);
+    this.fileBuilderService.replaceElement(elementsCopy[elementIdx], elementIdx - 1);
+    this.fileBuilderService.replaceElement(elementsCopy[elementIdx - 1], elementIdx);
   }
 
   highlight(elementIdx: number) {
-    this.ticketBuilderService.highlightElement(this.getElements()[elementIdx]);
+    this.fileBuilderService.highlightElement(this.getElements()[elementIdx]);
   }
 
   disableHighlight(elementIdx: number) {
-    this.ticketBuilderService.disableHighlight$.next(this.getElements()[elementIdx]);
+    this.fileBuilderService.disableHighlight$.next(this.getElements()[elementIdx]);
   }
 
   focus(elementIdx: number) {
-    this.ticketBuilderService.focusElement(this.getElements()[elementIdx]);
+    this.fileBuilderService.focusElement(this.getElements()[elementIdx]);
   }
 
 }

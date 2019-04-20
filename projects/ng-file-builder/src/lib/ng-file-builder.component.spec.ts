@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NgTicketBuilderComponent } from './ng-ticket-builder.component';
+import { NgFileBuilderComponent } from './ng-file-builder.component';
 
-describe('NgTicketBuilderComponent', () => {
-  let component: NgTicketBuilderComponent;
-  let fixture: ComponentFixture<NgTicketBuilderComponent>;
+describe('NgFileBuilderComponent', () => {
+  let component: NgFileBuilderComponent;
+  let fixture: ComponentFixture<NgFileBuilderComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NgTicketBuilderComponent ]
+      declarations: [ NgFileBuilderComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NgTicketBuilderComponent);
+    fixture = TestBed.createComponent(NgFileBuilderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

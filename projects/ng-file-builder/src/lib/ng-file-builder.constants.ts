@@ -1,4 +1,4 @@
-import { DefaultBlocks } from "./ng-ticket-builder.models";
+import { DefaultBlocks } from "./ng-file-builder.models";
 
 export const PAGE_SIZES = {
   A7: { width: 210, height: 298, scale: 2.02 },

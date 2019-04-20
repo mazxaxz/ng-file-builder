@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "build:library": "ng build --prod ng-ticket-builder && cp -a projects/ng-ticket-builder/src/assets dist/ng-ticket-builder"
+    "build:library": "ng build --prod ng-file-builder && cp -a projects/ng-file-builder/src/assets dist/ng-file-builder"
   },
   "private": true,
   "dependencies": {
