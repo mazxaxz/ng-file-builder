@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, OnDestroy, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Renderer2, OnDestroy, ViewChildren, QueryList, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { NgFileBuilderService } from '../../ng-file-builder.service';
 import { Subscription } from 'rxjs';
 import { FormGroup, FormControl } from '@angular/forms';
@@ -30,9 +30,10 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
     private renderer2: Renderer2) { }
 
   ngOnInit() {
+    this._focusedElement = this.fileBuilderService.focusedElement;
     this._initializeTypography();
     this._initializeGeneralForm();
-    this._initializeStyles();
+    this._listenForFocusedElementChange();
   }
 
   ngOnDestroy() {
@@ -66,6 +67,11 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
     this.typographyForm = new FormGroup({
       innerText: new FormControl(null)
     });
+    this._updateTypography();
+  }
+
+  private _updateTypography() {
+    this.typographyForm.get('innerText').setValue(this._focusedElement.innerText);
   }
 
   private _initializeGeneralForm() {
@@ -73,11 +79,12 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
       'background-image': new FormControl(null),
       'background-color': new FormControl(null),
       'background': new FormControl(null)
-    })
+    });
+
+    this._initializeStyles();
   }
   
   private _initializeStyles() {
-    this._focusedElement = this.fileBuilderService.focusedElement;
     Object.keys(this._focusedElement.style).forEach(property => {
       const dashcase = property.split(/(?=[A-Z])/).join('-');
 
@@ -91,6 +98,16 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
         return generalControl.setValue(this._focusedElement.style[property]);
       }
     });
+  }
+
+  private _listenForFocusedElementChange() {
+    const sub = this.fileBuilderService.focusElement$
+      .subscribe((element: any) => {
+        this._focusedElement = element;
+        this._updateTypography();
+        this._initializeStyles();
+      });
+    this._subs.push(sub);
   }
 
 }

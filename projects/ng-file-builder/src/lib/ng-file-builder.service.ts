@@ -14,8 +14,6 @@ export class NgFileBuilderService {
   focusElement$ = new BehaviorSubject<any>(this.focusedElement);
   disableFocus$ = new BehaviorSubject<any>(this.focusedElement);
 
-  constructor() { }
-
   getElements(): any[] {
     return this._allElements;
   }
