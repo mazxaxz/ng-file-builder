@@ -35,7 +35,8 @@ export class LayerItemsComponent implements OnInit {
     return '#fff';
   }
 
-  layerUp(elementIdx: number) {
+  layerUp(elementIdx: number, event) {
+    event.stopPropagation();
     const elementsCopy = [...this.getElements()];
     if (elementIdx === (elementsCopy.length - 1)) return;
 
@@ -46,7 +47,8 @@ export class LayerItemsComponent implements OnInit {
     this.fileBuilderService.replaceElement(elementsCopy[elementIdx + 1], elementIdx);
   }
 
-  layerDown(elementIdx: number) {
+  layerDown(elementIdx: number, event) {
+    event.stopPropagation();
     if (elementIdx === 0) return;
 
     const elementsCopy = [...this.getElements()];

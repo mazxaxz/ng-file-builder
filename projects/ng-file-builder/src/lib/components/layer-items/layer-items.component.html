@@ -10,12 +10,12 @@
             {{ element.innerText || element.nodeName.toLowerCase() }}
         </div>
         <div class="actions">
-            <div class="up" (click)="layerUp(idx)" *ngIf="idx !== (getElements().length - 1)">
+            <div class="up" (click)="layerUp(idx, $event)" *ngIf="idx !== (getElements().length - 1)">
                 <svg class="icon" aria-hidden="true" focusable="false">
                     <use xlink:href="assets/icons/arrow_up.svg#arrow_up"></use>
                 </svg>
             </div>
-            <div class="down" (click)="layerDown(idx)" *ngIf="idx !== 0">
+            <div class="down" (click)="layerDown(idx, $event)" *ngIf="idx !== 0">
                 <svg class="icon" aria-hidden="true" focusable="false">
                     <use xlink:href="assets/icons/arrow_down.svg#arrow_down"></use>
                 </svg>
