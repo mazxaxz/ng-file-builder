@@ -21,12 +21,6 @@ export const PAGE_SIZES = {
   }
 }
 
-export enum PageDensity {
-  PPI_72 = "72ppi",
-  PPI_96 = "96ppi",
-  PPI_150 = "150ppi"
-}
-
 export const QR_CODE_SRC_PLACEHOLDER = '/assets/images/qr_code_image_placeholder.png';
 
 export const DEFAULT_BLOCKS_HTML = {

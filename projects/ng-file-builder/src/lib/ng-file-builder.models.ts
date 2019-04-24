@@ -1,5 +1,11 @@
 import { ValidatorFn } from "@angular/forms";
 
+export enum PageDensity {
+    PPI_72 = "72ppi",
+    PPI_96 = "96ppi",
+    PPI_150 = "150ppi"
+}
+
 export enum PageSize {
     A7 = "A7",
     A6 = "A6",

@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild, Renderer2, ViewChildren, QueryList, AfterViewInit, Input, ChangeDetectionStrategy, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, FormArray, ValidatorFn } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { PageOrientation, PageSize, BuilderControl, DefaultBlocks } from './ng-file-builder.models';
+import { PageOrientation, PageSize, BuilderControl, DefaultBlocks, PageDensity } from './ng-file-builder.models';
 import { NgFileBuilderService } from './ng-file-builder.service';
-import { DEFAULT_BLOCKS_HTML, PAGE_SIZES, PageDensity } from './ng-file-builder.constants';
+import { DEFAULT_BLOCKS_HTML, PAGE_SIZES } from './ng-file-builder.constants';
 
 enum ArrowAction {
   Up = "ArrowUp",
