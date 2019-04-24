@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, Renderer2 } from '@angular/core';
 import { NgFileBuilderService } from '../../ng-file-builder.service';
 
 @Component({
@@ -6,13 +6,10 @@ import { NgFileBuilderService } from '../../ng-file-builder.service';
   templateUrl: './layer-items.component.html',
   styleUrls: ['./layer-items.component.scss']
 })
-export class LayerItemsComponent implements OnInit {
+export class LayerItemsComponent {
   constructor(
     private fileBuilderService: NgFileBuilderService,
     private renderer2: Renderer2) { }
-
-  ngOnInit() {
-  }
 
   getElements(): any[] {
     return this.fileBuilderService.getElements();

@@ -1,10 +1,30 @@
 import { DefaultBlocks } from "./ng-file-builder.models";
 
 export const PAGE_SIZES = {
-  A7: { width: 210, height: 298, scale: 2.02 },
-  A6: { width: 298, height: 420, scale: 1.42 },
-  A5: { width: 420, height: 595, scale: 1 },
-  A4: { width: 595, height: 842, scale: 0.7 }
+  "72ppi": {
+    A7: { width: 210, height: 298, scale: 2.02 },
+    A6: { width: 298, height: 420, scale: 1.42 },
+    A5: { width: 420, height: 595, scale: 1 },
+    A4: { width: 595, height: 842, scale: 0.7 }
+  },
+  "96ppi": {
+    A7: { width: 280, height: 397, scale: 1.515 },
+    A6: { width: 397, height: 559, scale: 1.065 },
+    A5: { width: 559, height: 794, scale: 0.75 },
+    A4: { width: 794, height: 1123, scale: 0.524 }
+  },
+  "150ppi": {
+    A7: { width: 437, height: 620, scale: 0.97 },
+    A6: { width: 620, height: 874, scale: 0.682 },
+    A5: { width: 874, height: 1240, scale: 0.479 },
+    A4: { width: 1240, height: 1754, scale: 0.3355 }
+  }
+}
+
+export enum PageDensity {
+  PPI_72 = "72ppi",
+  PPI_96 = "96ppi",
+  PPI_150 = "150ppi"
 }
 
 export const QR_CODE_SRC_PLACEHOLDER = '/assets/images/qr_code_image_placeholder.png';

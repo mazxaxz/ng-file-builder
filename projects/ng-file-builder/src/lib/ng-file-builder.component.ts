@@ -3,7 +3,7 @@ import { FormGroup, FormControl, FormBuilder, FormArray, ValidatorFn } from '@an
 import { Subscription } from 'rxjs';
 import { PageOrientation, PageSize, BuilderControl, DefaultBlocks } from './ng-file-builder.models';
 import { NgFileBuilderService } from './ng-file-builder.service';
-import { DEFAULT_BLOCKS_HTML, PAGE_SIZES } from './ng-file-builder.constants';
+import { DEFAULT_BLOCKS_HTML, PAGE_SIZES, PageDensity } from './ng-file-builder.constants';
 
 enum ArrowAction {
   Up = "ArrowUp",
@@ -37,6 +37,8 @@ export class NgFileBuilderComponent implements OnInit, OnDestroy, AfterViewInit 
   @ViewChildren('sizeAction') sizeActions: QueryList<any>;
   @Input() initialHtml?: string = '';
   @Input() controls?: BuilderControl[] = [];
+  @Input() density?: PageDensity = PageDensity.PPI_72;
+  @Input() initialSize?: PageSize = PageSize.A5;
 
   private _canvas: any;
   private _currentMouseX: number;
@@ -96,6 +98,7 @@ export class NgFileBuilderComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   ngAfterViewInit() {
+    this.setSize(this.initialSize);
     this.sizeActions.forEach(action => {
       const nativeElement = action.nativeElement;
       if (nativeElement.dataset.size !== this.currentSize) return;
@@ -133,9 +136,9 @@ export class NgFileBuilderComponent implements OnInit, OnDestroy, AfterViewInit 
 
   setSize(size: PageSize) {
     this.currentSize = size;
-    const width = `${PAGE_SIZES[size].width}px`;
-    const height = `${PAGE_SIZES[size].height}px`;
-    this.renderer2.setStyle(this._canvas, 'transform', `scale(${PAGE_SIZES[size].scale})`);
+    const width = `${PAGE_SIZES[this.density][size].width}px`;
+    const height = `${PAGE_SIZES[this.density][size].height}px`;
+    this.renderer2.setStyle(this._canvas, 'transform', `scale(${PAGE_SIZES[this.density][size].scale})`);
     if (this.currentOrientation === PageOrientation.Vertical) {
       this.renderer2.setStyle(this._canvas, 'width', width);
       this.renderer2.setStyle(this._canvas, 'height', height);
@@ -194,8 +197,8 @@ export class NgFileBuilderComponent implements OnInit, OnDestroy, AfterViewInit 
     this.currentSize = PageSize.A5;
     this.currentOrientation = PageOrientation.Vertical;
     this.renderer2.setStyle(this._canvas, 'background-color', '#fff');
-    this.renderer2.setStyle(this._canvas, 'width', `${PAGE_SIZES[this.currentSize].width}px`);
-    this.renderer2.setStyle(this._canvas, 'height', `${PAGE_SIZES[this.currentSize].height}px`);
+    this.renderer2.setStyle(this._canvas, 'width', `${PAGE_SIZES[this.density][this.currentSize].width}px`);
+    this.renderer2.setStyle(this._canvas, 'height', `${PAGE_SIZES[this.density][this.currentSize].height}px`);
     this.renderer2.setStyle(this._canvas, 'overflow', 'hidden');
     
     this._arrowMvmntFnc = this._handleArrowMovement.bind(this);
@@ -219,7 +222,7 @@ export class NgFileBuilderComponent implements OnInit, OnDestroy, AfterViewInit 
       const computed = window.getComputedStyle(element);
       const height = +computed.getPropertyValue('height').replace('px', '');
       const width = +computed.getPropertyValue('width').replace('px', '');
-      const borderSize = 10 / PAGE_SIZES[this.currentSize].scale;
+      const borderSize = 10 / PAGE_SIZES[this.density][this.currentSize].scale;
 
       if (e.offsetY > (height - borderSize) && e.offsetY < (height + borderSize) &&
           e.offsetX > (width - borderSize) && e.offsetX < (width + borderSize)) {
@@ -248,7 +251,7 @@ export class NgFileBuilderComponent implements OnInit, OnDestroy, AfterViewInit 
       const computed = window.getComputedStyle(element);
       const height = +computed.getPropertyValue('height').replace('px', '');
       const width = +computed.getPropertyValue('width').replace('px', '');
-      const borderSize = 10 / PAGE_SIZES[this.currentSize].scale;
+      const borderSize = 10 / PAGE_SIZES[this.density][this.currentSize].scale;
 
       this._currentMouseY = e.y;
       this._currentMouseX = e.x;
@@ -294,8 +297,8 @@ export class NgFileBuilderComponent implements OnInit, OnDestroy, AfterViewInit 
   private _resize(event) {
     const focused = this.fileBuilderService.focusedElement;
     const computed = window.getComputedStyle(focused);
-    const dy = (this._currentMouseY - event.y) / PAGE_SIZES[this.currentSize].scale;
-    const dx = (this._currentMouseX - event.x) / PAGE_SIZES[this.currentSize].scale;
+    const dy = (this._currentMouseY - event.y) / PAGE_SIZES[this.density][this.currentSize].scale;
+    const dx = (this._currentMouseX - event.x) / PAGE_SIZES[this.density][this.currentSize].scale;
     const height = +computed.getPropertyValue('height').replace('px', '');
     const width = +computed.getPropertyValue('width').replace('px', '');
 
@@ -319,8 +322,8 @@ export class NgFileBuilderComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   private _drag(event) {
-    let dy = (this._currentMouseY - event.y) / PAGE_SIZES[this.currentSize].scale;
-    let dx = (this._currentMouseX - event.x) / PAGE_SIZES[this.currentSize].scale;
+    let dy = (this._currentMouseY - event.y) / PAGE_SIZES[this.density][this.currentSize].scale;
+    let dx = (this._currentMouseX - event.x) / PAGE_SIZES[this.density][this.currentSize].scale;
     this._currentMouseY = event.y;
     this._currentMouseX = event.x;
     const focused = this.fileBuilderService.focusedElement;
