@@ -6,13 +6,15 @@ import { LayerItemsComponent } from './layer-items/layer-items.component';
 import { OptionsTabComponent } from './options-tab/options-tab.component';
 import { OptionTextInputComponent } from './inputs/option-text-input/option-text-input.component';
 import { FontFamilyInputComponent } from './inputs/font-family-input/font-family-input.component';
+import { FontWeightInputComponent } from './inputs/font-weight-input/font-weight-input.component';
 
 export const components = [
   InputComponent,
   LayerItemsComponent,
   OptionsTabComponent,
   OptionTextInputComponent,
-  FontFamilyInputComponent
+  FontFamilyInputComponent,
+  FontWeightInputComponent
 ]
 
 @NgModule({

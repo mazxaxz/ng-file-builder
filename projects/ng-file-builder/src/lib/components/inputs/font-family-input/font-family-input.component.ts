@@ -11,6 +11,10 @@ export class FontFamilyInputComponent {
   @Input() parentForm: FormGroup;
   @Input() controlName: string;
   @Input() label: string;
-  
+
   WEBSAFE_FONTS = WEBSAFE_FONTS;
+
+  cleanLabel(label: string) {
+    return label.replace(/"/g, '');
+  }
 }

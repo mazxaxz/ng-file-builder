@@ -1,6 +1,6 @@
 <div class="form-group" [formGroup]="parentForm">
   <select class="form-control" [formControlName]="controlName" [name]="controlName" [id]="controlName">
-    <option *ngFor="let font of WEBSAFE_FONTS" [value]="font">{{ cleanLabel(font) }}</option>
+    <option *ngFor="let key of weightKeys" [value]="key">{{ FONT_WEIGHTS[key] }}</option>
   </select>
   <label [for]="controlName" class="form-control-label">{{ label }}</label>
 </div>

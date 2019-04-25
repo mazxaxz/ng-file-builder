@@ -70,7 +70,7 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
       innerText: new FormControl(null),
       fontFamily: new FormControl(WEBSAFE_FONTS[0]),
       fontSize: new FormControl(14),
-      fontWeight: new FormControl(400)
+      fontWeight: new FormControl('400')
     });
     const innerTextSub = this.typographyForm.get('innerText').valueChanges
       .subscribe((change: string) => this._focusedElement.innerText = change);
@@ -102,14 +102,20 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
   
   private _initializeStyles() {
     Object.keys(this._focusedElement.style).forEach(property => {
+      const computedStyle = window.getComputedStyle(this._focusedElement);
+
       const typographyControl = this.typographyForm.get(property);
       if (typographyControl) {
-        if (property === 'fontFamily' && !WEBSAFE_FONTS.includes(this._focusedElement.style[property])) {
+        if (property === 'fontFamily' && !WEBSAFE_FONTS.includes(computedStyle.fontFamily)) {
           this._focusedElement.style[property] = WEBSAFE_FONTS[0];
           return typographyControl.setValue(WEBSAFE_FONTS[0]);
         }
 
-        return typographyControl.setValue(this._focusedElement.style[property]);
+        if (property === 'fontWeight' && !this._focusedElement.style[property]) {
+          return typographyControl.setValue(computedStyle.fontWeight);
+        }
+
+        return typographyControl.setValue(computedStyle[property]);
       }
 
       const generalControl = this.generalForm.get(property);

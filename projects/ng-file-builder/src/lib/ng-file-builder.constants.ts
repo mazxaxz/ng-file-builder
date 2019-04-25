@@ -21,8 +21,20 @@ export const PAGE_SIZES = {
   }
 }
 
-export const WEBSAFE_FONTS = ['Arial', 'Arial Black', 'Georgia', 'Times New Roman',
-  'Comic Sans MS', 'Impact', 'Tahoma', 'Verdana', 'Courier New', 'Lucida Console'];
+export const WEBSAFE_FONTS = ['Arial', '"Arial Black"', 'Georgia', '"Times New Roman"',
+  '"Comic Sans MS"', 'Impact', 'Tahoma', 'Verdana', '"Courier New"', '"Lucida Console"'];
+
+export const FONT_WEIGHTS = {
+  '100': 'Lightest',
+  '200': 'Lighter',
+  '300': 'Light',
+  '400': 'Normal',
+  '500': 'Bold Normal',
+  '600': 'Bolder Normal',
+  '700': 'Bold',
+  '800': 'Bolder',
+  '900': 'Boldest'
+}
 
 export const QR_CODE_SRC_PLACEHOLDER = '/assets/images/qr_code_image_placeholder.png';
 
