@@ -7,6 +7,7 @@ import { OptionsTabComponent } from './options-tab/options-tab.component';
 import { OptionTextInputComponent } from './inputs/option-text-input/option-text-input.component';
 import { FontFamilyInputComponent } from './inputs/font-family-input/font-family-input.component';
 import { FontWeightInputComponent } from './inputs/font-weight-input/font-weight-input.component';
+import { FontSizeInputComponent } from './inputs/font-size-input/font-size-input.component';
 
 export const components = [
   InputComponent,
@@ -14,7 +15,8 @@ export const components = [
   OptionsTabComponent,
   OptionTextInputComponent,
   FontFamilyInputComponent,
-  FontWeightInputComponent
+  FontWeightInputComponent,
+  FontSizeInputComponent
 ]
 
 @NgModule({

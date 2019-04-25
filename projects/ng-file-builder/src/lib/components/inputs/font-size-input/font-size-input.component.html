@@ -1,0 +1,9 @@
+<div class="form-group" [formGroup]="parentForm">
+  <input type="number" 
+    class="form-control" 
+    [formControlName]="controlName" 
+    [name]="controlName" 
+    [id]="controlName" 
+    required />
+  <label [for]="controlName" class="form-control-label">{{ label }}</label>
+</div>

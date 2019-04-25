@@ -79,7 +79,13 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
       .filter(k => k !== 'innerText')
       .forEach(key => {
         const sub = this.typographyForm.get(key).valueChanges
-          .subscribe((change: any) => this._focusedElement.style[key] = change);
+          .subscribe((change: any) => {
+            if (key === 'fontSize') {
+              change += 'px';
+            }
+
+            this._focusedElement.style[key] = change;
+          });
         this._subs.push(sub);
       });
 
@@ -113,6 +119,10 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (property === 'fontWeight' && !this._focusedElement.style[property]) {
           return typographyControl.setValue(computedStyle.fontWeight);
+        }
+
+        if (property === 'fontSize') {
+          return typographyControl.setValue(computedStyle[property].replace(/[^0-9\.]+/g, ''));
         }
 
         return typographyControl.setValue(computedStyle[property]);
