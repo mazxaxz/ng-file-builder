@@ -13,7 +13,8 @@
 
     <div #section class="list-content" data-section="typography">
       <form [formGroup]="typographyForm">
-        <mzx-option-text-input [parentForm]="typographyForm" controlName="innerText" label="Inner Text"></mzx-option-text-input>
+        <mzx-option-text-input [parentForm]="typographyForm" controlName="innerText" label="Text"></mzx-option-text-input>
+        <mzx-font-family-input [parentForm]="typographyForm" controlName="fontFamily" label="Font"></mzx-font-family-input>
       </form>
     </div>
   </div>
@@ -32,8 +33,8 @@
     
     <div #section class="list-content" data-section="general">
       <form [formGroup]="generalForm">
-        <mzx-option-text-input [parentForm]="generalForm" controlName="background-image" label="Background image URL"></mzx-option-text-input>
-        <mzx-option-text-input [parentForm]="generalForm" controlName="background-color" label="Background color"></mzx-option-text-input>
+        <mzx-option-text-input [parentForm]="generalForm" controlName="backgroundImage" label="Background image URL"></mzx-option-text-input>
+        <mzx-option-text-input [parentForm]="generalForm" controlName="backgroundColor" label="Background color"></mzx-option-text-input>
         <mzx-option-text-input [parentForm]="generalForm" controlName="background" label="Background"></mzx-option-text-input>
       </form>
     </div>

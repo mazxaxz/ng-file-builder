@@ -2,6 +2,7 @@ import { Component, OnInit, Renderer2, OnDestroy, ViewChildren, QueryList, After
 import { NgFileBuilderService } from '../../ng-file-builder.service';
 import { Subscription } from 'rxjs';
 import { FormGroup, FormControl } from '@angular/forms';
+import { WEBSAFE_FONTS } from '../../ng-file-builder.constants';
 
 enum Sections {
   Typography = "typography",
@@ -33,6 +34,7 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
     this._focusedElement = this.fileBuilderService.focusedElement;
     this._initializeTypography();
     this._initializeGeneralForm();
+    this._initializeStyles();
     this._listenForFocusedElementChange();
   }
 
@@ -65,8 +67,24 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private _initializeTypography() {
     this.typographyForm = new FormGroup({
-      innerText: new FormControl(null)
+      innerText: new FormControl(null),
+      fontFamily: new FormControl(WEBSAFE_FONTS[0]),
+      fontSize: new FormControl(14),
+      fontWeight: new FormControl(400)
     });
+    const innerTextSub = this.typographyForm.get('innerText').valueChanges
+      .subscribe((change: string) => this._focusedElement.innerText = change);
+    
+    Object.keys(this.typographyForm.controls)
+      .filter(k => k !== 'innerText')
+      .forEach(key => {
+        const sub = this.typographyForm.get(key).valueChanges
+          .subscribe((change: any) => this._focusedElement.style[key] = change);
+        this._subs.push(sub);
+      });
+
+    this._subs.push(innerTextSub);
+
     this._updateTypography();
   }
 
@@ -76,24 +94,25 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private _initializeGeneralForm() {
     this.generalForm = new FormGroup({
-      'background-image': new FormControl(null),
-      'background-color': new FormControl(null),
-      'background': new FormControl(null)
+      backgroundImage: new FormControl(null),
+      backgroundColor: new FormControl(null),
+      background: new FormControl(null)
     });
-
-    this._initializeStyles();
   }
   
   private _initializeStyles() {
     Object.keys(this._focusedElement.style).forEach(property => {
-      const dashcase = property.split(/(?=[A-Z])/).join('-');
-
-      const typographyControl = this.typographyForm.get(dashcase);
+      const typographyControl = this.typographyForm.get(property);
       if (typographyControl) {
+        if (property === 'fontFamily' && !WEBSAFE_FONTS.includes(this._focusedElement.style[property])) {
+          this._focusedElement.style[property] = WEBSAFE_FONTS[0];
+          return typographyControl.setValue(WEBSAFE_FONTS[0]);
+        }
+
         return typographyControl.setValue(this._focusedElement.style[property]);
       }
 
-      const generalControl = this.generalForm.get(dashcase);
+      const generalControl = this.generalForm.get(property);
       if (generalControl) {
         return generalControl.setValue(this._focusedElement.style[property]);
       }

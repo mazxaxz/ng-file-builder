@@ -21,6 +21,9 @@ export const PAGE_SIZES = {
   }
 }
 
+export const WEBSAFE_FONTS = ['Arial', 'Arial Black', 'Georgia', 'Times New Roman',
+  'Comic Sans MS', 'Impact', 'Tahoma', 'Verdana', 'Courier New', 'Lucida Console'];
+
 export const QR_CODE_SRC_PLACEHOLDER = '/assets/images/qr_code_image_placeholder.png';
 
 export const DEFAULT_BLOCKS_HTML = {
