@@ -53,14 +53,14 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
       const sectionElement = this._sections[i].nativeElement;
       
       if (sectionElement.dataset.section === section) {
-        if (sectionElement.classList.contains('expanded')) {
-          this.renderer2.removeClass(sectionElement, 'expanded');
-          this.renderer2.removeClass(icon, 'expanded');
+        if (sectionElement.classList.contains(`expanded-${section}`)) {
+          this.renderer2.removeClass(sectionElement, `expanded-${section}`);
+          this.renderer2.removeClass(icon, `expanded-${section}`);
           return;
         }
 
-        this.renderer2.addClass(sectionElement, 'expanded');
-        this.renderer2.addClass(icon, 'expanded');
+        this.renderer2.addClass(sectionElement, `expanded-${section}`);
+        this.renderer2.addClass(icon, `expanded-${section}`);
       }
     }
   }

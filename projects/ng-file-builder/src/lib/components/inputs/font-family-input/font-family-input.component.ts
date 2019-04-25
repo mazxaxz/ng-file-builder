@@ -5,7 +5,10 @@ import { WEBSAFE_FONTS } from '../../../ng-file-builder.constants';
 @Component({
   selector: 'mzx-font-family-input',
   templateUrl: './font-family-input.component.html',
-  styleUrls: ['./font-family-input.component.scss']
+  styleUrls: [
+    '../option-text-input/option-text-input.component.scss',
+    './font-family-input.component.scss'
+  ]
 })
 export class FontFamilyInputComponent {
   @Input() parentForm: FormGroup;

@@ -12,6 +12,7 @@
         padding: 8px 12px;
         font-size: 13px;
         margin-bottom: 10px;
+        max-height: 33px;
 
         &:valid + .form-control-label,
         &:focus + .form-control-label {

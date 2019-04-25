@@ -1,0 +1,20 @@
+@import '../../../../assets/scss/variables.scss';
+
+.form-group {
+    .addon {
+        position: absolute;
+        z-index: 1;
+        background: lighten($dark, 2.5%);
+        padding: 8px 4px;
+        font-size: 13px;
+        border: 1px solid darken($dark, 2.5%);
+        right: 0;
+        color: $primary-gradient-one;
+    }
+
+    .form-control {
+        &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+        }
+    }
+}

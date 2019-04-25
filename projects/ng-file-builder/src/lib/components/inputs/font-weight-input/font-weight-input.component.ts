@@ -5,7 +5,10 @@ import { FONT_WEIGHTS } from '../../../ng-file-builder.constants';
 @Component({
   selector: 'mzx-font-weight-input',
   templateUrl: './font-weight-input.component.html',
-  styleUrls: ['./font-weight-input.component.scss']
+  styleUrls: [
+    '../option-text-input/option-text-input.component.scss',
+    './font-weight-input.component.scss'
+  ]
 })
 export class FontWeightInputComponent implements OnInit {
   @Input() parentForm: FormGroup;

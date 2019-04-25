@@ -4,7 +4,10 @@ import { FormGroup } from '@angular/forms';
 @Component({
   selector: 'mzx-font-size-input',
   templateUrl: './font-size-input.component.html',
-  styleUrls: ['./font-size-input.component.scss']
+  styleUrls: [
+    '../option-text-input/option-text-input.component.scss',
+    './font-size-input.component.scss'
+  ]
 })
 export class FontSizeInputComponent {
   @Input() parentForm: FormGroup;
