@@ -21,4 +21,8 @@ export class AppComponent {
     { label: 'Listed name', name: 'listedName', validators: [Validators.required, Validators.minLength(3)] },
     { label: 'Price', name: 'price', validators: [Validators.required] }
   ]
+
+  onSave(event) {
+    console.log(event);
+  }
 }

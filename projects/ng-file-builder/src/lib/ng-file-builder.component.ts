@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Renderer2, ViewChildren, QueryList, AfterViewInit, Input, ChangeDetectionStrategy, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, Renderer2, ViewChildren, QueryList, AfterViewInit, Input, ChangeDetectionStrategy, OnDestroy, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, FormArray, ValidatorFn } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { PageOrientation, PageSize, BuilderControl, DefaultBlocks, PageDensity } from './ng-file-builder.models';
@@ -39,6 +39,7 @@ export class NgFileBuilderComponent implements OnInit, OnDestroy, AfterViewInit 
   @Input() controls?: BuilderControl[] = [];
   @Input() density?: PageDensity = PageDensity.PPI_72;
   @Input() initialSize?: PageSize = PageSize.A5;
+  @Output() onSave: EventEmitter<any> = new EventEmitter<any>();
 
   private _canvas: any;
   private _currentMouseX: number;
@@ -191,6 +192,10 @@ export class NgFileBuilderComponent implements OnInit, OnDestroy, AfterViewInit 
 
   getDefaultBlocksAsArray() {
     return Object.keys(DEFAULT_BLOCKS_HTML).map(key => DEFAULT_BLOCKS_HTML[key]);
+  }
+
+  saveTemplate() {
+    this.onSave.emit("Save event");
   }
 
   private _initialize() {
