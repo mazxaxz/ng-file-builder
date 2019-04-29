@@ -30,4 +30,17 @@
             }
         }
     }
+
+    .input-wrapper {
+        .input-texture {
+            .texture-block {
+                width: 30px;
+                height: 30px;
+                margin-right: 4px;
+                display: inline-block;
+                background-size: contain;
+                cursor: pointer;
+            }
+        }
+    }
 }

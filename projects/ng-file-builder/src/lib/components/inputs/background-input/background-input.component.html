@@ -11,7 +11,7 @@
     </button>
   </div>
 
-  <form [formGroup]="parentForm">
+  <form [formGroup]="parentForm"><!--TODO: optimize-->
     <div class="input-wrapper" [ngSwitch]="currentType">
       <div class="input-color" *ngSwitchCase="BackgroundType.Color">
         <input type="color" formControlName="background" />
@@ -22,7 +22,7 @@
       </div>
   
       <div class="input-texture" *ngSwitchCase="BackgroundType.Texture">
-        texture
+        <div class="texture-block" *ngFor="let url of AVAILABLE_TEXTURES" [style.background]="'url(' + url + ')'"></div>
       </div>
     </div>
   </form>

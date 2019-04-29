@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, ViewChildren, QueryList, Renderer2, AfterViewInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { BackgroundType } from '../../../ng-file-builder.models';
+import { AVAILABLE_TEXTURES } from '../../../ng-file-builder.constants';
 
 @Component({
   selector: 'mzx-background-input',
@@ -13,6 +14,8 @@ export class BackgroundInputComponent implements OnInit, AfterViewInit {
 
   BackgroundType = BackgroundType;
   currentType = BackgroundType.Color;
+
+  AVAILABLE_TEXTURES = AVAILABLE_TEXTURES;
   
   constructor(private renderer2: Renderer2) { }
 

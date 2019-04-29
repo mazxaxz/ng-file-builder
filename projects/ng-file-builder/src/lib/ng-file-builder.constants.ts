@@ -36,6 +36,34 @@ export const FONT_WEIGHTS = {
   '900': 'Boldest'
 }
 
+export const AVAILABLE_TEXTURES = [
+  'http://cdn.backgroundhost.com/backgrounds/subtlepatterns/always_grey.png',
+  'http://cdn.backgroundhost.com/backgrounds/subtlepatterns/arches.png',
+  'http://cdn.backgroundhost.com/backgrounds/subtlepatterns/az_subtle.png',
+  'http://cdn.backgroundhost.com/backgrounds/subtlepatterns/black_thread.png',
+  'http://cdn.backgroundhost.com/backgrounds/subtlepatterns/black_mamba.png',
+  'http://cdn.backgroundhost.com/backgrounds/subtlepatterns/black_lozenge.png',
+  'http://cdn.backgroundhost.com/backgrounds/subtlepatterns/cartographer.png',
+  'http://cdn.backgroundhost.com/backgrounds/subtlepatterns/checkered_pattern.png',
+  'http://cdn.backgroundhost.com/backgrounds/subtlepatterns/climpek.png',
+  'http://cdn.backgroundhost.com/backgrounds/subtlepatterns/corrugation.png',
+  'http://cdn.backgroundhost.com/backgrounds/subtlepatterns/cubes.png',
+  'http://cdn.backgroundhost.com/backgrounds/subtlepatterns/crosses.png',
+  'http://cdn.backgroundhost.com/backgrounds/subtlepatterns/crissXcross.png',
+  'http://cdn.backgroundhost.com/backgrounds/subtlepatterns/diagonal_striped_brick.png',
+  'http://cdn.backgroundhost.com/backgrounds/subtlepatterns/diagmonds.png',
+  'http://cdn.backgroundhost.com/backgrounds/subtlepatterns/escheresque.png',
+  'http://cdn.backgroundhost.com/backgrounds/subtlepatterns/escheresque_ste.png',
+  'http://cdn.backgroundhost.com/backgrounds/subtlepatterns/flowers.png',
+  'http://cdn.backgroundhost.com/backgrounds/subtlepatterns/graphy.png',
+  'http://cdn.backgroundhost.com/backgrounds/subtlepatterns/polonez_car.png',
+  'http://cdn.backgroundhost.com/backgrounds/subtlepatterns/pyramid.png',
+  'http://cdn.backgroundhost.com/backgrounds/subtlepatterns/soft_circle_scales.png',
+  'http://cdn.backgroundhost.com/backgrounds/subtlepatterns/struckaxiom.png',
+  'http://cdn.backgroundhost.com/backgrounds/subtlepatterns/tasky_pattern.png',
+  'http://cdn.backgroundhost.com/backgrounds/subtlepatterns/woven.png'
+];
+
 export const QR_CODE_SRC_PLACEHOLDER = '/assets/images/qr_code_image_placeholder.png';
 
 export const DEFAULT_BLOCKS_HTML = {
