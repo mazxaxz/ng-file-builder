@@ -31,3 +31,9 @@ export enum DefaultBlocks {
     Paragraph = "paragraph",
     Image = "image"
 }
+
+export enum BackgroundType {
+    Color = "color",
+    Url = "url-image",
+    Texture = "texture"
+}

@@ -8,6 +8,7 @@ import { OptionTextInputComponent } from './inputs/option-text-input/option-text
 import { FontFamilyInputComponent } from './inputs/font-family-input/font-family-input.component';
 import { FontWeightInputComponent } from './inputs/font-weight-input/font-weight-input.component';
 import { FontSizeInputComponent } from './inputs/font-size-input/font-size-input.component';
+import { BackgroundInputComponent } from './inputs/background-input/background-input.component';
 
 export const components = [
   InputComponent,
@@ -25,7 +26,8 @@ export const components = [
     ReactiveFormsModule
   ],
   declarations: [
-    ...components
+    ...components,
+    BackgroundInputComponent
   ],
   exports: [
     ReactiveFormsModule,

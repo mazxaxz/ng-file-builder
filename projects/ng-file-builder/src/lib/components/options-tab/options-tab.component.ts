@@ -3,6 +3,7 @@ import { NgFileBuilderService } from '../../ng-file-builder.service';
 import { Subscription } from 'rxjs';
 import { FormGroup, FormControl } from '@angular/forms';
 import { WEBSAFE_FONTS } from '../../ng-file-builder.constants';
+import { BackgroundType } from '../../ng-file-builder.models';
 
 enum Sections {
   Typography = "typography",
@@ -100,8 +101,7 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private _initializeGeneralForm() {
     this.generalForm = new FormGroup({
-      backgroundImage: new FormControl(null),
-      backgroundColor: new FormControl(null),
+      backgroundType: new FormControl(BackgroundType.Color),
       background: new FormControl(null)
     });
   }
@@ -130,7 +130,27 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
 
       const generalControl = this.generalForm.get(property);
       if (generalControl) {
-        return generalControl.setValue(this._focusedElement.style[property]);
+        const propertyValue = computedStyle[property];
+
+        if (property.includes('background')) {
+          const bgTypeAbstractControl = this.generalForm.get('backgroundType');
+
+          if (/^(rgb|#)/i.test(propertyValue)) {
+            bgTypeAbstractControl.setValue(BackgroundType.Color);
+          }
+
+          if (property.startsWith('url(')) {
+            if (computedStyle.backgroundRepeat === 'repeat') {
+              bgTypeAbstractControl.setValue(BackgroundType.Texture);
+            } else {
+              bgTypeAbstractControl.setValue(BackgroundType.Url);
+            }
+
+            return generalControl.setValue(propertyValue.slice(4, -2));
+          }
+        }
+
+        return generalControl.setValue(propertyValue);
       }
     });
   }

@@ -1,0 +1,33 @@
+@import '../../../../assets/scss/variables.scss';
+
+.container {
+    .bg-type-wrapper {
+        display: flex;
+
+        .toggle-button {
+            font-size: 12px;
+            outline: none;
+            border: 1px solid $primary-gradient-one;
+            background: transparent;
+            color: $light;
+            padding: 6px 5px;
+            flex: 1;
+            cursor: pointer;
+            will-change: background;
+            transition: .2s background ease-in-out;
+
+            &.color {
+                border-radius: 3px 0 0 3px;
+            }
+
+            &.texture {
+                border-radius: 0 3px 3px 0;
+            }
+
+            &.active {
+                background: $primary-gradient-one;
+                color: $dark;
+            }
+        }
+    }
+}
