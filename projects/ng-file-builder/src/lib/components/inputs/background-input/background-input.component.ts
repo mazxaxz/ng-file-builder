@@ -12,16 +12,16 @@ export class BackgroundInputComponent implements OnInit, AfterViewInit {
   @ViewChildren('toggleButton') toggleButtons: QueryList<any>;
 
   BackgroundType = BackgroundType;
+  currentType = BackgroundType.Color;
   
   constructor(private renderer2: Renderer2) { }
 
   ngOnInit() {
-
+    this.currentType = this.parentForm.get('backgroundType').value as BackgroundType;
   }
 
   ngAfterViewInit() {
-    const type = this.parentForm.get('backgroundType').value as BackgroundType;
-    this._updateTogglers(type);
+    this._updateTogglers(this.currentType);
   }
 
   setBackgroundType(type: BackgroundType) {
@@ -29,6 +29,7 @@ export class BackgroundInputComponent implements OnInit, AfterViewInit {
     if (abstractControl.value === type) return;
 
     abstractControl.setValue(type);
+    this.currentType = type;
     this._updateTogglers(type);
   }
 

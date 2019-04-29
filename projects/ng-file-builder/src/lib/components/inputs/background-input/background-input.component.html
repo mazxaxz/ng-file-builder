@@ -11,7 +11,19 @@
     </button>
   </div>
 
-  <div class="input-wrapper">
-
-  </div>
+  <form [formGroup]="parentForm">
+    <div class="input-wrapper" [ngSwitch]="currentType">
+      <div class="input-color" *ngSwitchCase="BackgroundType.Color">
+        <input type="color" formControlName="background" />
+      </div>
+  
+      <div class="input-url-image" *ngSwitchCase="BackgroundType.Url">
+        <input type="text" formControlName="background" />
+      </div>
+  
+      <div class="input-texture" *ngSwitchCase="BackgroundType.Texture">
+        texture
+      </div>
+    </div>
+  </form>
 </div>

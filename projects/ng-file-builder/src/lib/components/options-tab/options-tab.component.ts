@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { FormGroup, FormControl } from '@angular/forms';
 import { WEBSAFE_FONTS } from '../../ng-file-builder.constants';
 import { BackgroundType } from '../../ng-file-builder.models';
+import { fullRgbToHex, rgbStringToArray } from '../../helpers/ColorHelpers';
 
 enum Sections {
   Typography = "typography",
@@ -137,6 +138,11 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
 
           if (/^(rgb|#)/i.test(propertyValue)) {
             bgTypeAbstractControl.setValue(BackgroundType.Color);
+            if (propertyValue.startsWith('#')) {
+              return this.generalForm.setValue(propertyValue.substr(0, 7));
+            }
+            const colorArray = rgbStringToArray(propertyValue);
+            return generalControl.setValue(fullRgbToHex(colorArray[0], colorArray[1], colorArray[2]));
           }
 
           if (property.startsWith('url(')) {
@@ -146,7 +152,7 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
               bgTypeAbstractControl.setValue(BackgroundType.Url);
             }
 
-            return generalControl.setValue(propertyValue.slice(4, -2));
+            return generalControl.setValue(propertyValue.substring(4, propertyValue.indexOf(')') - 1));
           }
         }
 
