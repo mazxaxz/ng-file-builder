@@ -105,6 +105,29 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
       backgroundType: new FormControl(BackgroundType.Color),
       background: new FormControl(null)
     });
+
+    const bgTypeSub = this.generalForm.get('backgroundType').valueChanges
+      .subscribe((type: BackgroundType) => {
+        let repeat = 'no-repeat';
+        if (type === BackgroundType.Texture) {
+          repeat = 'repeat';
+        }
+
+        this.renderer2.setStyle(this.fileBuilderService.focusedElement, 'background-repeat', repeat);
+      });
+
+    const bgChangedSub = this.generalForm.get('background').valueChanges
+      .subscribe((value: string) => {
+        const type = this.generalForm.get('backgroundType').value as BackgroundType;
+        let bgValue = value;
+        if (type === BackgroundType.Url || type === BackgroundType.Texture) {
+          bgValue = `url('${value}')`;
+        }
+
+        this.renderer2.setStyle(this.fileBuilderService.focusedElement, 'background', bgValue);
+      });
+
+    this._subs.push(bgTypeSub, bgChangedSub);
   }
   
   private _initializeStyles() {
@@ -135,8 +158,7 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (property.includes('background')) {
           const bgTypeAbstractControl = this.generalForm.get('backgroundType');
-
-          if (/^(rgb|#)/i.test(propertyValue)) {
+          if (/^(rgb|#)/i.test(propertyValue) && !propertyValue.includes('url(')) {
             bgTypeAbstractControl.setValue(BackgroundType.Color);
             if (propertyValue.startsWith('#')) {
               return this.generalForm.setValue(propertyValue.substr(0, 7));
@@ -145,15 +167,15 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
             return generalControl.setValue(fullRgbToHex(colorArray[0], colorArray[1], colorArray[2]));
           }
 
-          if (property.startsWith('url(')) {
-            if (computedStyle.backgroundRepeat === 'repeat') {
-              bgTypeAbstractControl.setValue(BackgroundType.Texture);
-            } else {
-              bgTypeAbstractControl.setValue(BackgroundType.Url);
-            }
-
-            return generalControl.setValue(propertyValue.substring(4, propertyValue.indexOf(')') - 1));
+          if (computedStyle.backgroundRepeat === 'repeat') {
+            bgTypeAbstractControl.setValue(BackgroundType.Texture);
+          } else {
+            bgTypeAbstractControl.setValue(BackgroundType.Url);
           }
+
+          let url = propertyValue.substring(propertyValue.indexOf('url("') + 5);
+          url = url.substring(0, url.indexOf('")'));
+          return generalControl.setValue(url);
         }
 
         return generalControl.setValue(propertyValue);

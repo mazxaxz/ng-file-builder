@@ -11,18 +11,22 @@
     </button>
   </div>
 
-  <form [formGroup]="parentForm"><!--TODO: optimize-->
-    <div class="input-wrapper" [ngSwitch]="currentType">
-      <div class="input-color" *ngSwitchCase="BackgroundType.Color">
+  <form [formGroup]="parentForm">
+    <div class="input-wrapper">
+      <div class="input-base input-color" #backgroundTypeOptions>
         <input type="color" formControlName="background" />
       </div>
   
-      <div class="input-url-image" *ngSwitchCase="BackgroundType.Url">
+      <div class="input-base input-url-image" #backgroundTypeOptions>
         <input type="text" formControlName="background" />
       </div>
   
-      <div class="input-texture" *ngSwitchCase="BackgroundType.Texture">
-        <div class="texture-block" *ngFor="let url of AVAILABLE_TEXTURES" [style.background]="'url(' + url + ')'"></div>
+      <div class="input-base input-texture" #backgroundTypeOptions>
+        <div #textureBlock
+          *ngFor="let url of AVAILABLE_TEXTURES"
+          class="texture-block" 
+          [style.background]="'url(' + url + ')'"
+          (click)="chooseTexture(url)"></div>
       </div>
     </div>
   </form>

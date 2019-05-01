@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ViewChildren, QueryList, Renderer2, AfterView
 import { FormGroup } from '@angular/forms';
 import { BackgroundType } from '../../../ng-file-builder.models';
 import { AVAILABLE_TEXTURES } from '../../../ng-file-builder.constants';
+import { text } from '@angular/core/src/render3/instructions';
 
 @Component({
   selector: 'mzx-background-input',
@@ -11,6 +12,8 @@ import { AVAILABLE_TEXTURES } from '../../../ng-file-builder.constants';
 export class BackgroundInputComponent implements OnInit, AfterViewInit {
   @Input() parentForm: FormGroup;
   @ViewChildren('toggleButton') toggleButtons: QueryList<any>;
+  @ViewChildren('textureBlock') textureBlocks: QueryList<any>;
+  @ViewChildren('backgroundTypeOptions') backgroundTypeOptions: QueryList<any>;
 
   BackgroundType = BackgroundType;
   currentType = BackgroundType.Color;
@@ -24,7 +27,11 @@ export class BackgroundInputComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this._updateTogglers(this.currentType);
+    this._updateBgTypeView(this.currentType);
+
+    if (this.currentType === BackgroundType.Texture) {
+      this._updateTextures(this.parentForm.get('background').value);
+    }
   }
 
   setBackgroundType(type: BackgroundType) {
@@ -33,10 +40,18 @@ export class BackgroundInputComponent implements OnInit, AfterViewInit {
 
     abstractControl.setValue(type);
     this.currentType = type;
-    this._updateTogglers(type);
+    this._updateBgTypeView(type);
   }
 
-  private _updateTogglers(type: BackgroundType) {
+  chooseTexture(url: string) {
+    const abstractControl = this.parentForm.get('background');
+    if (abstractControl.value === url) return;
+
+    abstractControl.setValue(url);
+    this._updateTextures(url);
+  }
+
+  private _updateBgTypeView(type: BackgroundType) {
     this.toggleButtons.forEach(toggler => {
       const button = toggler.nativeElement;
       if (button.classList.contains('active')) {
@@ -47,6 +62,29 @@ export class BackgroundInputComponent implements OnInit, AfterViewInit {
         this.renderer2.addClass(button, 'active');
       }
     });
+
+    this.backgroundTypeOptions.forEach(container => {
+      const element = container.nativeElement;
+      if (element.classList.contains('active')) {
+        this.renderer2.removeClass(element, 'active');
+      }
+
+      if (element.classList.contains(`input-${type}`)) {
+        this.renderer2.addClass(element, 'active');
+      }
+    })
   }
 
+  private _updateTextures(url: string) {
+    this.textureBlocks.forEach(block => {
+      const texture = block.nativeElement;
+      if (texture.classList.contains('chosen')) {
+        this.renderer2.removeClass(texture, 'chosen');
+      }
+
+      if (texture.style.background.includes(url)) {
+        this.renderer2.addClass(texture, 'chosen');
+      }
+    })
+  }
 }
