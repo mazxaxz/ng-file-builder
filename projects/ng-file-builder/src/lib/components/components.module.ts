@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { InputComponent } from './inputs/input/input.component';
 import { LayerItemsComponent } from './layer-items/layer-items.component';
 import { OptionsTabComponent } from './options-tab/options-tab.component';
@@ -9,6 +9,7 @@ import { FontFamilyInputComponent } from './inputs/font-family-input/font-family
 import { FontWeightInputComponent } from './inputs/font-weight-input/font-weight-input.component';
 import { FontSizeInputComponent } from './inputs/font-size-input/font-size-input.component';
 import { BackgroundInputComponent } from './inputs/background-input/background-input.component';
+import { ColorpickerInputComponent } from './inputs/colorpicker-input/colorpicker-input.component';
 
 export const components = [
   InputComponent,
@@ -17,20 +18,23 @@ export const components = [
   OptionTextInputComponent,
   FontFamilyInputComponent,
   FontWeightInputComponent,
-  FontSizeInputComponent
+  FontSizeInputComponent,
+  BackgroundInputComponent,
+  ColorpickerInputComponent
 ]
 
 @NgModule({
   imports: [
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ],
   declarations: [
-    ...components,
-    BackgroundInputComponent
+    ...components
   ],
   exports: [
     ReactiveFormsModule,
+    FormsModule,
     ...components
   ]
 })

@@ -1,0 +1,12 @@
+<div class="container">
+  <input type="text" class="color-picker-value" 
+    [(ngModel)]="currentColor" 
+    (keyup)="colorChange()"
+    name="currentColor" />
+
+  <form [formGroup]="parentForm" class="form-group">
+    <label class="color-picker-preview" [for]="controlName" [style.background]="currentColor">
+      <input type="color" class="color-picker-input" [formControlName]="controlName" [id]="controlName" />
+    </label>
+  </form>
+</div>

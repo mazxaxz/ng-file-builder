@@ -14,7 +14,7 @@
   <form [formGroup]="parentForm">
     <div class="input-wrapper">
       <div class="input-base input-color" #backgroundTypeOptions>
-        <input type="color" formControlName="background" />
+        <mzx-colorpicker-input [parentForm]="parentForm" controlName="background"></mzx-colorpicker-input>
       </div>
   
       <div class="input-base input-url-image" #backgroundTypeOptions>
