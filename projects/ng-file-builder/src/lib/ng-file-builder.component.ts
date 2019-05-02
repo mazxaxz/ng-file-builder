@@ -2,8 +2,10 @@ import { Component, OnInit, ViewChild, Renderer2, ViewChildren, QueryList, After
 import { FormGroup, FormControl, FormBuilder, FormArray, ValidatorFn } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { PageOrientation, PageSize, BuilderControl, DefaultBlocks, PageDensity } from './ng-file-builder.models';
-import { NgFileBuilderService } from './ng-file-builder.service';
+import { NgFileBuilderService } from './services/ng-file-builder.service';
 import { DEFAULT_BLOCKS_HTML, PAGE_SIZES } from './ng-file-builder.constants';
+import { ModalService } from './services/modal.service';
+import { InfoBoxComponent } from './components/modals/info-box/info-box.component';
 
 enum ArrowAction {
   Up = "ArrowUp",
@@ -69,6 +71,7 @@ export class NgFileBuilderComponent implements OnInit, OnDestroy, AfterViewInit 
 
   constructor(
     private fileBuilderService: NgFileBuilderService,
+    private modalService: ModalService,
     private renderer2: Renderer2,
     private formBuilder: FormBuilder,
     private ref: ChangeDetectorRef) {
@@ -196,6 +199,10 @@ export class NgFileBuilderComponent implements OnInit, OnDestroy, AfterViewInit 
 
   saveTemplate() {
     this.onSave.emit("Save event");
+  }
+
+  showInfo() {
+    this.modalService.open(InfoBoxComponent);
   }
 
   private _initialize() {

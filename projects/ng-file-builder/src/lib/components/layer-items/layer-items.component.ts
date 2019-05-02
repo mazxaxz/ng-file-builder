@@ -1,5 +1,5 @@
 import { Component, Renderer2 } from '@angular/core';
-import { NgFileBuilderService } from '../../ng-file-builder.service';
+import { NgFileBuilderService } from '../../services/ng-file-builder.service';
 
 @Component({
   selector: 'mzx-layer-items',

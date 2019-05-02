@@ -10,6 +10,8 @@ import { FontWeightInputComponent } from './inputs/font-weight-input/font-weight
 import { FontSizeInputComponent } from './inputs/font-size-input/font-size-input.component';
 import { BackgroundInputComponent } from './inputs/background-input/background-input.component';
 import { ColorpickerInputComponent } from './inputs/colorpicker-input/colorpicker-input.component';
+import { ModalSetupComponent } from './modal-setup/modal-setup.component';
+import { InfoBoxComponent } from './modals/info-box/info-box.component';
 
 export const components = [
   InputComponent,
@@ -20,7 +22,9 @@ export const components = [
   FontWeightInputComponent,
   FontSizeInputComponent,
   BackgroundInputComponent,
-  ColorpickerInputComponent
+  ColorpickerInputComponent,
+  ModalSetupComponent,
+  InfoBoxComponent
 ]
 
 @NgModule({
@@ -36,6 +40,9 @@ export const components = [
     ReactiveFormsModule,
     FormsModule,
     ...components
+  ],
+  entryComponents: [
+    InfoBoxComponent
   ]
 })
 export class ComponentsModule { }

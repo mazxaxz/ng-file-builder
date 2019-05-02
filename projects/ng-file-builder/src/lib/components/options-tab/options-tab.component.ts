@@ -1,5 +1,5 @@
 import { Component, OnInit, Renderer2, OnDestroy, ViewChildren, QueryList, AfterViewInit, ChangeDetectorRef } from '@angular/core';
-import { NgFileBuilderService } from '../../ng-file-builder.service';
+import { NgFileBuilderService } from '../../services/ng-file-builder.service';
 import { Subscription } from 'rxjs';
 import { FormGroup, FormControl } from '@angular/forms';
 import { WEBSAFE_FONTS } from '../../ng-file-builder.constants';
