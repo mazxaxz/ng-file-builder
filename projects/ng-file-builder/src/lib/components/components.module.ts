@@ -12,6 +12,7 @@ import { BackgroundInputComponent } from './inputs/background-input/background-i
 import { ColorpickerInputComponent } from './inputs/colorpicker-input/colorpicker-input.component';
 import { ModalSetupComponent } from './modal-setup/modal-setup.component';
 import { InfoBoxComponent } from './modals/info-box/info-box.component';
+import { ModalBoxHeaderComponent } from './modal-box-header/modal-box-header.component';
 
 export const components = [
   InputComponent,
@@ -24,6 +25,7 @@ export const components = [
   BackgroundInputComponent,
   ColorpickerInputComponent,
   ModalSetupComponent,
+  ModalBoxHeaderComponent,
   InfoBoxComponent
 ]
 

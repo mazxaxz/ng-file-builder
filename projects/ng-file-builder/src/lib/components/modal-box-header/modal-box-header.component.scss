@@ -1,0 +1,51 @@
+@import '../../../assets/scss/variables.scss';
+
+.container {
+    margin-top: -16px;
+    margin-bottom: 16px;
+    margin-left: -24px;
+    width: calc(100% + 48px);
+    border-bottom: 1px solid $dark;
+    position: relative;
+
+    .text {
+        font-family: Arial;
+        font-size: 18px;
+        font-weight: 400;
+        padding-left: 12px;
+        padding-bottom: 8px;
+    }
+
+    .button-wrapper {
+        position: absolute;
+        top: 0;
+        right: 7px;
+
+        .close-button {
+            position: relative;
+            width: 16px;
+            height: 16px;
+            background: none;
+            border: none;
+            outline: none;
+            cursor: pointer;
+    
+            &::before, &::after {
+                content: ' ';
+                display: block;
+                position: absolute;
+                width: 100%;
+                height: 2px;
+                background: $light;
+            }
+
+            &::before {
+                transform: rotate(45deg);
+            }
+
+            &::after {
+                transform: rotate(-45deg);
+            }
+        }
+    }
+}
