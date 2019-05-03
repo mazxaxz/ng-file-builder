@@ -12,13 +12,13 @@ export class ModalService {
 
   open(component: any) {
     this.domService.appendComponentTo(this.modalElementId, component);
-    document.getElementById(this.modalElementId).className = 'show';
-    document.getElementById(this.overlayElementId).className = 'show';
+    document.getElementById(this.overlayElementId).classList.add('opened');
+    document.getElementById(this.modalElementId).classList.add('opened');
   }
 
   close() {
     this.domService.removeComponent();
-    document.getElementById(this.modalElementId).className = 'hidden';
-    document.getElementById(this.overlayElementId).className = 'hidden';
+    document.getElementById(this.modalElementId).classList.remove('opened');
+    document.getElementById(this.overlayElementId).classList.remove('opened');
   }
 }

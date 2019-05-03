@@ -13,4 +13,8 @@ export class ModalSetupComponent {
   removeModal() {
     this.modalService.close();
   }
+
+  preventClose(e) {
+    e.stopPropagation();
+  }
 }

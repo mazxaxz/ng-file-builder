@@ -1,2 +1,8 @@
-<div id="mzx-modal-container" class="hidden"></div>
-<div id="mzx-overlay" (click)="removeModal()" class="hidden"></div>
+<div id="mzx-overlay" (click)="removeModal()" class="mzx-overlay">
+  <div class="mzx-modal-wrapper">
+    <div id="mzx-modal-container" (click)="preventClose($event)" class="mzx-modal-container"></div>
+  </div>
+</div>
+
+<!-- <div id="mzx-modal-container" class="hidden"></div>
+<div id="mzx-overlay" (click)="removeModal()" class="hidden"></div> -->

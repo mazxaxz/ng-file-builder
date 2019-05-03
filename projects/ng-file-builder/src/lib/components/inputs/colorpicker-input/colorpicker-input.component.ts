@@ -31,7 +31,6 @@ export class ColorpickerInputComponent implements OnInit, OnDestroy {
   }
 
   colorChange() {
-    console.log(this.currentColor);
     this.parentForm.get(this.controlName).setValue(this.currentColor);
     this.ref.detectChanges();
   }
