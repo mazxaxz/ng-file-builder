@@ -1,0 +1,124 @@
+@import '../../../../assets/scss/variables.scss';
+
+.container {
+    font-family: Arial, Helvetica, sans-serif;
+
+    .section {
+        margin-top: 5px;
+
+        .section-list {
+            list-style-type: none;
+
+            .section-list-item {
+                margin-bottom: 5px;
+
+                .key-symbols {
+                    display: inline-block;
+                    color: $primary-gradient-one;
+
+                    .key {
+                        display: inline-block;
+                        border: 1px solid $primary-gradient-one;
+                        border-radius: 2px;
+                        margin-right: 5px;
+                        padding: 0 3px;
+                        font-weight: 400;
+                        min-width: 20px;
+                        text-align: center;
+                    }
+
+                    .plus-key {
+                        display: inline-block;
+                        padding: 0 3px;
+                        min-width: 20px;
+                        text-align: center;
+                        color: $light;
+                        margin-left: -5px;
+                    }
+
+                    .arrow {
+                        border: solid $primary-gradient-one;
+                        border-width: 0 3px 3px 0;
+                        display: inline-block;
+                        padding: 3px;
+                        margin-right: 8px;
+
+                        &.up {
+                            transform: translateY(2px) rotate(-135deg);
+                            -webkit-transform: translateY(2px) rotate(-135deg);
+                        }
+
+                        &.down {
+                            transform: translateY(-2px) rotate(45deg);
+                            -webkit-transform: translateY(-2px) rotate(45deg);
+                        }
+
+                        &.left {
+                            transform: translateY(-1px) rotate(135deg);
+                            -webkit-transform: translateY(-1px) rotate(135deg);
+                        }
+
+                        &.right {
+                            transform: translateY(-1px) rotate(-45deg);
+                            -webkit-transform: translateY(-1px) rotate(-45deg);
+                        }
+                    }
+                }
+
+                .meaning {
+                    display: inline-block;
+                    position: relative;
+                    margin-left: 14px;
+                    font-weight: 400;
+
+                    &::before {
+                        content: ' ';
+                        display: block;
+                        width: 7px;
+                        height: 2px;
+                        background: $light;
+                        top: calc(50% - 1px);
+                        position: absolute;
+                        left: -13px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.credits-footer {
+    margin-bottom: -24px;
+    margin-top: 24px;
+    margin-left: -24px;
+    width: calc(100% + 48px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 8px;
+    cursor: pointer;
+
+    &:hover {
+        .author {
+            opacity: 1;
+        }
+    }
+
+    .github-icon {
+        display: block;
+        background-image: url('https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/github.svg');
+        background-repeat: no-repeat;
+        width: 16px;
+        height: 16px;
+    }
+
+    .author {
+        font-family: Arial;
+        font-size: 12px;
+        margin-left: 4px;
+        opacity: 0.8;
+        will-change: opacity;
+        transition: .3s opacity ease-in-out;
+    }
+
+}

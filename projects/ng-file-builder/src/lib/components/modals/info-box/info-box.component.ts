@@ -12,4 +12,8 @@ export class InfoBoxComponent implements OnInit {
   ngOnInit() {
   }
 
+  navigateToRepository() {
+    window.open('https://github.com/mazxaxz/ng-file-builder', '_blank');
+  }
+
 }
