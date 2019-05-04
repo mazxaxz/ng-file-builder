@@ -164,6 +164,8 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
               return this.generalForm.setValue(propertyValue.substr(0, 7));
             }
             const colorArray = rgbStringToArray(propertyValue);
+            if (colorArray[3] === 0) return;
+            
             return generalControl.setValue(fullRgbToHex(colorArray[0], colorArray[1], colorArray[2]));
           }
 

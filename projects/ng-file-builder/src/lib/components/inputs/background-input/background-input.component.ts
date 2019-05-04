@@ -2,7 +2,6 @@ import { Component, OnInit, Input, ViewChildren, QueryList, Renderer2, AfterView
 import { FormGroup } from '@angular/forms';
 import { BackgroundType } from '../../../ng-file-builder.models';
 import { AVAILABLE_TEXTURES } from '../../../ng-file-builder.constants';
-import { text } from '@angular/core/src/render3/instructions';
 
 @Component({
   selector: 'mzx-background-input',

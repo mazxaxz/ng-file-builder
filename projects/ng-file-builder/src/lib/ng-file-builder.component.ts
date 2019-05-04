@@ -6,13 +6,7 @@ import { NgFileBuilderService } from './services/ng-file-builder.service';
 import { DEFAULT_BLOCKS_HTML, PAGE_SIZES } from './ng-file-builder.constants';
 import { ModalService } from './services/modal.service';
 import { InfoBoxComponent } from './components/modals/info-box/info-box.component';
-
-enum ArrowAction {
-  Up = "ArrowUp",
-  Left = "ArrowLeft",
-  Right = "ArrowRight",
-  Down = "ArrowDown"
-}
+import { ConvertPixelsToNumber } from './helpers/UnitHelper';
 
 interface NavigationTab {
   icon: string;
@@ -46,14 +40,14 @@ export class NgFileBuilderComponent implements OnInit, OnDestroy, AfterViewInit 
   private _canvas: any;
   private _currentMouseX: number;
   private _currentMouseY: number;
-
   private _currentDrag = { x: 0, y: 0 };
 
   private _resizeBindingFnc: any;
   private _dragBindingFnc: any;
   private _rotateBindingFnc: any;
-  private _arrowMvmntFnc: any;
+  private _onKeyPressFnc: any;
 
+  navigationTabs: NavigationTab[];
   navigationForm: FormGroup;
   coreForm: FormGroup;
   coreFormFields: FormArray;
@@ -66,8 +60,6 @@ export class NgFileBuilderComponent implements OnInit, OnDestroy, AfterViewInit 
   PageOrientation = PageOrientation;
   Tabs = Tabs;
   DefaultBlocks = DefaultBlocks;
-
-  navigationTabs: NavigationTab[];
 
   constructor(
     private fileBuilderService: NgFileBuilderService,
@@ -96,7 +88,7 @@ export class NgFileBuilderComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   ngOnDestroy() {
-    window.removeEventListener('keydown', this._arrowMvmntFnc);
+    window.removeEventListener('keydown', this._onKeyPressFnc);
     this._subs.forEach(sub => sub.unsubscribe());
     this._listeners.forEach(fn => fn());
   }
@@ -175,10 +167,10 @@ export class NgFileBuilderComponent implements OnInit, OnDestroy, AfterViewInit 
       element.innerText = selected.initialText;
     }
     
-    const height = element.style.height.replace('px', '') << 0;
-    const width = element.style.width.replace('px', '') << 0;
-    const parentHeight = this._canvas.style.height.replace('px', '') << 0;
-    const parentWidth = this._canvas.style.width.replace('px', '') << 0;
+    const height = ConvertPixelsToNumber(element.style.height);
+    const width = ConvertPixelsToNumber(element.style.width);
+    const parentHeight = ConvertPixelsToNumber(this._canvas.style.height);
+    const parentWidth = ConvertPixelsToNumber(this._canvas.style.width);
 
     this.renderer2.setStyle(element, 'position', 'absolute');
     this.renderer2.setStyle(element, 'top', `${(parentHeight / 2) - (height / 2)}px`);
@@ -213,8 +205,12 @@ export class NgFileBuilderComponent implements OnInit, OnDestroy, AfterViewInit 
     this.renderer2.setStyle(this._canvas, 'height', `${PAGE_SIZES[this.density][this.currentSize].height}px`);
     this.renderer2.setStyle(this._canvas, 'overflow', 'hidden');
     
-    this._arrowMvmntFnc = this._handleArrowMovement.bind(this);
-    window.addEventListener('keydown', this._arrowMvmntFnc);
+    this._onKeyPressFnc = this._handleKeyPress.bind(this);
+    window.addEventListener('keydown', this._onKeyPressFnc);
+  }
+
+  private _handleKeyPress(e) {
+    this.fileBuilderService.handleKeyPress(e);
   }
 
   private _addListeners(element) {
@@ -232,8 +228,8 @@ export class NgFileBuilderComponent implements OnInit, OnDestroy, AfterViewInit 
 
     const move = this.renderer2.listen(this._canvas, 'mousemove', (e) => {
       const computed = window.getComputedStyle(element);
-      const height = +computed.getPropertyValue('height').replace('px', '');
-      const width = +computed.getPropertyValue('width').replace('px', '');
+      const height = ConvertPixelsToNumber(computed.getPropertyValue('height'));
+      const width = ConvertPixelsToNumber(computed.getPropertyValue('width'));
       const borderSize = 10 / PAGE_SIZES[this.density][this.currentSize].scale;
 
       if (e.offsetY > (height - borderSize) && e.offsetY < (height + borderSize) &&
@@ -261,8 +257,8 @@ export class NgFileBuilderComponent implements OnInit, OnDestroy, AfterViewInit 
       this.renderer2.setStyle(element, 'outline', '3px solid rgba(149,177,225,1)');
 
       const computed = window.getComputedStyle(element);
-      const height = +computed.getPropertyValue('height').replace('px', '');
-      const width = +computed.getPropertyValue('width').replace('px', '');
+      const height = ConvertPixelsToNumber(computed.getPropertyValue('height'));
+      const width = ConvertPixelsToNumber(computed.getPropertyValue('width'));
       const borderSize = 10 / PAGE_SIZES[this.density][this.currentSize].scale;
 
       this._currentMouseY = e.y;
@@ -293,8 +289,8 @@ export class NgFileBuilderComponent implements OnInit, OnDestroy, AfterViewInit 
       if (this._currentDrag.x !== 0 || this._currentDrag.y !== 0) {
         const focused = this.fileBuilderService.focusedElement;
         const computed = window.getComputedStyle(focused);
-        const y = +computed.getPropertyValue('top').replace('px', '');
-        const x = +computed.getPropertyValue('left').replace('px', '');
+        const y = ConvertPixelsToNumber(computed.getPropertyValue('top'));
+        const x = ConvertPixelsToNumber(computed.getPropertyValue('left'));
         const rotation = focused.dataset.rotation ? `rotate(${focused.dataset.rotation})` : '';
 
         this.renderer2.setStyle(focused, 'top', `${y + this._currentDrag.y}px`);
@@ -311,8 +307,8 @@ export class NgFileBuilderComponent implements OnInit, OnDestroy, AfterViewInit 
     const computed = window.getComputedStyle(focused);
     const dy = (this._currentMouseY - event.y) / PAGE_SIZES[this.density][this.currentSize].scale;
     const dx = (this._currentMouseX - event.x) / PAGE_SIZES[this.density][this.currentSize].scale;
-    const height = +computed.getPropertyValue('height').replace('px', '');
-    const width = +computed.getPropertyValue('width').replace('px', '');
+    const height = ConvertPixelsToNumber(computed.getPropertyValue('height'));
+    const width = ConvertPixelsToNumber(computed.getPropertyValue('width'));
 
     this._currentMouseY = event.y;
     this._currentMouseX = event.x;
@@ -415,29 +411,4 @@ export class NgFileBuilderComponent implements OnInit, OnDestroy, AfterViewInit 
     group.addControl(name, new FormControl('', validators));
     return group;
   }
-
-  private _handleArrowMovement(e) {
-    const focused = this.fileBuilderService.focusedElement;
-    if (!focused) return;
-      
-    const currentY = focused.style.top.replace('px', '') << 0;
-    const currentX = focused.style.left.replace('px', '') << 0;
-
-    if (e.code === ArrowAction.Up) {
-      return focused.style.top = `${currentY - 1}px`;
-    }
-
-    if (e.code === ArrowAction.Down) {
-      return focused.style.top = `${currentY + 1}px`;
-    }
-
-    if (e.code === ArrowAction.Left) {
-      return focused.style.left = `${currentX - 1}px`;
-    }
-
-    if (e.code === ArrowAction.Right) {
-      return focused.style.left = `${currentX + 1}px`;
-    }
-  }
-
 }
