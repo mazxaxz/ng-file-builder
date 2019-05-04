@@ -85,6 +85,7 @@ export class NgFileBuilderComponent implements OnInit, OnDestroy, AfterViewInit 
     this._initializeCoreForm();
     this._initializeHighlight();
     this._initializeFocus();
+    this._initializeDelete();
   }
 
   ngOnDestroy() {
@@ -325,8 +326,7 @@ export class NgFileBuilderComponent implements OnInit, OnDestroy, AfterViewInit 
     const radians = Math.atan2(dx - this._currentMouseX, dy - this._currentMouseY);
     const degree = (((radians * (180 / Math.PI) * -1) - 120) * 4) % 360;
 
-    this.fileBuilderService.focusedElement.setAttribute('data-rotation', degree + 'deg');
-    this.renderer2.setStyle(this.fileBuilderService.focusedElement, 'transform', `rotate(${degree}deg)`);
+    this.fileBuilderService.setRotation(degree);
   }
 
   private _drag(event) {
@@ -387,7 +387,7 @@ export class NgFileBuilderComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   private _initializeFocus() {
-    const focusSub = this.fileBuilderService.focusElement$
+    const focusSub = this.fileBuilderService.focusedElement$
       .subscribe(element => {
         if (element === null) return;
 
@@ -404,6 +404,24 @@ export class NgFileBuilderComponent implements OnInit, OnDestroy, AfterViewInit 
       });
 
     this._subs.push(focusSub, disableFocusSub);
+  }
+
+  private _initializeDelete() {
+    const sub = this.fileBuilderService.onDelete$
+      .subscribe((element: any) => {
+        if (element === null) return;
+
+        for (let i = 0; i < this._canvas.children.length; i++) {
+          if (this._canvas.children[i] === element) {
+            this._canvas.removeChild(this._canvas.children[i]);
+            break;
+          }
+        }
+
+        this.navigationForm.get('currentTab').setValue(Tabs.Blocks);
+        this.ref.detectChanges();
+      });
+    this._subs.push(sub);
   }
 
   private _createInput(name: string, validators: ValidatorFn[]): FormGroup {

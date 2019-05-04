@@ -165,7 +165,7 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
             }
             const colorArray = rgbStringToArray(propertyValue);
             if (colorArray[3] === 0) return;
-            
+
             return generalControl.setValue(fullRgbToHex(colorArray[0], colorArray[1], colorArray[2]));
           }
 
@@ -186,8 +186,10 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private _listenForFocusedElementChange() {
-    const sub = this.fileBuilderService.focusElement$
+    const sub = this.fileBuilderService.focusedElement$
       .subscribe((element: any) => {
+        if (element === null) return;
+
         this._focusedElement = element;
         this._updateTypography();
         this._initializeStyles();

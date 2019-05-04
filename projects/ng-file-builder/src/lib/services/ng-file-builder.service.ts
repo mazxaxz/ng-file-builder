@@ -28,8 +28,9 @@ export class NgFileBuilderService {
   disableHighlight$ = new BehaviorSubject<any>(this._highlightedElement);
 
   focusedElement = null;
-  focusElement$ = new BehaviorSubject<any>(this.focusedElement);
+  focusedElement$ = new BehaviorSubject<any>(this.focusedElement);
   disableFocus$ = new BehaviorSubject<any>(this.focusedElement);
+  onDelete$ = new BehaviorSubject<any>(null);
 
   getElements(): any[] {
     return this._allElements;
@@ -60,7 +61,25 @@ export class NgFileBuilderService {
   focusElement(element) {
     this.disableFocus$.next(this.focusedElement);
     this.focusedElement = element;
-    this.focusElement$.next(element);
+    this.focusedElement$.next(element);
+  }
+
+  deleteElement(element) {
+    const foundIdx = this._allElements.findIndex(elem => elem === element);
+    if (foundIdx === -1) return;
+
+    this.onDelete$.next(this.focusedElement);
+    this.focusedElement$.next(null);
+    this.focusedElement = null;
+    this._allElements.splice(foundIdx, 1);
+    for (let i = foundIdx; i < this._allElements.length; i++) {
+      this._allElements[i].style.zIndex = i;
+    }
+  }
+
+  setRotation(degree: number) {
+    this.focusedElement.setAttribute('data-rotation', `${degree}deg`);
+    this.focusedElement.style.transform = `rotate(${degree}deg)`;
   }
 
   handleKeyPress(event) {
@@ -80,11 +99,13 @@ export class NgFileBuilderService {
       case KeyMap.ArrowRight:
         return focused.style.left = `${currentX + 1}px`;
       case KeyMap.Delete:
-        return true; //DeleteItem
+        return this.deleteElement(this.focusedElement);
       case KeyMap.Q:
-        return true; //Rotate left
+        const currentRotation = (focused.dataset.rotation || '0').replace('deg', '') << 0;
+        this.setRotation((currentRotation - 2) % 360);
       case KeyMap.E:
-        return true; //Rotate right
+        const currRotation = (focused.dataset.rotation || '0').replace('deg', '') << 0;
+        this.setRotation((currRotation + 1) % 360);
       default:
         if (event.code === KeyMap.K && event.ctrlKey) {
           return true; //Layer up
