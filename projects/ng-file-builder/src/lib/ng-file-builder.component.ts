@@ -411,13 +411,7 @@ export class NgFileBuilderComponent implements OnInit, OnDestroy, AfterViewInit 
       .subscribe((element: any) => {
         if (element === null) return;
 
-        for (let i = 0; i < this._canvas.children.length; i++) {
-          if (this._canvas.children[i] === element) {
-            this._canvas.removeChild(this._canvas.children[i]);
-            break;
-          }
-        }
-
+        this._canvas.removeChild(element);
         this.navigationForm.get('currentTab').setValue(Tabs.Blocks);
         this.ref.detectChanges();
       });
