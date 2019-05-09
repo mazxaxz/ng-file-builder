@@ -1,5 +1,5 @@
 <div class="container">
-    <div *ngFor="let element of getElements(); let idx = index;"
+    <div *ngFor="let element of elements; let idx = index;"
         (mouseover)="highlight(idx)"
         (mouseout)="disableHighlight(idx)"
         (click)="focus(idx)"
@@ -10,7 +10,7 @@
             {{ element.innerText || element.nodeName.toLowerCase() }}
         </div>
         <div class="actions">
-            <div class="up" (click)="layerUp(idx, $event)" *ngIf="idx !== (getElements().length - 1)">
+            <div class="up" (click)="layerUp(idx, $event)" *ngIf="idx !== (elements.length - 1)">
                 <svg class="icon" aria-hidden="true" focusable="false">
                     <use xlink:href="assets/icons/arrow_up.svg#arrow_up"></use>
                 </svg>

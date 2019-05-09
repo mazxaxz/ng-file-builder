@@ -84,17 +84,19 @@ export class NgFileBuilderService {
 
   moveItemUp(elementIdx: number) {
     const elementsCopy = [...this.getElements()];
-    if (elementIdx === (elementsCopy.length - 1)) return;
+    if (elementIdx === (elementsCopy.length - 1)) return false;
 
     elementsCopy[elementIdx].style.zIndex = elementIdx + 1;
     elementsCopy[elementIdx + 1].style.zIndex = elementIdx;
 
     this.replaceElement(elementsCopy[elementIdx], elementIdx + 1);
     this.replaceElement(elementsCopy[elementIdx + 1], elementIdx);
+
+    return true;
   }
 
-  moveItemDown(elementIdx: number) {
-    if (elementIdx === 0) return;
+  moveItemDown(elementIdx: number): boolean {
+    if (elementIdx === 0) return false;
 
     const elementsCopy = [...this.getElements()];
     elementsCopy[elementIdx].style.zIndex = elementIdx - 1;
@@ -102,6 +104,8 @@ export class NgFileBuilderService {
 
     this.replaceElement(elementsCopy[elementIdx], elementIdx - 1);
     this.replaceElement(elementsCopy[elementIdx - 1], elementIdx);
+
+    return true;
   }
 
   handleKeyPress(event) {

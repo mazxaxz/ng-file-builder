@@ -1,16 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ApplicationRef, ChangeDetectorRef, OnInit } from '@angular/core';
 import { NgFileBuilderService } from '../../services/ng-file-builder.service';
 
 @Component({
   selector: 'mzx-layer-items',
   templateUrl: './layer-items.component.html',
-  styleUrls: ['./layer-items.component.scss']
+  styleUrls: ['./layer-items.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LayerItemsComponent {
+export class LayerItemsComponent implements OnInit {
+  elements: any[] = [];
+
   constructor(private fileBuilderService: NgFileBuilderService) { }
 
-  getElements(): any[] {
-    return this.fileBuilderService.getElements();
+  ngOnInit() {
+    this.elements = this._getElements();
   }
 
   getElementBackground(element) {
@@ -41,15 +44,19 @@ export class LayerItemsComponent {
   }
 
   highlight(elementIdx: number) {
-    this.fileBuilderService.highlightElement(this.getElements()[elementIdx]);
+    this.fileBuilderService.highlightElement(this._getElements()[elementIdx]);
   }
 
   disableHighlight(elementIdx: number) {
-    this.fileBuilderService.disableHighlight$.next(this.getElements()[elementIdx]);
+    this.fileBuilderService.disableHighlight$.next(this._getElements()[elementIdx]);
   }
 
   focus(elementIdx: number) {
-    this.fileBuilderService.focusElement(this.getElements()[elementIdx]);
+    this.fileBuilderService.focusElement(this._getElements()[elementIdx]);
+  }
+
+  private _getElements() {
+    return this.fileBuilderService.getElements();
   }
 
 }
