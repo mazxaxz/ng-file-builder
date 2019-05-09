@@ -31,6 +31,7 @@ export class NgFileBuilderService {
   focusedElement$ = new BehaviorSubject<any>(this.focusedElement);
   disableFocus$ = new BehaviorSubject<any>(this.focusedElement);
   onDelete$ = new BehaviorSubject<any>(null);
+  refresh$ = new BehaviorSubject<number>(null);
 
   getElements(): any[] {
     return this._allElements;
@@ -138,15 +139,21 @@ export class NgFileBuilderService {
           foundIdx = this._allElements.findIndex(el => el === this.focusedElement);
           if (foundIdx === -1) return;
 
-          return this.moveItemUp(foundIdx);
+          this.moveItemUp(foundIdx);
+          return this._refresh();
         }
 
         if (event.code === KeyMap.M && event.ctrlKey) {
           foundIdx = this._allElements.findIndex(el => el === this.focusedElement);
           if (foundIdx === -1) return;
 
-          return this.moveItemDown(foundIdx);
+          this.moveItemDown(foundIdx);
+          return this._refresh();
         }
     }
+  }
+
+  private _refresh() {
+    this.refresh$.next(new Date().getMilliseconds());
   }
 }

@@ -1,5 +1,6 @@
-import { Component, ChangeDetectionStrategy, ApplicationRef, ChangeDetectorRef, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { NgFileBuilderService } from '../../services/ng-file-builder.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'mzx-layer-items',
@@ -7,13 +8,23 @@ import { NgFileBuilderService } from '../../services/ng-file-builder.service';
   styleUrls: ['./layer-items.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LayerItemsComponent implements OnInit {
+export class LayerItemsComponent implements OnInit, OnDestroy {
+  private _subs: Subscription[] = [];
   elements: any[] = [];
 
-  constructor(private fileBuilderService: NgFileBuilderService) { }
+  constructor(
+    private fileBuilderService: NgFileBuilderService,
+    private ref: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.elements = this._getElements();
+    const sub = this.fileBuilderService.refresh$
+      .subscribe(val => val ? this._updateElements() : null);
+    this._subs.push(sub);
+  }
+
+  ngOnDestroy() {
+    this._subs.forEach(sub => sub.unsubscribe());
   }
 
   getElementBackground(element) {
@@ -55,8 +66,12 @@ export class LayerItemsComponent implements OnInit {
     this.fileBuilderService.focusElement(this._getElements()[elementIdx]);
   }
 
+  private _updateElements() {
+    this.elements = this._getElements();
+    this.ref.detectChanges();
+  }
+
   private _getElements() {
     return this.fileBuilderService.getElements();
   }
-
 }
