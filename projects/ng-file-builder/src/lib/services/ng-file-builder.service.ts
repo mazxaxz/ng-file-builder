@@ -10,8 +10,8 @@ enum KeyMap {
   Delete = "Delete",
   Q = "KeyQ",
   E = "KeyE",
-  K = "KeyK",
-  L = "KeyL",
+  M = "KeyM",
+  B = "KeyB",
   PlusNumPad = "NumpadAdd",
   PlusStandard = "Equal",
   MinusNumPad = "NumpadSubtract",
@@ -129,14 +129,20 @@ export class NgFileBuilderService {
         const currRotation = (focused.dataset.rotation || '0').replace('deg', '') << 0;
         this.setRotation((currRotation + 1) % 360);
       default:
-        if (event.code === KeyMap.K && event.ctrlKey) {
-          return true; //Layer up
+        let foundIdx = -1;
+        if (event.code === KeyMap.B && event.ctrlKey) {
+          foundIdx = this._allElements.findIndex(el => el === this.focusedElement);
+          if (foundIdx === -1) return;
+
+          return this.moveItemUp(foundIdx);
         }
 
-        if (event.code === KeyMap.L && event.ctrlKey) {
-          return true; //layer down
+        if (event.code === KeyMap.M && event.ctrlKey) {
+          foundIdx = this._allElements.findIndex(el => el === this.focusedElement);
+          if (foundIdx === -1) return;
+
+          return this.moveItemDown(foundIdx);
         }
-        break;
     }
   }
 }
