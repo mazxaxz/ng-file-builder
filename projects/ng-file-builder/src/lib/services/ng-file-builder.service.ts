@@ -82,6 +82,28 @@ export class NgFileBuilderService {
     this.focusedElement.style.transform = `rotate(${degree}deg)`;
   }
 
+  moveItemUp(elementIdx: number) {
+    const elementsCopy = [...this.getElements()];
+    if (elementIdx === (elementsCopy.length - 1)) return;
+
+    elementsCopy[elementIdx].style.zIndex = elementIdx + 1;
+    elementsCopy[elementIdx + 1].style.zIndex = elementIdx;
+
+    this.replaceElement(elementsCopy[elementIdx], elementIdx + 1);
+    this.replaceElement(elementsCopy[elementIdx + 1], elementIdx);
+  }
+
+  moveItemDown(elementIdx: number) {
+    if (elementIdx === 0) return;
+
+    const elementsCopy = [...this.getElements()];
+    elementsCopy[elementIdx].style.zIndex = elementIdx - 1;
+    elementsCopy[elementIdx - 1].style.zIndex = elementIdx;
+
+    this.replaceElement(elementsCopy[elementIdx], elementIdx - 1);
+    this.replaceElement(elementsCopy[elementIdx - 1], elementIdx);
+  }
+
   handleKeyPress(event) {
     const focused = this.focusedElement;
     if (!focused) return;

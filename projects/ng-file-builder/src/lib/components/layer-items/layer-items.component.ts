@@ -1,4 +1,4 @@
-import { Component, Renderer2 } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgFileBuilderService } from '../../services/ng-file-builder.service';
 
 @Component({
@@ -7,9 +7,7 @@ import { NgFileBuilderService } from '../../services/ng-file-builder.service';
   styleUrls: ['./layer-items.component.scss']
 })
 export class LayerItemsComponent {
-  constructor(
-    private fileBuilderService: NgFileBuilderService,
-    private renderer2: Renderer2) { }
+  constructor(private fileBuilderService: NgFileBuilderService) { }
 
   getElements(): any[] {
     return this.fileBuilderService.getElements();
@@ -34,26 +32,12 @@ export class LayerItemsComponent {
 
   layerUp(elementIdx: number, event) {
     event.stopPropagation();
-    const elementsCopy = [...this.getElements()];
-    if (elementIdx === (elementsCopy.length - 1)) return;
-
-    this.renderer2.setStyle(elementsCopy[elementIdx], 'z-index', elementIdx + 1);
-    this.renderer2.setStyle(elementsCopy[elementIdx + 1], 'z-index', elementIdx);
-
-    this.fileBuilderService.replaceElement(elementsCopy[elementIdx], elementIdx + 1);
-    this.fileBuilderService.replaceElement(elementsCopy[elementIdx + 1], elementIdx);
+    this.fileBuilderService.moveItemUp(elementIdx);
   }
 
   layerDown(elementIdx: number, event) {
     event.stopPropagation();
-    if (elementIdx === 0) return;
-
-    const elementsCopy = [...this.getElements()];
-    this.renderer2.setStyle(elementsCopy[elementIdx], 'z-index', elementIdx - 1);
-    this.renderer2.setStyle(elementsCopy[elementIdx - 1], 'z-index', elementIdx);
-
-    this.fileBuilderService.replaceElement(elementsCopy[elementIdx], elementIdx - 1);
-    this.fileBuilderService.replaceElement(elementsCopy[elementIdx - 1], elementIdx);
+    this.fileBuilderService.moveItemDown(elementIdx);
   }
 
   highlight(elementIdx: number) {
