@@ -103,7 +103,8 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
   private _initializeGeneralForm() {
     this.generalForm = new FormGroup({
       backgroundType: new FormControl(BackgroundType.Color),
-      background: new FormControl(null)
+      background: new FormControl(null),
+      opacity: new FormControl(1)
     });
 
     const bgTypeSub = this.generalForm.get('backgroundType').valueChanges
@@ -125,6 +126,16 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         this.renderer2.setStyle(this.fileBuilderService.focusedElement, 'background', bgValue);
+      });
+
+    Object.keys(this.generalForm.controls)
+      .filter(k => !k.includes('background'))
+      .forEach(key => {
+        const sub = this.generalForm.get(key).valueChanges
+          .subscribe(value => {
+            this.renderer2.setStyle(this.fileBuilderService.focusedElement, key, value);
+          });
+        this._subs.push(sub);
       });
 
     this._subs.push(bgTypeSub, bgChangedSub);
