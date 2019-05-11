@@ -1,3 +1,5 @@
+@import '../../../../assets/scss/variables.scss';
+
 .container {
     display: flex;
     margin-top: 6px;
@@ -5,11 +7,16 @@
     .color-picker-value {
         display: inline-block;
         width: calc(100% - 30px);
+        outline: none;
+        border: 1px solid darken($dark, 2.5%);
+        color: $light;
+        background: lighten($dark, 5%);
+        padding: 8px 12px;
     }
 
     .form-group {
-        width: 30px;
-        height: 30px;
+        width: 32px;
+        height: 32px;
         display: inline-block;
 
         .color-picker-preview {
