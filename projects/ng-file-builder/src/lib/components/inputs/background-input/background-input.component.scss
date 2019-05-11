@@ -38,6 +38,10 @@
             &.active {
                 display: block;
             }
+
+            &.input-url-image {
+                padding-top: 6px;
+            }
         }
         
         .input-texture {
