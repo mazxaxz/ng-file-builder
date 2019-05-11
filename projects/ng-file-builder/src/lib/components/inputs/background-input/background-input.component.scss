@@ -32,6 +32,8 @@
     }
 
     .input-wrapper {
+        padding-top: 8px;
+
         .input-base {
             display: none;
 
@@ -45,10 +47,26 @@
         }
         
         .input-texture {
+            height: 85px;
+            overflow-x: auto;
+            border: 1px solid darken($dark, 2.5%);
+
+            &::-webkit-scrollbar {
+                width: 5px;
+            }
+            
+            &::-webkit-scrollbar-track {
+                background: lighten($dark, 10%);
+            }
+            
+            &::-webkit-scrollbar-thumb {
+                background: lighten($dark, 5%);
+            }
+
             .texture-block {
-                width: 30px;
-                height: 30px;
-                margin-right: 4px;
+                width: 32px;
+                height: 32px;
+                margin: 0 2.5px 0 2.5px;
                 display: inline-block;
                 background-size: contain;
                 cursor: pointer;
