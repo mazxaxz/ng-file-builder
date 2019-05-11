@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { PipesModule } from '../pipes/pipes.module';
+
 import { InputComponent } from './inputs/input/input.component';
 import { LayerItemsComponent } from './layer-items/layer-items.component';
 import { OptionsTabComponent } from './options-tab/options-tab.component';
@@ -33,7 +35,8 @@ export const components = [
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    PipesModule
   ],
   declarations: [
     ...components

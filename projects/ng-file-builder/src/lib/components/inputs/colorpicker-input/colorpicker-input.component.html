@@ -1,6 +1,7 @@
 <div class="container">
   <input type="text" class="color-picker-value" 
-    [(ngModel)]="currentColor" 
+    [ngModel]="currentColor | colorFormatter" 
+    (ngModelChange)="currentColor = $event"
     (keyup)="colorChange()"
     name="currentColor" />
 
