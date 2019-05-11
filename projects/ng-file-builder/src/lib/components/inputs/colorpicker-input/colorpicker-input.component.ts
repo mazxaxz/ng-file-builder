@@ -13,6 +13,7 @@ export class ColorpickerInputComponent implements OnInit, OnDestroy {
   @Input() controlName: string;
 
   currentColor: string = '#000000';
+  hexRegex = /[0-9A-Fa-f]/;
 
   constructor(private ref: ChangeDetectorRef) {}
 
@@ -30,9 +31,35 @@ export class ColorpickerInputComponent implements OnInit, OnDestroy {
     this._subs.forEach(sub => sub.unsubscribe());
   }
 
-  colorChange() {
+  colorChange(event: KeyboardEvent) {
+    if (this._isColorMaxLength() || !this._hashCanBePressed(event.key)) {
+      return event.preventDefault();
+    }
+
+    if (!this._isInputHexadecimal(event.key)) {
+      return event.preventDefault();
+    }
+
     this.parentForm.get(this.controlName).setValue(this.currentColor);
     this.ref.detectChanges();
+  }
+
+  private _isColorMaxLength() {
+    return (this.currentColor.length >= 7);
+  }
+
+  private _hashCanBePressed(input: string) {
+    if (this.currentColor.length === 0 && input === '#') return true;
+
+    if (this.currentColor.length > 0 && input !== '#') return true;
+
+    return false;
+  }
+
+  private _isInputHexadecimal(input: string) {
+    if (input === '#') return true;
+
+    return this.hexRegex.test(input);
   }
 
 }

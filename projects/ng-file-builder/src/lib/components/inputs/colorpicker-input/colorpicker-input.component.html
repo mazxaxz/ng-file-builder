@@ -2,7 +2,7 @@
   <input type="text" class="color-picker-value" 
     [ngModel]="currentColor | colorFormatter" 
     (ngModelChange)="currentColor = $event"
-    (keyup)="colorChange()"
+    (keypress)="colorChange($event)"
     name="currentColor" />
 
   <form [formGroup]="parentForm" class="form-group">
