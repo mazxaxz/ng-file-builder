@@ -109,6 +109,16 @@ export class NgFileBuilderService {
     return true;
   }
 
+  increaseSize(element: any, amount: number) {
+    element.style.width = `${ConvertPixelsToNumber(element.style.width) + amount}px`;
+    element.style.height = `${ConvertPixelsToNumber(element.style.height) + amount}px`;
+  }
+
+  decreaseSize(element: any, amount: number) {
+    element.style.width = `${ConvertPixelsToNumber(element.style.width) - amount}px`;
+    element.style.height = `${ConvertPixelsToNumber(element.style.height) - amount}px`;
+  }
+
   handleKeyPress(event) {
     const focused = this.focusedElement;
     if (!focused) return;
@@ -149,6 +159,14 @@ export class NgFileBuilderService {
 
           this.moveItemDown(foundIdx);
           return this._refresh();
+        }
+
+        if (event.code === KeyMap.PlusNumPad || event.code === KeyMap.PlusStandard) {
+          return this.increaseSize(this.focusedElement, 1);
+        }
+
+        if (event.code === KeyMap.MinusNumPad || event.code === KeyMap.MinusStandard) {
+          return this.decreaseSize(this.focusedElement, 1);
         }
     }
   }
