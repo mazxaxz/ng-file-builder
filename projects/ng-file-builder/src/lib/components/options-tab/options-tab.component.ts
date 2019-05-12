@@ -114,7 +114,10 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
     this.generalForm = new FormGroup({
       backgroundType: new FormControl(BackgroundType.Color),
       background: new FormControl(null),
-      opacity: new FormControl(1)
+      opacity: new FormControl(1),
+      borderWidth: new FormControl(0),
+      borderStyle: new FormControl('none'),
+      borderColor: new FormControl('#000000')
     });
 
     const bgTypeSub = this.generalForm.get('backgroundType').valueChanges
@@ -154,8 +157,8 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
   private _initializeStyles() {
     Object.keys(this._focusedElement.style).forEach(property => {
       const computedStyle = window.getComputedStyle(this._focusedElement);
-
       const typographyControl = this.typographyForm.get(property);
+      
       if (typographyControl) {
         if (property === 'fontFamily' && !WEBSAFE_FONTS.includes(computedStyle.fontFamily)) {
           this._focusedElement.style[property] = WEBSAFE_FONTS[0];

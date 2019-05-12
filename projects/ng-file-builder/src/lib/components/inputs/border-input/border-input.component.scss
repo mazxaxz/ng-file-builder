@@ -1,0 +1,33 @@
+@import '../../../../assets/scss/variables.scss';
+
+.container {
+    margin-top: 5px;
+
+    .container-label {
+        font-size: 10px;
+        color: $primary-gradient-one;
+    }
+
+    .input-container {
+        padding: 4px;
+        background: $dark;
+        border: 1px solid darken($dark, 5%);
+
+        .inputs-wrapper {
+            display: flex;
+
+            .width-wrapper {
+                flex: 4;
+            }
+
+            .style-wrapper {
+                flex: 6;
+            }
+        }
+
+        .color-wrapper {
+            margin-top: -9px;
+        }
+    }
+    
+}

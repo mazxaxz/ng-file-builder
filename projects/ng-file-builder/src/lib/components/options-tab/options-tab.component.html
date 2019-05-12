@@ -17,7 +17,7 @@
         <mzx-font-family-input [parentForm]="typographyForm" controlName="fontFamily" label="Font"></mzx-font-family-input>
         
         <div class="font-size-weight-group">
-          <mzx-font-size-input [parentForm]="typographyForm" controlName="fontSize" label="Size"></mzx-font-size-input>
+          <mzx-pixel-number-input [parentForm]="typographyForm" controlName="fontSize" label="Size"></mzx-pixel-number-input>
           <mzx-font-weight-input [parentForm]="typographyForm" controlName="fontWeight" label="Weight"></mzx-font-weight-input>
         </div>
 
@@ -49,6 +49,7 @@
     <div #section class="list-content" data-section="general">
       <form [formGroup]="generalForm">
         <mzx-background-input [parentForm]="generalForm"></mzx-background-input>
+        <mzx-border-input [parentForm]="generalForm"></mzx-border-input>
       </form>
     </div>
   </div>

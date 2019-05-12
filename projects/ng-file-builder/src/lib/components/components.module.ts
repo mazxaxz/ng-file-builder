@@ -9,7 +9,7 @@ import { OptionsTabComponent } from './options-tab/options-tab.component';
 import { OptionTextInputComponent } from './inputs/option-text-input/option-text-input.component';
 import { FontFamilyInputComponent } from './inputs/font-family-input/font-family-input.component';
 import { FontWeightInputComponent } from './inputs/font-weight-input/font-weight-input.component';
-import { FontSizeInputComponent } from './inputs/font-size-input/font-size-input.component';
+import { PixelNumberInputComponent } from './inputs/pixel-number-input/pixel-number-input.component';
 import { BackgroundInputComponent } from './inputs/background-input/background-input.component';
 import { ColorpickerInputComponent } from './inputs/colorpicker-input/colorpicker-input.component';
 import { ModalSetupComponent } from './modal-setup/modal-setup.component';
@@ -17,6 +17,8 @@ import { InfoBoxComponent } from './modals/info-box/info-box.component';
 import { ModalBoxHeaderComponent } from './modal-box-header/modal-box-header.component';
 import { RangeInputComponent } from './inputs/range-input/range-input.component';
 import { ButtonGroupInputComponent } from './inputs/button-group-input/button-group-input.component';
+import { BorderInputComponent } from './inputs/border-input/border-input.component';
+import { SelectInputComponent } from './inputs/select-input/select-input.component';
 
 export const components = [
   InputComponent,
@@ -25,14 +27,16 @@ export const components = [
   OptionTextInputComponent,
   FontFamilyInputComponent,
   FontWeightInputComponent,
-  FontSizeInputComponent,
+  PixelNumberInputComponent,
   BackgroundInputComponent,
   ColorpickerInputComponent,
   ModalSetupComponent,
   ModalBoxHeaderComponent,
   InfoBoxComponent,
   RangeInputComponent,
-  ButtonGroupInputComponent
+  ButtonGroupInputComponent,
+  BorderInputComponent,
+  SelectInputComponent
 ]
 
 @NgModule({

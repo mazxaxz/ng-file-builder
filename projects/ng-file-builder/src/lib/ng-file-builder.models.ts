@@ -49,4 +49,16 @@ export enum TextAlignment {
     Center = "center",
     Right = "right",
     Justify = "justify"
-} 
+}
+
+export enum BorderStyle {
+    None = "none",
+    Solid = "solid",
+    Dotted = "dotted",
+    Dashed = "dashed",
+    Double = "double",
+    Groove = "groove",
+    Ridge = "ridge",
+    Inset = "inset",
+    Outset = "outset"
+}

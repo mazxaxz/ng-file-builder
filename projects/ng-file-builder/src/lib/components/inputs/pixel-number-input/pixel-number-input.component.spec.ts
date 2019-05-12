@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FontSizeInputComponent } from './font-size-input.component';
+import { PixelNumberInputComponent } from './pixel-number-input.component';
 
-describe('FontSizeInputComponent', () => {
-  let component: FontSizeInputComponent;
-  let fixture: ComponentFixture<FontSizeInputComponent>;
+describe('PixelNumberInputComponent', () => {
+  let component: PixelNumberInputComponent;
+  let fixture: ComponentFixture<PixelNumberInputComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FontSizeInputComponent ]
+      declarations: [ PixelNumberInputComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FontSizeInputComponent);
+    fixture = TestBed.createComponent(PixelNumberInputComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
