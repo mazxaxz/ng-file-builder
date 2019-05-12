@@ -24,6 +24,12 @@ export interface BuilderControl {
     validators: ValidatorFn[];
 }
 
+export interface ButtonToggler {
+    label?: string;
+    icon?: string;
+    value: any;
+}
+
 export enum DefaultBlocks {
     QrCode = "qrcode",
     Square = "square",
@@ -37,3 +43,10 @@ export enum BackgroundType {
     Url = "url-image",
     Texture = "texture"
 }
+
+export enum TextAlignment {
+    Left = "align-left",
+    Center = "align-center",
+    Right = "align-right",
+    Justify = "align-justify"
+} 

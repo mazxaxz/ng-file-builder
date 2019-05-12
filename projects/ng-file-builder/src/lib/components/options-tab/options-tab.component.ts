@@ -72,7 +72,9 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
       innerText: new FormControl(null),
       fontFamily: new FormControl(WEBSAFE_FONTS[0]),
       fontSize: new FormControl(14),
-      fontWeight: new FormControl('400')
+      fontWeight: new FormControl('400'),
+      color: new FormControl('#000000'),
+      textAlign: new FormControl('left')
     });
     const innerTextSub = this.typographyForm.get('innerText').valueChanges
       .subscribe((change: string) => this._focusedElement.innerText = change);

@@ -58,8 +58,12 @@
                 }
             }
 
+            .typography-color-wrapper {
+                margin-top: -7px;
+            }
+
             &.expanded-typography {
-                height: 138px;
+                height: 400px;
             }
 
             &.expanded-general {

@@ -16,6 +16,7 @@ import { ModalSetupComponent } from './modal-setup/modal-setup.component';
 import { InfoBoxComponent } from './modals/info-box/info-box.component';
 import { ModalBoxHeaderComponent } from './modal-box-header/modal-box-header.component';
 import { RangeInputComponent } from './inputs/range-input/range-input.component';
+import { ButtonGroupInputComponent } from './inputs/button-group-input/button-group-input.component';
 
 export const components = [
   InputComponent,
@@ -30,7 +31,8 @@ export const components = [
   ModalSetupComponent,
   ModalBoxHeaderComponent,
   InfoBoxComponent,
-  RangeInputComponent
+  RangeInputComponent,
+  ButtonGroupInputComponent
 ]
 
 @NgModule({

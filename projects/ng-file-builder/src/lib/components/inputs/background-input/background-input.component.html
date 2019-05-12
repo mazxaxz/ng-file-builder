@@ -4,15 +4,12 @@
   </form>
 
   <div class="bg-type-wrapper">
-    <button #toggleButton class="toggle-button color" (click)="setBackgroundType(BackgroundType.Color)">
-      Color
-    </button>
-    <button #toggleButton class="toggle-button url-image" (click)="setBackgroundType(BackgroundType.Url)">
-      Url Image
-    </button>
-    <button #toggleButton class="toggle-button texture" (click)="setBackgroundType(BackgroundType.Texture)">
-      Texture
-    </button>
+    <mzx-button-group-input 
+      [parentForm]="parentForm" 
+      controlName="backgroundType"
+      label="Background type"
+      [buttons]="backgroundTypeTogglers"
+      (onValueChange)="setBackgroundType($event)"></mzx-button-group-input>
   </div>
 
   <form [formGroup]="parentForm">

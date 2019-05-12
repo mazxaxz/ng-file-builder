@@ -1,0 +1,8 @@
+<div class="wrapper">
+  <button #toggleButton 
+    *ngFor="let button of buttons" 
+    attr.class="toggle-button {{button.value}}" 
+    (click)="handle(button.value)">
+    {{ button.label }}
+  </button>
+</div>

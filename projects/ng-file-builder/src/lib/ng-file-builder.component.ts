@@ -178,6 +178,7 @@ export class NgFileBuilderComponent implements OnInit, OnDestroy, AfterViewInit 
     this.renderer2.setStyle(element, 'left', `${(parentWidth / 2) - (width / 2)}px`);
     this.renderer2.setStyle(element, 'cursor', 'auto');
     this.renderer2.setStyle(element, 'user-select', 'none');
+    this.renderer2.setStyle(element, 'word-break', 'break-word');
     this.renderer2.setStyle(element, 'z-index', this.fileBuilderService.getElements().length);
 
     this._addListeners(element);
