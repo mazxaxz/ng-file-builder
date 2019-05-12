@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { BorderStyle } from '../../../ng-file-builder.models';
+import { BorderStyle, SelectOption } from '../../../ng-file-builder.models';
 
 @Component({
   selector: 'mzx-border-input',
@@ -9,9 +9,11 @@ import { BorderStyle } from '../../../ng-file-builder.models';
 })
 export class BorderInputComponent implements OnInit {
   @Input() parentForm: FormGroup;
-  borderStyles: string[];
+  borderStyles: SelectOption[];
 
   ngOnInit() {
-    this.borderStyles = Object.keys(BorderStyle);
+    this.borderStyles = Object.keys(BorderStyle).map(key => {
+      return { label: key, value: BorderStyle[key] } as SelectOption;
+    });
   }
 }

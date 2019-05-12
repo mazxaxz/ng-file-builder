@@ -5,6 +5,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { WEBSAFE_FONTS } from '../../ng-file-builder.constants';
 import { BackgroundType, ButtonToggler, TextAlignment } from '../../ng-file-builder.models';
 import { fullRgbToHex, rgbStringToArray } from '../../helpers/ColorHelpers';
+import { ConvertPixelsToNumber } from '../../helpers/UnitHelper';
 
 enum Sections {
   Typography = "typography",
@@ -146,6 +147,10 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
       .forEach(key => {
         const sub = this.generalForm.get(key).valueChanges
           .subscribe(value => {
+            if (key === 'borderWidth') {
+              value += 'px';
+            }
+
             this.renderer2.setStyle(this.fileBuilderService.focusedElement, key, value);
           });
         this._subs.push(sub);
@@ -158,7 +163,7 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
     Object.keys(this._focusedElement.style).forEach(property => {
       const computedStyle = window.getComputedStyle(this._focusedElement);
       const typographyControl = this.typographyForm.get(property);
-      
+
       if (typographyControl) {
         if (property === 'fontFamily' && !WEBSAFE_FONTS.includes(computedStyle.fontFamily)) {
           this._focusedElement.style[property] = WEBSAFE_FONTS[0];
@@ -170,7 +175,7 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         if (property === 'fontSize') {
-          return typographyControl.setValue(computedStyle[property].replace(/[^0-9\.]+/g, ''));
+          return typographyControl.setValue(ConvertPixelsToNumber(computedStyle[property]));
         }
 
         if (property === 'textAlign' && !(/left|center|right|justify/.test(computedStyle[property]))) {
@@ -183,6 +188,10 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
       const generalControl = this.generalForm.get(property);
       if (generalControl) {
         const propertyValue = computedStyle[property];
+
+        if (property === 'borderWidth') {
+          return generalControl.setValue(ConvertPixelsToNumber(propertyValue));
+        }
 
         if (property.includes('background')) {
           const bgTypeAbstractControl = this.generalForm.get('backgroundType');

@@ -1,3 +1,6 @@
-<p>
-  select-input works!
-</p>
+<div class="form-group" [formGroup]="parentForm">
+  <select class="form-control" [formControlName]="controlName" [name]="controlName" [id]="controlName">
+    <option *ngFor="let option of options" [value]="option.value">{{ option.label }}</option>
+  </select>
+  <label [for]="controlName" class="form-control-label">{{ label }}</label>
+</div>

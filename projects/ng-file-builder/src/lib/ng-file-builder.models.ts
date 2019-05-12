@@ -30,6 +30,11 @@ export interface ButtonToggler {
     value: any;
 }
 
+export interface SelectOption {
+    label: string;
+    value: string;
+}
+
 export enum DefaultBlocks {
     QrCode = "qrcode",
     Square = "square",
