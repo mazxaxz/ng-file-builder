@@ -16,17 +16,29 @@
         will-change: background;
         transition: .2s background ease-in-out;
 
-        &.color {
+        .icon {
+            width: 24px;
+            height: 15px;
+            color: $light;
+            fill: $light;
+        }
+
+        &:first-child {
             border-radius: 3px 0 0 3px;
         }
 
-        &.texture {
+        &:last-child {
             border-radius: 0 3px 3px 0;
         }
 
         &.active {
             background: $primary-gradient-one;
             color: $dark;
+
+            .icon {
+                color: $dark;
+                fill: $dark;
+            }
         }
     }
 }

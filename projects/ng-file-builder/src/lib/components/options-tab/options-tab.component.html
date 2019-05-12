@@ -25,6 +25,11 @@
           <mzx-colorpicker-input [parentForm]="typographyForm" controlName="color"></mzx-colorpicker-input>
         </div>
         
+        <mzx-button-group-input 
+          [parentForm]="typographyForm" 
+          controlName="textAlign"
+          label="Text alignment"
+          [buttons]="textAlignmentTogglers"></mzx-button-group-input>
       </form>
     </div>
   </div>

@@ -3,6 +3,13 @@
     *ngFor="let button of buttons" 
     attr.class="toggle-button {{button.value}}" 
     (click)="handle(button.value)">
-    {{ button.label }}
+
+    <svg class="icon" aria-hidden="true" focusable="false" *ngIf="button.icon">
+      <use attr.xlink:href="assets/icons/{{button.icon}}.svg#{{button.icon}}"></use>
+    </svg>
+
+    <ng-container *ngIf="button.label">
+      {{ button.label }}
+    </ng-container>
   </button>
 </div>

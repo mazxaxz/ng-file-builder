@@ -45,8 +45,8 @@ export enum BackgroundType {
 }
 
 export enum TextAlignment {
-    Left = "align-left",
-    Center = "align-center",
-    Right = "align-right",
-    Justify = "align-justify"
+    Left = "left",
+    Center = "center",
+    Right = "right",
+    Justify = "justify"
 } 

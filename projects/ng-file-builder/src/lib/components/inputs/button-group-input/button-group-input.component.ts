@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChildren, QueryList, Renderer2 } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChildren, QueryList, Renderer2, AfterViewInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ButtonToggler } from '../../../ng-file-builder.models';
 
@@ -7,7 +7,7 @@ import { ButtonToggler } from '../../../ng-file-builder.models';
   templateUrl: './button-group-input.component.html',
   styleUrls: ['./button-group-input.component.scss']
 })
-export class ButtonGroupInputComponent {
+export class ButtonGroupInputComponent implements AfterViewInit {
   @ViewChildren('toggleButton') toggleButtons: QueryList<any>;
   @Input() parentForm: FormGroup;
   @Input() controlName: string;
@@ -16,6 +16,11 @@ export class ButtonGroupInputComponent {
   @Output() onValueChange = new EventEmitter<any>();
 
   constructor(private renderer2: Renderer2) { }
+
+  ngAfterViewInit() {
+    let currentValue = this.parentForm.get(this.controlName).value;
+    this._updateView(currentValue);
+  }
 
   handle(value: any) {
     const abstractControl = this.parentForm.get(this.controlName);

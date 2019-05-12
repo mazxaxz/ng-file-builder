@@ -3,7 +3,7 @@ import { NgFileBuilderService } from '../../services/ng-file-builder.service';
 import { Subscription } from 'rxjs';
 import { FormGroup, FormControl } from '@angular/forms';
 import { WEBSAFE_FONTS } from '../../ng-file-builder.constants';
-import { BackgroundType } from '../../ng-file-builder.models';
+import { BackgroundType, ButtonToggler, TextAlignment } from '../../ng-file-builder.models';
 import { fullRgbToHex, rgbStringToArray } from '../../helpers/ColorHelpers';
 
 enum Sections {
@@ -28,12 +28,21 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
   typographyForm: FormGroup;
   generalForm: FormGroup;
 
+  textAlignmentTogglers: ButtonToggler[];
+
   constructor(
     private fileBuilderService: NgFileBuilderService,
     private renderer2: Renderer2) { }
 
   ngOnInit() {
     this._focusedElement = this.fileBuilderService.focusedElement;
+    this.textAlignmentTogglers = [
+      { icon: 'align_left', value: TextAlignment.Left },
+      { icon: 'align_center', value: TextAlignment.Center },
+      { icon: 'align_right', value: TextAlignment.Right },
+      { icon: 'align_justify', value: TextAlignment.Justify }
+    ];
+
     this._initializeTypography();
     this._initializeGeneralForm();
     this._initializeStyles();
@@ -74,7 +83,7 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
       fontSize: new FormControl(14),
       fontWeight: new FormControl('400'),
       color: new FormControl('#000000'),
-      textAlign: new FormControl('left')
+      textAlign: new FormControl(TextAlignment.Left)
     });
     const innerTextSub = this.typographyForm.get('innerText').valueChanges
       .subscribe((change: string) => this._focusedElement.innerText = change);
@@ -92,7 +101,6 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
           });
         this._subs.push(sub);
       });
-
     this._subs.push(innerTextSub);
 
     this._updateTypography();
@@ -160,6 +168,10 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (property === 'fontSize') {
           return typographyControl.setValue(computedStyle[property].replace(/[^0-9\.]+/g, ''));
+        }
+
+        if (property === 'textAlign' && !(/left|center|right|justify/.test(computedStyle[property]))) {
+          return typographyControl.setValue(TextAlignment.Left);
         }
 
         return typographyControl.setValue(computedStyle[property]);
