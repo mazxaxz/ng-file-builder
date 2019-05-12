@@ -1,0 +1,4 @@
+<div class="wrapper" [formGroup]="parentForm">
+  <label [for]="controlName" class="input-label">{{ label }}</label>
+  <input type="range" [min]="min" [max]="max" [step]="step" [formControlName]="controlName" [name]="controlName" />
+</div>

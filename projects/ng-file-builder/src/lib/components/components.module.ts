@@ -15,6 +15,7 @@ import { ColorpickerInputComponent } from './inputs/colorpicker-input/colorpicke
 import { ModalSetupComponent } from './modal-setup/modal-setup.component';
 import { InfoBoxComponent } from './modals/info-box/info-box.component';
 import { ModalBoxHeaderComponent } from './modal-box-header/modal-box-header.component';
+import { RangeInputComponent } from './inputs/range-input/range-input.component';
 
 export const components = [
   InputComponent,
@@ -28,7 +29,8 @@ export const components = [
   ColorpickerInputComponent,
   ModalSetupComponent,
   ModalBoxHeaderComponent,
-  InfoBoxComponent
+  InfoBoxComponent,
+  RangeInputComponent
 ]
 
 @NgModule({
