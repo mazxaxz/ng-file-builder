@@ -7,6 +7,8 @@ import { DEFAULT_BLOCKS_HTML, PAGE_SIZES } from './ng-file-builder.constants';
 import { ModalService } from './services/modal.service';
 import { InfoBoxComponent } from './components/modals/info-box/info-box.component';
 import { ConvertPixelsToNumber } from './helpers/UnitHelper';
+import { ImportTemplateBoxComponent } from './components/modals/import-template-box/import-template-box.component';
+import { ExportTemplateBoxComponent } from './components/modals/export-template-box/export-template-box.component';
 
 interface NavigationTab {
   icon: string;
@@ -193,6 +195,14 @@ export class NgFileBuilderComponent implements OnInit, OnDestroy, AfterViewInit 
 
   saveTemplate() {
     this.onSave.emit("Save event");
+  }
+
+  openImportBox() {
+    this.modalService.open(ImportTemplateBoxComponent);
+  }
+
+  openExportBox() {
+    this.modalService.open(ExportTemplateBoxComponent);
   }
 
   showInfo() {

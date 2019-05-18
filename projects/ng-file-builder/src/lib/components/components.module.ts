@@ -20,6 +20,8 @@ import { ButtonGroupInputComponent } from './inputs/button-group-input/button-gr
 import { BorderInputComponent } from './inputs/border-input/border-input.component';
 import { SelectInputComponent } from './inputs/select-input/select-input.component';
 import { DegreeInputComponent } from './inputs/degree-input/degree-input.component';
+import { ImportTemplateBoxComponent } from './modals/import-template-box/import-template-box.component';
+import { ExportTemplateBoxComponent } from './modals/export-template-box/export-template-box.component';
 
 export const components = [
   InputComponent,
@@ -38,7 +40,9 @@ export const components = [
   ButtonGroupInputComponent,
   BorderInputComponent,
   SelectInputComponent,
-  DegreeInputComponent
+  DegreeInputComponent,
+  ImportTemplateBoxComponent,
+  ExportTemplateBoxComponent
 ]
 
 @NgModule({
@@ -49,7 +53,7 @@ export const components = [
     PipesModule
   ],
   declarations: [
-    ...components
+    ...components,
   ],
   exports: [
     ReactiveFormsModule,
@@ -57,7 +61,9 @@ export const components = [
     ...components
   ],
   entryComponents: [
-    InfoBoxComponent
+    InfoBoxComponent,
+    ImportTemplateBoxComponent,
+    ExportTemplateBoxComponent
   ]
 })
 export class ComponentsModule { }

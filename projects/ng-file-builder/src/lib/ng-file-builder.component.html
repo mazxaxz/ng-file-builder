@@ -31,12 +31,12 @@
 
       <div class="group-additional">
         <button class="builder-btn builder-action">
-          <svg class="icon" aria-hidden="true" focusable="false">
+          <svg class="icon" aria-hidden="true" focusable="false" (click)="openImportBox()">
             <use xlink:href="assets/icons/code.svg#code"></use>
           </svg>
         </button>
 
-        <button class="builder-btn builder-action">
+        <button class="builder-btn builder-action" (click)="openExportBox()">
           <svg class="icon" aria-hidden="true" focusable="false">
             <use xlink:href="assets/icons/get_app.svg#get_app"></use>
           </svg>
