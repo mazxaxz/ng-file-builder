@@ -9,7 +9,7 @@ enum KeyMap {
   ArrowDown = "ArrowDown",
   Delete = "Delete",
   Q = "KeyQ",
-  E = "KeyE",
+  Z = "KeyZ",
   M = "KeyM",
   B = "KeyB",
   PlusNumPad = "NumpadAdd",
@@ -123,10 +123,11 @@ export class NgFileBuilderService {
 
   handleKeyPress(event) {
     const focused = this.focusedElement;
-    if (!focused) return;
+    if (!focused || !(event.ctrlKey || event.altKey)) return;
       
     const currentY = ConvertPixelsToNumber(focused.style.top);
     const currentX = ConvertPixelsToNumber(focused.style.left);
+    let foundIdx = -1;
 
     switch (event.code) {
       case KeyMap.ArrowUp:
@@ -141,28 +142,23 @@ export class NgFileBuilderService {
         return this.deleteElement(this.focusedElement);
       case KeyMap.Q:
         const currentRotation = (focused.dataset.rotation || '0').replace('deg', '') << 0;
-        this.setRotation((currentRotation - 2) % 360);
-      case KeyMap.E:
+        return this.setRotation((currentRotation - 1) % 360);
+      case KeyMap.Z:
         const currRotation = (focused.dataset.rotation || '0').replace('deg', '') << 0;
-        this.setRotation((currRotation + 1) % 360);
+        return this.setRotation((currRotation + 1) % 360);
+      case KeyMap.B:
+        foundIdx = this._allElements.findIndex(el => el === this.focusedElement);
+        if (foundIdx === -1) return;
+
+        this.moveItemUp(foundIdx);
+        return this._refresh();
+      case KeyMap.M:
+        foundIdx = this._allElements.findIndex(el => el === this.focusedElement);
+        if (foundIdx === -1) return;
+
+        this.moveItemDown(foundIdx);
+        return this._refresh();
       default:
-        let foundIdx = -1;
-        if (event.code === KeyMap.B && event.ctrlKey) {
-          foundIdx = this._allElements.findIndex(el => el === this.focusedElement);
-          if (foundIdx === -1) return;
-
-          this.moveItemUp(foundIdx);
-          return this._refresh();
-        }
-
-        if (event.code === KeyMap.M && event.ctrlKey) {
-          foundIdx = this._allElements.findIndex(el => el === this.focusedElement);
-          if (foundIdx === -1) return;
-
-          this.moveItemDown(foundIdx);
-          return this._refresh();
-        }
-
         if (event.code === KeyMap.PlusNumPad || event.code === KeyMap.PlusStandard) {
           return this.increaseSize(this.focusedElement, 1);
         }
