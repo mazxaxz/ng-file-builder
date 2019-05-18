@@ -19,6 +19,7 @@ import { RangeInputComponent } from './inputs/range-input/range-input.component'
 import { ButtonGroupInputComponent } from './inputs/button-group-input/button-group-input.component';
 import { BorderInputComponent } from './inputs/border-input/border-input.component';
 import { SelectInputComponent } from './inputs/select-input/select-input.component';
+import { DegreeInputComponent } from './inputs/degree-input/degree-input.component';
 
 export const components = [
   InputComponent,
@@ -36,7 +37,8 @@ export const components = [
   RangeInputComponent,
   ButtonGroupInputComponent,
   BorderInputComponent,
-  SelectInputComponent
+  SelectInputComponent,
+  DegreeInputComponent
 ]
 
 @NgModule({

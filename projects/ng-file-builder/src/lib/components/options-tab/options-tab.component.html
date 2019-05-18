@@ -1,5 +1,51 @@
 <div class="container">
   <div class="list-container">
+    <div class="list-collapse-toggler" (click)="toggleSection(Sections.Dimension)">
+      <span class="toggler-label">
+        Dimension
+      </span>
+      <div class="icon-wrapper">
+        <svg #toggleIcon class="icon" data-section="dimension" aria-hidden="true" focusable="false">
+          <use xlink:href="assets/icons/keyboard_arrow_down.svg#keyboard_arrow_down"></use>
+        </svg>
+      </div>
+    </div>
+    
+    <div #section class="list-content" data-section="dimension">
+      <form [formGroup]="dimensionForm">
+        <div class="element-input-group-wrapper">
+          <mzx-pixel-number-input [parentForm]="dimensionForm" controlName="width" label="Width"></mzx-pixel-number-input>
+          <mzx-pixel-number-input [parentForm]="dimensionForm" controlName="height" label="Height"></mzx-pixel-number-input>
+        </div>
+
+        <div class="element-input-group-wrapper">
+          <mzx-pixel-number-input [parentForm]="dimensionForm" controlName="left" label="X"></mzx-pixel-number-input>
+          <mzx-pixel-number-input [parentForm]="dimensionForm" controlName="top" label="Y"></mzx-pixel-number-input>
+        </div>
+
+        <div class="padding-size-container">
+          <span class="padding-label">Padding</span>
+          <div class="padding-input-wrapper">
+            <div class="input-group">
+              <mzx-pixel-number-input [parentForm]="dimensionForm" controlName="paddingTop" label="Top"></mzx-pixel-number-input>
+              <mzx-pixel-number-input [parentForm]="dimensionForm" controlName="paddingBottom" label="Bottom"></mzx-pixel-number-input>
+            </div>
+
+            <div class="input-group">
+              <mzx-pixel-number-input [parentForm]="dimensionForm" controlName="paddingRight" label="Right"></mzx-pixel-number-input>
+              <mzx-pixel-number-input [parentForm]="dimensionForm" controlName="paddingLeft" label="Left"></mzx-pixel-number-input>
+            </div>
+          </div>
+        </div>
+        
+        <div class="degrees-wrapper">
+          <mzx-degree-input [parentForm]="dimensionForm" controlName="rotation" label="Rotation"></mzx-degree-input>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="list-container">
     <div class="list-collapse-toggler" (click)="toggleSection(Sections.Typography)">
       <span class="toggler-label">
         Typography

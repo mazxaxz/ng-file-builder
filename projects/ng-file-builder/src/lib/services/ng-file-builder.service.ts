@@ -81,6 +81,8 @@ export class NgFileBuilderService {
   setRotation(degree: number) {
     this.focusedElement.setAttribute('data-rotation', `${degree}deg`);
     this.focusedElement.style.transform = `rotate(${degree}deg)`;
+    this.focusedElement.style.webkitTransform = `rotate(${degree}deg)`;
+    this.focusedElement.style.webkitBackfaceVisibility = 'hidden';
   }
 
   moveItemUp(elementIdx: number) {

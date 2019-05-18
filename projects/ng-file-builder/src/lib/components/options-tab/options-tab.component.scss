@@ -45,6 +45,44 @@
             will-change: height;
             transition: .3s height ease-in-out;
 
+            .element-input-group-wrapper {
+                display: flex;
+
+                & > *:first-of-type {
+                    margin-right: 10px;
+                }
+            }
+
+            .padding-size-container {
+                .padding-label {
+                    font-size: 10px;
+                    color: $primary-gradient-one;
+                }
+
+                .padding-input-wrapper {
+                    padding: 6px 4px;
+                    background: $dark;
+                    border: 1px solid darken($dark, 5%);
+
+                    .input-group {
+                        display: flex;
+
+                        &:last-of-type {
+                            margin-bottom: -8px;
+                        }
+
+                        & > *:first-of-type {
+                            margin-right: 10px;
+                        }
+                    }
+                }
+            }
+
+            .degrees-wrapper {
+                margin-top: 13px;
+                max-width: calc(50% - 6px);
+            }
+
             .font-size-weight-group {
                 display: flex;
 
@@ -61,6 +99,10 @@
             .typography-color-wrapper {
                 margin-top: -7px;
                 margin-bottom: 7px;
+            }
+
+            &.expanded-dimension {
+                height: 262px;
             }
 
             &.expanded-typography {

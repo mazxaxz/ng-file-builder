@@ -8,6 +8,7 @@ import { fullRgbToHex, rgbStringToArray } from '../../helpers/ColorHelpers';
 import { ConvertPixelsToNumber } from '../../helpers/UnitHelper';
 
 enum Sections {
+  Dimension = "dimension",
   Typography = "typography",
   General = "general"
 }
@@ -26,6 +27,7 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
   private _sections: any[];
 
   Sections = Sections;
+  dimensionForm: FormGroup;
   typographyForm: FormGroup;
   generalForm: FormGroup;
 
@@ -44,6 +46,7 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
       { icon: 'align_justify', value: TextAlignment.Justify }
     ];
 
+    this._initializeDimensionForm();
     this._initializeTypography();
     this._initializeGeneralForm();
     this._initializeStyles();
@@ -67,14 +70,47 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
       if (sectionElement.dataset.section === section) {
         if (sectionElement.classList.contains(`expanded-${section}`)) {
           this.renderer2.removeClass(sectionElement, `expanded-${section}`);
-          this.renderer2.removeClass(icon, `expanded-${section}`);
+          this.renderer2.removeClass(icon, 'expanded');
           return;
         }
 
         this.renderer2.addClass(sectionElement, `expanded-${section}`);
-        this.renderer2.addClass(icon, `expanded-${section}`);
+        this.renderer2.addClass(icon, 'expanded');
       }
     }
+  }
+
+  private _initializeDimensionForm() {
+    this.dimensionForm = new FormGroup({
+      width: new FormControl(0),
+      height: new FormControl(0),
+      left: new FormControl(0),
+      top: new FormControl(0),
+      rotation: new FormControl(0),
+      paddingTop: new FormControl(0),
+      paddingRight: new FormControl(0),
+      paddingBottom: new FormControl(0),
+      paddingLeft: new FormControl(0)
+    });
+
+    const rotation = this._focusedElement.dataset.rotation;
+    if (rotation) {
+      this.dimensionForm.get('rotation').setValue(rotation << 0);
+    }
+
+    Object.keys(this.dimensionForm.controls)
+      .forEach(key => {
+        const sub = this.dimensionForm.get(key).valueChanges
+          .subscribe((change: number) => {
+            if (key === 'rotation') {
+              return this.fileBuilderService.setRotation(change);
+            }
+
+            this._focusedElement.style[key] = `${change}px`;
+          });
+        this._subs.push(sub);
+      });
+      
   }
 
   private _initializeTypography() {
@@ -162,8 +198,13 @@ export class OptionsTabComponent implements OnInit, OnDestroy, AfterViewInit {
   private _initializeStyles() {
     Object.keys(this._focusedElement.style).forEach(property => {
       const computedStyle = window.getComputedStyle(this._focusedElement);
-      const typographyControl = this.typographyForm.get(property);
+      const dimensionControl = this.dimensionForm.get(property);
 
+      if (dimensionControl) {
+        return dimensionControl.setValue(ConvertPixelsToNumber(computedStyle[property]));
+      }
+
+      const typographyControl = this.typographyForm.get(property);
       if (typographyControl) {
         if (property === 'fontFamily' && !WEBSAFE_FONTS.includes(computedStyle.fontFamily)) {
           this._focusedElement.style[property] = WEBSAFE_FONTS[0];
